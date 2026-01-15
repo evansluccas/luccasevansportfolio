@@ -101,6 +101,36 @@ export type Database = {
         }
         Relationships: []
       }
+      experience_stories: {
+        Row: {
+          caption: string
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          lang: string
+          updated_at: string
+        }
+        Insert: {
+          caption: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          lang?: string
+          updated_at?: string
+        }
+        Update: {
+          caption?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          lang?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       experiences: {
         Row: {
           company: string
