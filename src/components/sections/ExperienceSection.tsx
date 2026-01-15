@@ -1,46 +1,25 @@
 import { MapPin, Calendar } from 'lucide-react';
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
-
-const experiences = [
-  {
-    position: 'Senior Product Manager',
-    company: 'TechCorp Inc.',
-    location: 'São Paulo, Brazil',
-    period: '2022 - Present',
-    description: 'Leading product strategy for a B2B SaaS platform serving 10K+ enterprise clients. Drove 40% increase in user engagement through data-driven feature prioritization.',
-    technologies: ['Jira', 'Amplitude', 'Figma', 'SQL', 'Metabase'],
-    type: 'Full-time',
-  },
-  {
-    position: 'Product Manager',
-    company: 'StartupX',
-    location: 'Remote',
-    period: '2020 - 2022',
-    description: 'Built and scaled a marketplace product from 0 to 100K users. Managed cross-functional team of 12 engineers and designers.',
-    technologies: ['Notion', 'Mixpanel', 'Miro', 'Google Analytics'],
-    type: 'Full-time',
-  },
-  {
-    position: 'Associate Product Manager',
-    company: 'InnovateLab',
-    location: 'Rio de Janeiro, Brazil',
-    period: '2018 - 2020',
-    description: 'Contributed to the development of mobile fintech solutions. Implemented user research programs that improved NPS by 25 points.',
-    technologies: ['Trello', 'Hotjar', 'Sketch', 'Firebase'],
-    type: 'Full-time',
-  },
-  {
-    position: 'Product Consultant',
-    company: 'Freelance',
-    location: 'Remote',
-    period: '2017 - 2018',
-    description: 'Provided product strategy consulting for early-stage startups. Helped 5+ companies define MVPs and go-to-market strategies.',
-    technologies: ['Lean Canvas', 'User Interviews', 'Prototyping'],
-    type: 'Freelance',
-  },
-];
+import { useExperiences } from '@/hooks/usePortfolioData';
+import { Skeleton } from '@/components/ui/skeleton';
+import { format } from 'date-fns';
 
 export function ExperienceSection() {
+  const { data: experiences, isLoading } = useExperiences();
+
+  // Don't render if no experiences
+  if (!isLoading && (!experiences || experiences.length === 0)) {
+    return null;
+  }
+
+  const formatDate = (dateStr: string) => {
+    try {
+      return format(new Date(dateStr), 'MMM yyyy');
+    } catch {
+      return dateStr;
+    }
+  };
+
   return (
     <section id="experience" className="relative section-padding overflow-hidden">
       <BlobDecoration 
@@ -70,71 +49,89 @@ export function ExperienceSection() {
 
           {/* Experience Items */}
           <div className="space-y-12">
-            {experiences.map((exp, index) => (
-              <div
-                key={index}
-                className={`relative flex flex-col md:flex-row gap-8 ${
-                  index % 2 === 0 ? 'md:flex-row-reverse' : ''
-                }`}
-              >
-                {/* Timeline Dot */}
-                <div className="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10" />
+            {isLoading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="relative flex flex-col md:flex-row gap-8">
+                  <div className="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10" />
+                  <div className="md:w-1/2 pl-8 md:pl-0 md:pr-16">
+                    <Skeleton className="h-48 rounded-2xl" />
+                  </div>
+                  <div className="hidden md:block md:w-1/2" />
+                </div>
+              ))
+            ) : (
+              experiences?.map((exp, index) => (
+                <div
+                  key={exp.id}
+                  className={`relative flex flex-col md:flex-row gap-8 ${
+                    index % 2 === 0 ? 'md:flex-row-reverse' : ''
+                  }`}
+                >
+                  {/* Timeline Dot */}
+                  <div className="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10" />
 
-                {/* Content */}
-                <div className={`md:w-1/2 pl-8 md:pl-0 ${index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
-                  <div className="p-6 rounded-2xl bg-card border border-primary/20 hover-lift">
-                    {/* Type Badge */}
-                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-4 ${
-                      exp.type === 'Freelance' 
-                        ? 'bg-coral/20 text-coral' 
-                        : 'bg-primary/20 text-primary'
-                    }`}>
-                      {exp.type}
-                    </span>
-
-                    {/* Position & Company */}
-                    <h3 className="text-xl font-bold text-foreground mb-1">
-                      {exp.position}
-                    </h3>
-                    <h4 className="text-lg text-primary font-medium mb-3">
-                      {exp.company}
-                    </h4>
-
-                    {/* Meta Info */}
-                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
-                      <span className="flex items-center gap-1">
-                        <MapPin size={14} />
-                        {exp.location}
+                  {/* Content */}
+                  <div className={`md:w-1/2 pl-8 md:pl-0 ${index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
+                    <div className="p-6 rounded-2xl bg-card border border-primary/20 hover-lift">
+                      {/* Type Badge */}
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-4 ${
+                        exp.employment_type === 'Freelance' 
+                          ? 'bg-coral/20 text-coral' 
+                          : 'bg-primary/20 text-primary'
+                      }`}>
+                        {exp.employment_type}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar size={14} />
-                        {exp.period}
-                      </span>
-                    </div>
 
-                    {/* Description */}
-                    <p className="text-muted-foreground mb-4 leading-relaxed">
-                      {exp.description}
-                    </p>
+                      {/* Position & Company */}
+                      <h3 className="text-xl font-bold text-foreground mb-1">
+                        {exp.position}
+                      </h3>
+                      <h4 className="text-lg text-primary font-medium mb-3">
+                        {exp.company}
+                      </h4>
 
-                    {/* Technologies */}
-                    <div className="flex flex-wrap gap-2">
-                      {exp.technologies.map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="px-3 py-1 rounded-full bg-muted text-xs font-medium text-muted-foreground"
-                        >
-                          {tech}
+                      {/* Meta Info */}
+                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
+                        {exp.location && (
+                          <span className="flex items-center gap-1">
+                            <MapPin size={14} />
+                            {exp.location}
+                          </span>
+                        )}
+                        <span className="flex items-center gap-1">
+                          <Calendar size={14} />
+                          {formatDate(exp.start_date)} - {exp.end_date ? formatDate(exp.end_date) : 'Present'}
                         </span>
-                      ))}
+                      </div>
+
+                      {/* Description */}
+                      {exp.description && (
+                        <p className="text-muted-foreground mb-4 leading-relaxed">
+                          {exp.description}
+                        </p>
+                      )}
+
+                      {/* Technologies */}
+                      {exp.technologies && exp.technologies.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {exp.technologies.map((tech, techIndex) => (
+                            <span
+                              key={techIndex}
+                              className="px-3 py-1 rounded-full bg-muted text-xs font-medium text-muted-foreground"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
 
-                {/* Spacer for alternating layout */}
-                <div className="hidden md:block md:w-1/2" />
-              </div>
-            ))}
+                  {/* Spacer for alternating layout */}
+                  <div className="hidden md:block md:w-1/2" />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

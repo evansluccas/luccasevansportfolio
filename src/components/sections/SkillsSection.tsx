@@ -1,49 +1,22 @@
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
-
-const skillCategories = [
-  {
-    title: 'Product Management',
-    skills: [
-      { name: 'Product Strategy', level: 95 },
-      { name: 'Roadmap Planning', level: 90 },
-      { name: 'User Research', level: 85 },
-      { name: 'A/B Testing', level: 80 },
-      { name: 'Go-to-Market', level: 85 },
-    ],
-  },
-  {
-    title: 'Technical Skills',
-    skills: [
-      { name: 'SQL & Analytics', level: 80 },
-      { name: 'No-Code Tools', level: 90 },
-      { name: 'API Understanding', level: 75 },
-      { name: 'Prototyping', level: 85 },
-      { name: 'Data Visualization', level: 80 },
-    ],
-  },
-  {
-    title: 'Tools & Platforms',
-    skills: [
-      { name: 'Jira / Asana', level: 95 },
-      { name: 'Figma', level: 85 },
-      { name: 'Amplitude / Mixpanel', level: 90 },
-      { name: 'Notion / Confluence', level: 95 },
-      { name: 'Miro / FigJam', level: 90 },
-    ],
-  },
-  {
-    title: 'Soft Skills',
-    skills: [
-      { name: 'Leadership', level: 90 },
-      { name: 'Communication', level: 95 },
-      { name: 'Problem Solving', level: 90 },
-      { name: 'Stakeholder Management', level: 85 },
-      { name: 'Team Collaboration', level: 95 },
-    ],
-  },
-];
+import { useSkills } from '@/hooks/usePortfolioData';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function SkillsSection() {
+  const { data: skills, isLoading } = useSkills();
+
+  // Don't render if no skills
+  if (!isLoading && (!skills || skills.length === 0)) {
+    return null;
+  }
+
+  // Group skills by category
+  const groupedSkills = skills?.reduce((acc, skill) => {
+    if (!acc[skill.category]) acc[skill.category] = [];
+    acc[skill.category].push(skill);
+    return acc;
+  }, {} as Record<string, typeof skills>);
+
   return (
     <section id="skills" className="relative section-padding overflow-hidden">
       <BlobDecoration 
@@ -69,36 +42,42 @@ export function SkillsSection() {
 
         {/* Skills Grid */}
         <div className="grid md:grid-cols-2 gap-8">
-          {skillCategories.map((category, categoryIndex) => (
-            <div
-              key={categoryIndex}
-              className="p-6 lg:p-8 rounded-2xl bg-card border border-primary/20 hover-lift"
-            >
-              <h3 className="text-xl font-bold text-primary mb-6">
-                {category.title}
-              </h3>
-              <div className="space-y-5">
-                {category.skills.map((skill, skillIndex) => (
-                  <div key={skillIndex}>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-foreground">
-                        {skill.name}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {skill.level}%
-                      </span>
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-64 rounded-2xl" />
+            ))
+          ) : (
+            groupedSkills && Object.entries(groupedSkills).map(([category, categorySkills]) => (
+              <div
+                key={category}
+                className="p-6 lg:p-8 rounded-2xl bg-card border border-primary/20 hover-lift"
+              >
+                <h3 className="text-xl font-bold text-primary mb-6">
+                  {category}
+                </h3>
+                <div className="space-y-5">
+                  {categorySkills?.map((skill) => (
+                    <div key={skill.id}>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-foreground">
+                          {skill.name}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {skill.proficiency}%
+                        </span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-1000 ease-out"
+                          style={{ width: `${skill.proficiency}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </section>
