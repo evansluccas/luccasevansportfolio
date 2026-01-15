@@ -1,29 +1,36 @@
 import { Linkedin, Mail, MapPin, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
-
-const contactInfo = [
-  {
-    icon: Linkedin,
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/luccasevans',
-    href: 'https://linkedin.com/in/luccasevans',
-  },
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'hello@luccasevans.com',
-    href: 'mailto:hello@luccasevans.com',
-  },
-  {
-    icon: MapPin,
-    label: 'Location',
-    value: 'São Paulo, Brazil',
-    href: '#',
-  },
-];
+import { useSiteConfig } from '@/hooks/usePortfolioData';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function ContactSection() {
+  const { data: config, isLoading } = useSiteConfig();
+
+  const contactInfo = [
+    {
+      icon: Linkedin,
+      label: 'LinkedIn',
+      value: config?.social_linkedin ? config.social_linkedin.replace('https://linkedin.com/in/', '') : null,
+      href: config?.social_linkedin || '#',
+      show: !!config?.social_linkedin,
+    },
+    {
+      icon: Mail,
+      label: 'Email',
+      value: config?.social_email,
+      href: config?.social_email ? `mailto:${config.social_email}` : '#',
+      show: !!config?.social_email,
+    },
+    {
+      icon: MapPin,
+      label: 'Location',
+      value: config?.location,
+      href: '#',
+      show: !!config?.location,
+    },
+  ].filter(item => item.show);
+
   return (
     <section id="contact" className="relative section-padding overflow-hidden bg-card/50">
       <BlobDecoration 
@@ -58,23 +65,31 @@ export function ContactSection() {
               Let's <span className="text-primary">Talk</span>
             </h3>
 
-            {contactInfo.map((info, index) => (
-              <a
-                key={index}
-                href={info.href}
-                target={info.href.startsWith('http') ? '_blank' : undefined}
-                rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="flex items-center gap-4 p-4 rounded-xl bg-card border border-primary/20 hover-lift group"
-              >
-                <div className="p-3 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors">
-                  <info.icon size={24} className="text-primary" />
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">{info.label}</div>
-                  <div className="text-foreground font-medium">{info.value}</div>
-                </div>
-              </a>
-            ))}
+            {isLoading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-20 rounded-xl" />
+              ))
+            ) : contactInfo.length > 0 ? (
+              contactInfo.map((info, index) => (
+                <a
+                  key={index}
+                  href={info.href}
+                  target={info.href.startsWith('http') ? '_blank' : undefined}
+                  rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-card border border-primary/20 hover-lift group"
+                >
+                  <div className="p-3 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors">
+                    <info.icon size={24} className="text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-muted-foreground">{info.label}</div>
+                    <div className="text-foreground font-medium">{info.value}</div>
+                  </div>
+                </a>
+              ))
+            ) : (
+              <p className="text-muted-foreground">Contact information not configured yet.</p>
+            )}
 
             <p className="text-muted-foreground mt-8 leading-relaxed">
               I'm always open to discussing new projects, creative ideas, or opportunities 
