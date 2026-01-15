@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -150,13 +151,8 @@ export default function AdminExperienceStories() {
   };
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Experience Stories</h1>
-        <p className="text-muted-foreground">
-          Manage the story carousel images that appear alongside your experience timeline.
-        </p>
-      </div>
+    <AdminLayout title="Experience Stories" description="Manage the story carousel images that appear alongside your experience timeline">
+      <div className="space-y-8">
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="p-6 bg-card rounded-xl border border-primary/20 space-y-4">
@@ -289,6 +285,7 @@ export default function AdminExperienceStories() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
