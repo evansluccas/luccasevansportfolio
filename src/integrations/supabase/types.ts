@@ -185,6 +185,39 @@ export type Database = {
         }
         Relationships: []
       }
+      nav_links: {
+        Row: {
+          created_at: string
+          display_order: number
+          href: string
+          id: string
+          is_visible: boolean
+          label: string
+          lang: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          href: string
+          id?: string
+          is_visible?: boolean
+          label: string
+          lang?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          href?: string
+          id?: string
+          is_visible?: boolean
+          label?: string
+          lang?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

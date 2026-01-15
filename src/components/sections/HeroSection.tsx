@@ -10,19 +10,6 @@ export function HeroSection() {
 
   const isLoading = configLoading || statsLoading;
 
-  // Don't render anything if no config exists
-  if (!isLoading && !config) {
-    return (
-      <section id="home" className="relative min-h-screen flex items-center justify-center pt-24 pb-16">
-        <div className="text-center">
-          <p className="text-muted-foreground">Configure your portfolio in the admin panel</p>
-          <Button variant="outline" className="mt-4" asChild>
-            <a href="/admin">Go to Admin</a>
-          </Button>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">

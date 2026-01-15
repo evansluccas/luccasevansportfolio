@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import type { Tables } from '@/integrations/supabase/types';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface SiteConfig {
@@ -86,6 +87,29 @@ export interface BlogPost {
   status: string;
   author: string;
   reading_time: number;
+}
+
+export interface NavLink {
+  id: string;
+  label: string;
+  href: string;
+  display_order: number;
+  is_visible: boolean;
+}
+
+export function useNavLinks() {
+  return useQuery({
+    queryKey: ['nav-links'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('nav_links')
+        .select('*')
+        .order('display_order', { ascending: true });
+      
+      if (error) throw error;
+      return data as NavLink[];
+    },
+  });
 }
 
 export function useSiteConfig() {
