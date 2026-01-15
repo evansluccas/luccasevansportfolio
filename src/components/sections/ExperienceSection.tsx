@@ -155,9 +155,7 @@ export function ExperienceSection() {
                           <div className="w-8 h-8 rounded-full bg-primary" />
                         </div>
                         {/* Vertical dashed line extending down */}
-                        {index < (experiences?.length || 0) - 1 && (
-                          <div className="w-px flex-1 min-h-20 border-l-2 border-dashed border-muted-foreground/40" />
-                        )}
+                        <div className="w-px flex-1 min-h-20 border-l-2 border-dashed border-muted-foreground/40" />
                       </div>
 
                       {/* Content */}
