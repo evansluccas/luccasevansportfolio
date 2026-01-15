@@ -59,9 +59,15 @@ export function ExperienceSection() {
       <div className="section-container relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+          <span className="inline-block px-4 py-2 bg-primary/20 text-primary rounded-full text-sm font-medium mb-6">
             About me
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+            Professional <span className="text-primary">Experience</span>
           </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            A journey of growth, learning, and impactful contributions across different roles and companies.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
