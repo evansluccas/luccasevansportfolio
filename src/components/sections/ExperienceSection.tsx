@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useExperiences, useExperienceStories } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import useEmblaCarousel from 'embla-carousel-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function ExperienceSection() {
   const { data: experiences, isLoading: experiencesLoading } = useExperiences();
@@ -27,6 +28,14 @@ export function ExperienceSection() {
   const scrollTo = useCallback((index: number) => {
     if (!emblaApi) return;
     emblaApi.scrollTo(index);
+  }, [emblaApi]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
   const isLoading = experiencesLoading || storiesLoading;
@@ -59,13 +68,13 @@ export function ExperienceSection() {
           {/* Left Side - Story Carousel */}
           <div className="flex flex-col">
             {storiesLoading ? (
-              <Skeleton className="aspect-square w-full max-w-md mx-auto rounded-2xl" />
+              <Skeleton className="aspect-[3/4] w-full max-w-md mx-auto rounded-2xl" />
             ) : stories && stories.length > 0 ? (
-              <div className="flex flex-col items-center">
+              <div className="relative max-w-md mx-auto w-full">
                 {/* Carousel */}
                 <div 
                   ref={emblaRef} 
-                  className="overflow-hidden w-full max-w-md rounded-2xl"
+                  className="overflow-hidden w-full rounded-2xl"
                 >
                   <div className="flex">
                     {stories.map((story) => (
@@ -73,32 +82,53 @@ export function ExperienceSection() {
                         key={story.id} 
                         className="flex-[0_0_100%] min-w-0"
                       >
-                        <div className="relative aspect-square bg-primary/20 rounded-2xl overflow-hidden">
+                        <div className="relative aspect-[3/4] bg-primary/20 rounded-2xl overflow-hidden">
                           <img
                             src={story.image_url}
                             alt={story.caption}
                             className="w-full h-full object-cover"
                           />
+                          {/* Caption Overlay */}
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <div className="bg-foreground/60 backdrop-blur-md rounded-xl p-4">
+                              <p className="text-background text-sm leading-relaxed">
+                                {story.caption}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Caption */}
-                {stories[selectedIndex] && (
-                  <p className="mt-4 text-muted-foreground text-center max-w-md">
-                    {stories[selectedIndex].caption}
-                  </p>
+                {/* Navigation Arrows */}
+                {stories.length > 1 && (
+                  <>
+                    <button
+                      onClick={scrollPrev}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-foreground/80 hover:bg-foreground text-background flex items-center justify-center transition-colors z-10"
+                      aria-label="Previous slide"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={scrollNext}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-foreground/80 hover:bg-foreground text-background flex items-center justify-center transition-colors z-10"
+                      aria-label="Next slide"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </>
                 )}
 
                 {/* Dots Navigation */}
-                <div className="flex gap-2 mt-6">
+                <div className="flex gap-2 mt-6 justify-center">
                   {stories.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => scrollTo(index)}
-                      className={`w-3 h-3 rounded-full transition-colors ${
+                      className={`w-2.5 h-2.5 rounded-full transition-colors ${
                         index === selectedIndex 
                           ? 'bg-primary' 
                           : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
@@ -109,7 +139,7 @@ export function ExperienceSection() {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center aspect-square w-full max-w-md mx-auto rounded-2xl bg-card border border-primary/20">
+              <div className="flex items-center justify-center aspect-[3/4] w-full max-w-md mx-auto rounded-2xl bg-card border border-primary/20">
                 <p className="text-muted-foreground text-center px-8">
                   Add stories in the admin panel to display your journey here.
                 </p>
