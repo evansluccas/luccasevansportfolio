@@ -97,6 +97,13 @@ export interface NavLink {
   is_visible: boolean;
 }
 
+export interface ExperienceStory {
+  id: string;
+  image_url: string;
+  caption: string;
+  display_order: number;
+}
+
 export function useNavLinks() {
   return useQuery({
     queryKey: ['nav-links'],
@@ -169,6 +176,21 @@ export function useExperiences() {
       
       if (error) throw error;
       return data as Experience[];
+    },
+  });
+}
+
+export function useExperienceStories() {
+  return useQuery({
+    queryKey: ['experience-stories'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('experience_stories')
+        .select('*')
+        .order('display_order', { ascending: true });
+      
+      if (error) throw error;
+      return data as ExperienceStory[];
     },
   });
 }

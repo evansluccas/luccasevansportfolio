@@ -19,6 +19,7 @@ import AdminProjectForm from "./pages/admin/AdminProjectForm";
 import AdminBlog from "./pages/admin/AdminBlog";
 import AdminBlogForm from "./pages/admin/AdminBlogForm";
 import AdminExperiences from "./pages/admin/AdminExperiences";
+import AdminExperienceStories from "./pages/admin/AdminExperienceStories";
 import AdminSkills from "./pages/admin/AdminSkills";
 import AdminAboutCards from "./pages/admin/AdminAboutCards";
 import AdminHeroStats from "./pages/admin/AdminHeroStats";
@@ -79,6 +80,11 @@ const App = () => (
             <Route path="/admin/experiences" element={
               <ProtectedRoute requireAdmin>
                 <AdminExperiences />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/experience-stories" element={
+              <ProtectedRoute requireAdmin>
+                <AdminExperienceStories />
               </ProtectedRoute>
             } />
             <Route path="/admin/skills" element={

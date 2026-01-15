@@ -1,136 +1,179 @@
-import { MapPin, Calendar } from 'lucide-react';
-import { BlobDecoration } from '@/components/decorations/BlobDecoration';
-import { useExperiences } from '@/hooks/usePortfolioData';
+import { useState, useCallback, useEffect } from 'react';
+import { useExperiences, useExperienceStories } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
-import { format } from 'date-fns';
+import useEmblaCarousel from 'embla-carousel-react';
 
 export function ExperienceSection() {
-  const { data: experiences, isLoading } = useExperiences();
+  const { data: experiences, isLoading: experiencesLoading } = useExperiences();
+  const { data: stories, isLoading: storiesLoading } = useExperienceStories();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  const scrollTo = useCallback((index: number) => {
+    if (!emblaApi) return;
+    emblaApi.scrollTo(index);
+  }, [emblaApi]);
+
+  const isLoading = experiencesLoading || storiesLoading;
 
   // Don't render if no experiences
   if (!isLoading && (!experiences || experiences.length === 0)) {
     return null;
   }
 
-  const formatDate = (dateStr: string) => {
+  // Extract year from start_date
+  const getYear = (dateStr: string) => {
     try {
-      return format(new Date(dateStr), 'MMM yyyy');
+      return new Date(dateStr).getFullYear().toString();
     } catch {
       return dateStr;
     }
   };
 
   return (
-    <section id="experience" className="relative section-padding overflow-hidden">
-      <BlobDecoration 
-        className="-left-48 top-1/3 opacity-15" 
-        size="xl" 
-        variant="secondary"
-      />
-
+    <section id="experience" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
-            Career Journey
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-            Professional <span className="text-primary">Experience</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+            About me
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A track record of building impactful products across different industries and scales.
-          </p>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Timeline Line */}
-          <div className="absolute left-0 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20" />
-
-          {/* Experience Items */}
-          <div className="space-y-12">
-            {isLoading ? (
-              Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="relative flex flex-col md:flex-row gap-8">
-                  <div className="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10" />
-                  <div className="md:w-1/2 pl-8 md:pl-0 md:pr-16">
-                    <Skeleton className="h-48 rounded-2xl" />
-                  </div>
-                  <div className="hidden md:block md:w-1/2" />
-                </div>
-              ))
-            ) : (
-              experiences?.map((exp, index) => (
-                <div
-                  key={exp.id}
-                  className={`relative flex flex-col md:flex-row gap-8 ${
-                    index % 2 === 0 ? 'md:flex-row-reverse' : ''
-                  }`}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          {/* Left Side - Story Carousel */}
+          <div className="flex flex-col">
+            {storiesLoading ? (
+              <Skeleton className="aspect-square w-full max-w-md mx-auto rounded-2xl" />
+            ) : stories && stories.length > 0 ? (
+              <div className="flex flex-col items-center">
+                {/* Carousel */}
+                <div 
+                  ref={emblaRef} 
+                  className="overflow-hidden w-full max-w-md rounded-2xl"
                 >
-                  {/* Timeline Dot */}
-                  <div className="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10" />
+                  <div className="flex">
+                    {stories.map((story) => (
+                      <div 
+                        key={story.id} 
+                        className="flex-[0_0_100%] min-w-0"
+                      >
+                        <div className="relative aspect-square bg-primary/20 rounded-2xl overflow-hidden">
+                          <img
+                            src={story.image_url}
+                            alt={story.caption}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-                  {/* Content */}
-                  <div className={`md:w-1/2 pl-8 md:pl-0 ${index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
-                    <div className="p-6 rounded-2xl bg-card border border-primary/20 hover-lift">
-                      {/* Type Badge */}
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-4 ${
-                        exp.employment_type === 'Freelance' 
-                          ? 'bg-coral/20 text-coral' 
-                          : 'bg-primary/20 text-primary'
-                      }`}>
-                        {exp.employment_type}
-                      </span>
+                {/* Caption */}
+                {stories[selectedIndex] && (
+                  <p className="mt-4 text-muted-foreground text-center max-w-md">
+                    {stories[selectedIndex].caption}
+                  </p>
+                )}
 
-                      {/* Position & Company */}
-                      <h3 className="text-xl font-bold text-foreground mb-1">
-                        {exp.position}
-                      </h3>
-                      <h4 className="text-lg text-primary font-medium mb-3">
-                        {exp.company}
-                      </h4>
+                {/* Dots Navigation */}
+                <div className="flex gap-2 mt-6">
+                  {stories.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => scrollTo(index)}
+                      className={`w-3 h-3 rounded-full transition-colors ${
+                        index === selectedIndex 
+                          ? 'bg-primary' 
+                          : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center aspect-square w-full max-w-md mx-auto rounded-2xl bg-card border border-primary/20">
+                <p className="text-muted-foreground text-center px-8">
+                  Add stories in the admin panel to display your journey here.
+                </p>
+              </div>
+            )}
+          </div>
 
-                      {/* Meta Info */}
-                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
-                        {exp.location && (
-                          <span className="flex items-center gap-1">
-                            <MapPin size={14} />
-                            {exp.location}
-                          </span>
-                        )}
-                        <span className="flex items-center gap-1">
-                          <Calendar size={14} />
-                          {formatDate(exp.start_date)} - {exp.end_date ? formatDate(exp.end_date) : 'Present'}
+          {/* Right Side - Timeline */}
+          <div className="relative">
+            {experiencesLoading ? (
+              <div className="space-y-8">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="flex gap-6">
+                    <Skeleton className="w-16 h-6" />
+                    <Skeleton className="w-4 h-4 rounded-full flex-shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-5 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
+                      <Skeleton className="h-16 w-full" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="relative">
+                {/* Vertical dashed line */}
+                <div 
+                  className="absolute left-[4.5rem] top-2 bottom-2 w-px border-l-2 border-dashed border-muted-foreground/30"
+                  style={{ marginLeft: '0.5rem' }}
+                />
+
+                <div className="space-y-8">
+                  {experiences?.map((exp) => (
+                    <div key={exp.id} className="flex gap-6 items-start">
+                      {/* Year */}
+                      <div className="w-14 flex-shrink-0 text-right">
+                        <span className="text-lg font-semibold text-foreground">
+                          {getYear(exp.start_date)}
                         </span>
                       </div>
 
-                      {/* Description */}
-                      {exp.description && (
-                        <p className="text-muted-foreground mb-4 leading-relaxed">
-                          {exp.description}
-                        </p>
-                      )}
+                      {/* Dot */}
+                      <div className="relative flex-shrink-0 z-10">
+                        <div className="w-4 h-4 rounded-full bg-primary border-4 border-background" />
+                      </div>
 
-                      {/* Technologies */}
-                      {exp.technologies && exp.technologies.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {exp.technologies.map((tech, techIndex) => (
-                            <span
-                              key={techIndex}
-                              className="px-3 py-1 rounded-full bg-muted text-xs font-medium text-muted-foreground"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                      {/* Content */}
+                      <div className="flex-1 pb-4">
+                        <h3 className="text-lg font-bold text-foreground">
+                          {exp.position}
+                        </h3>
+                        <h4 className="text-base text-primary font-medium mb-2">
+                          @{exp.company}
+                        </h4>
+                        {exp.description && (
+                          <p className="text-muted-foreground text-sm leading-relaxed">
+                            {exp.description}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Spacer for alternating layout */}
-                  <div className="hidden md:block md:w-1/2" />
+                  ))}
                 </div>
-              ))
+              </div>
             )}
           </div>
         </div>
