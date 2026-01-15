@@ -43,8 +43,7 @@ export interface Experience {
   position: string;
   company: string;
   location: string | null;
-  start_date: string;
-  end_date: string | null;
+  year: string | null;
   description: string | null;
   technologies: string[];
   employment_type: string;

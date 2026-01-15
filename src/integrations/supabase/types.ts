@@ -146,6 +146,7 @@ export type Database = {
           start_date: string
           technologies: string[] | null
           updated_at: string
+          year: string | null
         }
         Insert: {
           company: string
@@ -161,6 +162,7 @@ export type Database = {
           start_date: string
           technologies?: string[] | null
           updated_at?: string
+          year?: string | null
         }
         Update: {
           company?: string
@@ -176,6 +178,7 @@ export type Database = {
           start_date?: string
           technologies?: string[] | null
           updated_at?: string
+          year?: string | null
         }
         Relationships: []
       }

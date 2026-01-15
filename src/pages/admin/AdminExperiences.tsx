@@ -10,8 +10,7 @@ interface Experience {
   position: string;
   company: string;
   location: string | null;
-  start_date: string;
-  end_date: string | null;
+  year: string | null;
   employment_type: string;
   display_order: number;
 }
@@ -24,8 +23,7 @@ export default function AdminExperiences() {
     position: '',
     company: '',
     location: '',
-    start_date: '',
-    end_date: '',
+    year: '',
     description: '',
     technologies: '',
     employment_type: 'Full-time',
@@ -57,8 +55,7 @@ export default function AdminExperiences() {
       position: '',
       company: '',
       location: '',
-      start_date: '',
-      end_date: '',
+      year: '',
       description: '',
       technologies: '',
       employment_type: 'Full-time',
@@ -74,8 +71,7 @@ export default function AdminExperiences() {
         position: data.position,
         company: data.company,
         location: data.location || '',
-        start_date: data.start_date,
-        end_date: data.end_date || '',
+        year: data.year || '',
         description: data.description || '',
         technologies: (data.technologies || []).join(', '),
         employment_type: data.employment_type || 'Full-time',
@@ -91,8 +87,8 @@ export default function AdminExperiences() {
       position: formData.position,
       company: formData.company,
       location: formData.location || null,
-      start_date: formData.start_date,
-      end_date: formData.end_date || null,
+      year: formData.year || null,
+      start_date: formData.year ? `${formData.year}-01-01` : new Date().toISOString().split('T')[0],
       description: formData.description || null,
       technologies: formData.technologies.split(',').map(t => t.trim()).filter(Boolean),
       employment_type: formData.employment_type,
@@ -158,27 +154,13 @@ export default function AdminExperiences() {
               onChange={e => setFormData({...formData, location: e.target.value})}
               className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
             />
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs text-muted-foreground mb-1">Start Date *</label>
-                <input
-                  type="date"
-                  value={formData.start_date}
-                  onChange={e => setFormData({...formData, start_date: e.target.value})}
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-muted-foreground mb-1">End Date</label>
-                <input
-                  type="date"
-                  value={formData.end_date}
-                  onChange={e => setFormData({...formData, end_date: e.target.value})}
-                  className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
-                />
-              </div>
-            </div>
+            <input
+              type="text"
+              placeholder="Year (e.g., 2024)"
+              value={formData.year}
+              onChange={e => setFormData({...formData, year: e.target.value})}
+              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+            />
             <textarea
               placeholder="Description"
               value={formData.description}
@@ -244,7 +226,7 @@ export default function AdminExperiences() {
                   <h4 className="font-semibold text-foreground">{exp.position}</h4>
                   <p className="text-primary text-sm">{exp.company}</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {exp.start_date} - {exp.end_date || 'Present'} • {exp.employment_type}
+                    {exp.year || 'No year'} • {exp.employment_type}
                   </p>
                 </div>
                 <div className="flex gap-2">
