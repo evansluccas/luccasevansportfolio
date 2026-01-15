@@ -10,6 +10,7 @@ export function ContactSection() {
   const contactInfo = [
     {
       icon: Linkedin,
+      customIconUrl: config?.linkedin_icon_url,
       label: 'LinkedIn',
       value: config?.social_linkedin ? config.social_linkedin.replace('https://linkedin.com/in/', '') : null,
       href: config?.social_linkedin || '#',
@@ -17,6 +18,7 @@ export function ContactSection() {
     },
     {
       icon: Mail,
+      customIconUrl: config?.email_icon_url,
       label: 'Email',
       value: config?.social_email,
       href: config?.social_email ? `mailto:${config.social_email}` : '#',
@@ -24,6 +26,7 @@ export function ContactSection() {
     },
     {
       icon: MapPin,
+      customIconUrl: config?.location_icon_url,
       label: 'Location',
       value: config?.location,
       href: '#',
@@ -78,8 +81,16 @@ export function ContactSection() {
                   rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="flex items-center gap-4 p-4 rounded-xl bg-card border border-primary/20 hover-lift group"
                 >
-                  <div className="p-3 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors">
-                    <info.icon size={24} className="text-primary" />
+                  <div className="w-12 h-12 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors flex items-center justify-center overflow-hidden">
+                    {info.customIconUrl ? (
+                      <img 
+                        src={info.customIconUrl} 
+                        alt={`${info.label} icon`} 
+                        className="w-7 h-7 object-contain"
+                      />
+                    ) : (
+                      <info.icon size={24} className="text-primary" />
+                    )}
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">{info.label}</div>

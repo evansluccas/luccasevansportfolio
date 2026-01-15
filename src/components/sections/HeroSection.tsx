@@ -3,6 +3,7 @@ import { BlobDecoration } from '@/components/decorations/BlobDecoration';
 import { useSiteConfig, useHeroStats } from '@/hooks/usePortfolioData';
 import { getIcon } from '@/lib/icons';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TypingAnimation } from '@/components/ui/typing-animation';
 
 export function HeroSection() {
   const { data: config, isLoading: configLoading } = useSiteConfig();
@@ -56,12 +57,22 @@ export function HeroSection() {
               </h1>
             )}
 
-            {/* Title */}
+            {/* Title with Typing Animation */}
             {isLoading ? (
               <Skeleton className="h-8 w-48 mb-6 mx-auto lg:mx-0" />
             ) : (
-              <h2 className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground font-medium mb-6">
-                {config?.title}
+              <h2 className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground font-medium mb-6 min-h-[1.5em]">
+                <TypingAnimation 
+                  texts={[
+                    config?.title || '',
+                    config?.title_2 || '',
+                    config?.title_3 || '',
+                    config?.title_4 || '',
+                  ]}
+                  typingSpeed={80}
+                  deletingSpeed={40}
+                  pauseDuration={2500}
+                />
               </h2>
             )}
 

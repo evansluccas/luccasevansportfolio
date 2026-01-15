@@ -346,45 +346,63 @@ export type Database = {
           bio_long: string | null
           bio_short: string | null
           created_at: string
+          email_icon_url: string | null
           hero_tag: string | null
           id: string
           lang: string
+          linkedin_icon_url: string | null
           location: string | null
+          location_icon_url: string | null
           name: string
           profile_image_url: string | null
           social_email: string | null
           social_linkedin: string | null
           title: string
+          title_2: string | null
+          title_3: string | null
+          title_4: string | null
           updated_at: string
         }
         Insert: {
           bio_long?: string | null
           bio_short?: string | null
           created_at?: string
+          email_icon_url?: string | null
           hero_tag?: string | null
           id?: string
           lang?: string
+          linkedin_icon_url?: string | null
           location?: string | null
+          location_icon_url?: string | null
           name?: string
           profile_image_url?: string | null
           social_email?: string | null
           social_linkedin?: string | null
           title?: string
+          title_2?: string | null
+          title_3?: string | null
+          title_4?: string | null
           updated_at?: string
         }
         Update: {
           bio_long?: string | null
           bio_short?: string | null
           created_at?: string
+          email_icon_url?: string | null
           hero_tag?: string | null
           id?: string
           lang?: string
+          linkedin_icon_url?: string | null
           location?: string | null
+          location_icon_url?: string | null
           name?: string
           profile_image_url?: string | null
           social_email?: string | null
           social_linkedin?: string | null
           title?: string
+          title_2?: string | null
+          title_3?: string | null
+          title_4?: string | null
           updated_at?: string
         }
         Relationships: []
