@@ -135,25 +135,29 @@ export function ExperienceSection() {
               </div>
             ) : (
               <div className="relative">
-                {/* Vertical dashed line */}
-                <div 
-                  className="absolute left-[4.5rem] top-2 bottom-2 w-px border-l-2 border-dashed border-muted-foreground/30"
-                  style={{ marginLeft: '0.5rem' }}
-                />
-
-                <div className="space-y-8">
-                  {experiences?.map((exp) => (
+                <div className="space-y-0">
+                  {experiences?.map((exp, index) => (
                     <div key={exp.id} className="flex gap-6 items-start">
                       {/* Year */}
-                      <div className="w-14 flex-shrink-0 text-right">
+                      <div className="w-14 flex-shrink-0 text-right pt-4">
                         <span className="text-lg font-semibold text-foreground">
                           {getYear(exp.start_date)}
                         </span>
                       </div>
 
-                      {/* Dot */}
-                      <div className="relative flex-shrink-0 z-10">
-                        <div className="w-4 h-4 rounded-full bg-primary border-4 border-background" />
+                      {/* Timeline Connector */}
+                      <div className="relative flex-shrink-0 z-10 flex flex-col items-center">
+                        {/* Orange ball with dashed border */}
+                        <div className="relative w-12 h-12 flex items-center justify-center">
+                          {/* Dashed outer ring */}
+                          <div className="absolute inset-0 rounded-full border-2 border-dashed border-muted-foreground/60" />
+                          {/* Solid orange inner circle */}
+                          <div className="w-8 h-8 rounded-full bg-primary" />
+                        </div>
+                        {/* Vertical dashed line extending down */}
+                        {index < (experiences?.length || 0) - 1 && (
+                          <div className="w-px flex-1 min-h-20 border-l-2 border-dashed border-muted-foreground/40" />
+                        )}
                       </div>
 
                       {/* Content */}
