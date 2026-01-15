@@ -150,9 +150,6 @@ export function HeroSection() {
                           <div className="text-2xl lg:text-3xl font-bold text-foreground">
                             {stat.number}
                           </div>
-                          <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                            {stat.unit}
-                          </div>
                           <div className="text-sm text-muted-foreground mt-1">
                             {stat.description}
                           </div>
