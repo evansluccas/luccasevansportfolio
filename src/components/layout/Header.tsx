@@ -75,8 +75,8 @@ export function Header() {
           {getInitials()}
         </a>
 
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center gap-1">
+        {/* Desktop Navigation - Centered */}
+        <ul className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
