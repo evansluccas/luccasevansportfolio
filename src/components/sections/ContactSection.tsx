@@ -12,7 +12,7 @@ export function ContactSection() {
       icon: Linkedin,
       customIconUrl: config?.linkedin_icon_url,
       label: 'LinkedIn',
-      value: config?.social_linkedin ? config.social_linkedin.replace('https://linkedin.com/in/', '') : null,
+      value: 'Connect with me',
       href: config?.social_linkedin || '#',
       show: !!config?.social_linkedin,
     },
