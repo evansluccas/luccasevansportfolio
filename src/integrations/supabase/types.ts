@@ -341,6 +341,48 @@ export type Database = {
         }
         Relationships: []
       }
+      section_config: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          is_visible: boolean
+          lang: string
+          section_key: string
+          tag: string | null
+          title: string
+          title_highlight: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_visible?: boolean
+          lang?: string
+          section_key: string
+          tag?: string | null
+          title: string
+          title_highlight?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_visible?: boolean
+          lang?: string
+          section_key?: string
+          tag?: string | null
+          title?: string
+          title_highlight?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_config: {
         Row: {
           bio_long: string | null

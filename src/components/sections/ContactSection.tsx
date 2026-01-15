@@ -1,11 +1,17 @@
 import { Linkedin, Mail, MapPin, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
-import { useSiteConfig } from '@/hooks/usePortfolioData';
+import { useSiteConfig, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function ContactSection() {
-  const { data: config, isLoading } = useSiteConfig();
+  const { data: config, isLoading: configLoading } = useSiteConfig();
+  const { data: sectionConfig, isLoading: sectionConfigLoading } = useSectionConfig('contact');
+
+  // Don't render if section is hidden
+  if (!sectionConfigLoading && sectionConfig && !sectionConfig.is_visible) {
+    return null;
+  }
 
   const contactInfo = [
     {
@@ -50,15 +56,30 @@ export function ContactSection() {
       <div className="section-container relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
-            Get in Touch
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-            Contact <span className="text-primary">Me</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Have a project in mind or want to discuss opportunities? Let's connect!
-          </p>
+          {sectionConfigLoading ? (
+            <>
+              <Skeleton className="h-8 w-32 mx-auto mb-4" />
+              <Skeleton className="h-12 w-64 mx-auto mb-6" />
+              <Skeleton className="h-6 w-96 mx-auto" />
+            </>
+          ) : (
+            <>
+              {sectionConfig?.tag && (
+                <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
+                  {sectionConfig.tag}
+                </span>
+              )}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+                {sectionConfig?.title || "Let's Work"}{' '}
+                <span className="text-primary">{sectionConfig?.title_highlight || 'Together'}</span>
+              </h2>
+              {sectionConfig?.description && (
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  {sectionConfig.description}
+                </p>
+              )}
+            </>
+          )}
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
@@ -68,7 +89,7 @@ export function ContactSection() {
               Let's <span className="text-primary">Talk</span>
             </h3>
 
-            {isLoading ? (
+            {configLoading ? (
               Array.from({ length: 3 }).map((_, i) => (
                 <Skeleton key={i} className="h-20 rounded-xl" />
               ))

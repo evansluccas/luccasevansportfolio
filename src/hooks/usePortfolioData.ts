@@ -110,6 +110,17 @@ export interface ExperienceStory {
   display_order: number;
 }
 
+export interface SectionConfig {
+  id: string;
+  section_key: string;
+  tag: string | null;
+  title: string;
+  title_highlight: string | null;
+  description: string | null;
+  is_visible: boolean;
+  display_order: number;
+}
+
 export function useNavLinks() {
   return useQuery({
     queryKey: ['nav-links'],
@@ -282,5 +293,37 @@ export function useBlogPost(slug: string) {
       return data as BlogPost | null;
     },
     enabled: !!slug,
+  });
+}
+
+export function useSectionConfig(sectionKey: string) {
+  return useQuery({
+    queryKey: ['section-config', sectionKey],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('section_config')
+        .select('*')
+        .eq('section_key', sectionKey)
+        .maybeSingle();
+      
+      if (error) throw error;
+      return data as SectionConfig | null;
+    },
+    enabled: !!sectionKey,
+  });
+}
+
+export function useSectionConfigs() {
+  return useQuery({
+    queryKey: ['section-configs'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('section_config')
+        .select('*')
+        .order('display_order', { ascending: true });
+      
+      if (error) throw error;
+      return data as SectionConfig[];
+    },
   });
 }

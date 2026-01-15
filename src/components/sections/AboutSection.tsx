@@ -1,16 +1,23 @@
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
-import { useAboutCards, useSiteConfig } from '@/hooks/usePortfolioData';
+import { useAboutCards, useSectionConfig } from '@/hooks/usePortfolioData';
 import { getAboutIcon } from '@/lib/aboutIcons';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function AboutSection() {
   const { data: cards, isLoading: cardsLoading } = useAboutCards();
-  const { data: config } = useSiteConfig();
+  const { data: sectionConfig, isLoading: configLoading } = useSectionConfig('about');
+
+  // Don't render if section is hidden
+  if (!configLoading && sectionConfig && !sectionConfig.is_visible) {
+    return null;
+  }
 
   // Don't render if no cards
   if (!cardsLoading && (!cards || cards.length === 0)) {
     return null;
   }
+
+  const isLoading = cardsLoading || configLoading;
 
   return (
     <section id="about" className="relative section-padding overflow-hidden">
@@ -23,16 +30,29 @@ export function AboutSection() {
       <div className="section-container relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
-            About Me
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-            What I <span className="text-primary">Bring</span> to the Table
-          </h2>
-          {config?.bio_long && (
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {config.bio_long}
-            </p>
+          {isLoading ? (
+            <>
+              <Skeleton className="h-8 w-32 mx-auto mb-4" />
+              <Skeleton className="h-12 w-64 mx-auto mb-6" />
+              <Skeleton className="h-6 w-96 mx-auto" />
+            </>
+          ) : (
+            <>
+              {sectionConfig?.tag && (
+                <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
+                  {sectionConfig.tag}
+                </span>
+              )}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+                {sectionConfig?.title || 'Know Who'}{' '}
+                <span className="text-primary">{sectionConfig?.title_highlight || 'I Am'}</span>
+              </h2>
+              {sectionConfig?.description && (
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  {sectionConfig.description}
+                </p>
+              )}
+            </>
           )}
         </div>
 

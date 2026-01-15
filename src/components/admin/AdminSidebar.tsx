@@ -12,12 +12,14 @@ import {
   BarChart3,
   MessageSquare,
   Navigation,
-  Images
+  Images,
+  Layers
 } from 'lucide-react';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/navigation', label: 'Header Navigation', icon: Navigation },
+  { href: '/admin/sections', label: 'Sections', icon: Layers },
   { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
   { href: '/admin/blog', label: 'Blog Posts', icon: FileText },
   { href: '/admin/experiences', label: 'Experiences', icon: Briefcase },
