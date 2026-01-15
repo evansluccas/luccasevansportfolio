@@ -46,15 +46,6 @@ export function Header() {
     }
   };
 
-  // Get initials from name
-  const getInitials = () => {
-    if (!config?.name) return 'LE';
-    const parts = config.name.split(' ');
-    if (parts.length >= 2) {
-      return parts[0].charAt(0) + parts[parts.length - 1].charAt(0);
-    }
-    return parts[0].substring(0, 2).toUpperCase();
-  };
 
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl">
@@ -66,15 +57,8 @@ export function Header() {
           border border-primary/20
         `}
       >
-        {/* Logo */}
-        <a 
-          href="#home" 
-          onClick={(e) => { e.preventDefault(); handleNavClick('#home'); }}
-          className="text-xl font-bold text-primary hover:brightness-110 transition-all"
-        >
-          {getInitials()}
-        </a>
-
+        {/* Spacer for layout balance */}
+        <div className="w-8 md:hidden" />
         {/* Desktop Navigation - Centered */}
         <ul className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
           {navLinks.map((link) => (
