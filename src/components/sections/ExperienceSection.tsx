@@ -51,14 +51,6 @@ export function ExperienceSection() {
     return null;
   }
 
-  // Extract year from start_date
-  const getYear = (dateStr: string) => {
-    try {
-      return new Date(dateStr).getFullYear().toString();
-    } catch {
-      return dateStr;
-    }
-  };
 
   return (
     <section id="experience" className="relative section-padding overflow-hidden bg-background">
@@ -198,7 +190,7 @@ export function ExperienceSection() {
                       {/* Year */}
                       <div className="w-14 flex-shrink-0 text-right pt-4">
                         <span className="text-lg font-semibold text-foreground">
-                          {getYear(exp.start_date)}
+                          {exp.year || '—'}
                         </span>
                       </div>
 
