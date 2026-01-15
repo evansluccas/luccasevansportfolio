@@ -51,16 +51,14 @@ export function Header() {
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl">
       <nav
         className={`
-          flex items-center justify-between px-6 md:px-10 py-3 
+          flex items-center justify-center px-6 md:px-10 py-3 
           rounded-pill transition-all duration-300
           ${isScrolled ? 'glass-effect shadow-card' : 'bg-card/90 backdrop-blur-sm'}
           border border-primary/20
         `}
       >
-        {/* Spacer for layout balance */}
-        <div className="w-8 md:hidden" />
         {/* Desktop Navigation - Centered */}
-        <ul className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+        <ul className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
@@ -79,7 +77,7 @@ export function Header() {
             </li>
           ))}
         </ul>
-
+        
         {/* Mobile Menu Button */}
         <Button
           variant="ghost"
