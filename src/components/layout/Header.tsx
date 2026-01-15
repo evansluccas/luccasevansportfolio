@@ -1,22 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useSiteConfig } from '@/hooks/usePortfolioData';
-
-const navLinks = [
-  { href: '#home', label: 'Home' },
-  { href: '#about', label: 'About' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#contact', label: 'Contact' },
-];
+import { useSiteConfig, useNavLinks } from '@/hooks/usePortfolioData';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { data: config } = useSiteConfig();
+  const { data: navLinks = [] } = useNavLinks();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,7 +16,7 @@ export function Header() {
 
       // Find active section
       const sections = navLinks.map(link => link.href.slice(1));
-      for (const section of sections.reverse()) {
+      for (const section of [...sections].reverse()) {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();

@@ -10,11 +10,13 @@ import {
   LogOut,
   User,
   BarChart3,
-  MessageSquare
+  MessageSquare,
+  Navigation
 } from 'lucide-react';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/navigation', label: 'Header Navigation', icon: Navigation },
   { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
   { href: '/admin/blog', label: 'Blog Posts', icon: FileText },
   { href: '/admin/experiences', label: 'Experiences', icon: Briefcase },

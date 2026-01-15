@@ -23,6 +23,7 @@ import AdminSkills from "./pages/admin/AdminSkills";
 import AdminAboutCards from "./pages/admin/AdminAboutCards";
 import AdminHeroStats from "./pages/admin/AdminHeroStats";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminNavigation from "./pages/admin/AdminNavigation";
 
 const queryClient = new QueryClient();
 
@@ -98,6 +99,11 @@ const App = () => (
             <Route path="/admin/settings" element={
               <ProtectedRoute requireAdmin>
                 <AdminSettings />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/navigation" element={
+              <ProtectedRoute requireAdmin>
+                <AdminNavigation />
               </ProtectedRoute>
             } />
 
