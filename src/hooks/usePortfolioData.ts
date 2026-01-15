@@ -6,6 +6,9 @@ export interface SiteConfig {
   id: string;
   name: string;
   title: string;
+  title_2: string | null;
+  title_3: string | null;
+  title_4: string | null;
   hero_tag: string | null;
   bio_short: string | null;
   bio_long: string | null;
@@ -13,6 +16,9 @@ export interface SiteConfig {
   social_linkedin: string | null;
   social_email: string | null;
   location: string | null;
+  linkedin_icon_url: string | null;
+  email_icon_url: string | null;
+  location_icon_url: string | null;
 }
 
 export interface HeroStat {
