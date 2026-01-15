@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useExperiences, useExperienceStories } from '@/hooks/usePortfolioData';
+import { useExperiences, useExperienceStories, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 export function ExperienceSection() {
   const { data: experiences, isLoading: experiencesLoading } = useExperiences();
   const { data: stories, isLoading: storiesLoading } = useExperienceStories();
+  const { data: sectionConfig, isLoading: configLoading } = useSectionConfig('experience');
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
@@ -38,7 +39,12 @@ export function ExperienceSection() {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  const isLoading = experiencesLoading || storiesLoading;
+  const isLoading = experiencesLoading || storiesLoading || configLoading;
+
+  // Don't render if section is hidden
+  if (!configLoading && sectionConfig && !sectionConfig.is_visible) {
+    return null;
+  }
 
   // Don't render if no experiences
   if (!isLoading && (!experiences || experiences.length === 0)) {
@@ -59,15 +65,30 @@ export function ExperienceSection() {
       <div className="section-container relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-primary/20 text-primary rounded-full text-sm font-medium mb-6">
-            About me
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            Professional <span className="text-primary">Experience</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A journey of growth, learning, and impactful contributions across different roles and companies.
-          </p>
+          {configLoading ? (
+            <>
+              <Skeleton className="h-8 w-32 mx-auto mb-4" />
+              <Skeleton className="h-12 w-64 mx-auto mb-6" />
+              <Skeleton className="h-6 w-96 mx-auto" />
+            </>
+          ) : (
+            <>
+              {sectionConfig?.tag && (
+                <span className="inline-block px-4 py-2 bg-primary/20 text-primary rounded-full text-sm font-medium mb-6">
+                  {sectionConfig.tag}
+                </span>
+              )}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+                {sectionConfig?.title || 'Professional'}{' '}
+                <span className="text-primary">{sectionConfig?.title_highlight || 'Experience'}</span>
+              </h2>
+              {sectionConfig?.description && (
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  {sectionConfig.description}
+                </p>
+              )}
+            </>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">

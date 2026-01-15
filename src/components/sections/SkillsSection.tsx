@@ -1,14 +1,22 @@
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
-import { useSkills } from '@/hooks/usePortfolioData';
+import { useSkills, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function SkillsSection() {
-  const { data: skills, isLoading } = useSkills();
+  const { data: skills, isLoading: skillsLoading } = useSkills();
+  const { data: sectionConfig, isLoading: configLoading } = useSectionConfig('skills');
 
-  // Don't render if no skills
-  if (!isLoading && (!skills || skills.length === 0)) {
+  // Don't render if section is hidden
+  if (!configLoading && sectionConfig && !sectionConfig.is_visible) {
     return null;
   }
+
+  // Don't render if no skills
+  if (!skillsLoading && (!skills || skills.length === 0)) {
+    return null;
+  }
+
+  const isLoading = skillsLoading || configLoading;
 
   // Group skills by category
   const groupedSkills = skills?.reduce((acc, skill) => {
@@ -28,21 +36,35 @@ export function SkillsSection() {
       <div className="section-container relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
-            Expertise
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-            Skills & <span className="text-primary">Competencies</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A blend of technical knowledge, business acumen, and interpersonal skills 
-            that drive product success.
-          </p>
+          {configLoading ? (
+            <>
+              <Skeleton className="h-8 w-32 mx-auto mb-4" />
+              <Skeleton className="h-12 w-64 mx-auto mb-6" />
+              <Skeleton className="h-6 w-96 mx-auto" />
+            </>
+          ) : (
+            <>
+              {sectionConfig?.tag && (
+                <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
+                  {sectionConfig.tag}
+                </span>
+              )}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+                {sectionConfig?.title || 'Skills &'}{' '}
+                <span className="text-primary">{sectionConfig?.title_highlight || 'Technologies'}</span>
+              </h2>
+              {sectionConfig?.description && (
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  {sectionConfig.description}
+                </p>
+              )}
+            </>
+          )}
         </div>
 
         {/* Skills Grid */}
         <div className="grid md:grid-cols-2 gap-8">
-          {isLoading ? (
+          {skillsLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
               <Skeleton key={i} className="h-64 rounded-2xl" />
             ))

@@ -1,16 +1,24 @@
 import { ArrowRight } from 'lucide-react';
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
 import { Link } from 'react-router-dom';
-import { useProjects } from '@/hooks/usePortfolioData';
+import { useProjects, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function ProjectsSection() {
-  const { data: projects, isLoading } = useProjects();
+  const { data: projects, isLoading: projectsLoading } = useProjects();
+  const { data: sectionConfig, isLoading: configLoading } = useSectionConfig('projects');
 
-  // Don't render if no projects
-  if (!isLoading && (!projects || projects.length === 0)) {
+  // Don't render if section is hidden
+  if (!configLoading && sectionConfig && !sectionConfig.is_visible) {
     return null;
   }
+
+  // Don't render if no projects
+  if (!projectsLoading && (!projects || projects.length === 0)) {
+    return null;
+  }
+
+  const isLoading = projectsLoading || configLoading;
 
   return (
     <section id="projects" className="relative section-padding overflow-hidden">
@@ -23,20 +31,35 @@ export function ProjectsSection() {
       <div className="section-container relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
-            Portfolio
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-            Featured <span className="text-primary">Projects</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A selection of products I've helped build, from concept to launch.
-          </p>
+          {configLoading ? (
+            <>
+              <Skeleton className="h-8 w-32 mx-auto mb-4" />
+              <Skeleton className="h-12 w-64 mx-auto mb-6" />
+              <Skeleton className="h-6 w-96 mx-auto" />
+            </>
+          ) : (
+            <>
+              {sectionConfig?.tag && (
+                <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
+                  {sectionConfig.tag}
+                </span>
+              )}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+                {sectionConfig?.title || 'Featured'}{' '}
+                <span className="text-primary">{sectionConfig?.title_highlight || 'Projects'}</span>
+              </h2>
+              {sectionConfig?.description && (
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  {sectionConfig.description}
+                </p>
+              )}
+            </>
+          )}
         </div>
 
         {/* Projects Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {isLoading ? (
+          {projectsLoading ? (
             Array.from({ length: 6 }).map((_, i) => (
               <Skeleton key={i} className="h-80 rounded-2xl" />
             ))

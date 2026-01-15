@@ -25,6 +25,7 @@ import AdminAboutCards from "./pages/admin/AdminAboutCards";
 import AdminHeroStats from "./pages/admin/AdminHeroStats";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminNavigation from "./pages/admin/AdminNavigation";
+import AdminSections from "./pages/admin/AdminSections";
 
 const queryClient = new QueryClient();
 
@@ -110,6 +111,11 @@ const App = () => (
             <Route path="/admin/navigation" element={
               <ProtectedRoute requireAdmin>
                 <AdminNavigation />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/sections" element={
+              <ProtectedRoute requireAdmin>
+                <AdminSections />
               </ProtectedRoute>
             } />
 
