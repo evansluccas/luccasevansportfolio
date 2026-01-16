@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Upload, X, Image as ImageIcon } from 'lucide-react';
 
 interface ProjectFormData {
   title: string;
@@ -46,6 +46,9 @@ export default function AdminProjectForm() {
   const [formData, setFormData] = useState<ProjectFormData>(initialFormData);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(!!id);
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const isEditing = !!id;
 
   useEffect(() => {
@@ -80,8 +83,65 @@ export default function AdminProjectForm() {
         results: (data.results || []).join('\n'),
         display_order: data.display_order,
       });
+      // Set image preview if there's an existing cover image
+      if (data.cover_image_url) {
+        setImagePreview(data.cover_image_url);
+      }
     }
     setFetching(false);
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({ title: 'Invalid file type', description: 'Please select an image file', variant: 'destructive' });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: 'File too large', description: 'Maximum file size is 5MB', variant: 'destructive' });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      // Generate unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `projects/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+      // Upload to storage
+      const { error: uploadError } = await supabase.storage
+        .from('portfolio-assets')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('portfolio-assets')
+        .getPublicUrl(fileName);
+
+      setFormData(prev => ({ ...prev, cover_image_url: publicUrl }));
+      setImagePreview(publicUrl);
+      toast({ title: 'Image uploaded successfully' });
+    } catch (error: any) {
+      toast({ title: 'Upload failed', description: error.message, variant: 'destructive' });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData(prev => ({ ...prev, cover_image_url: '' }));
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -213,15 +273,54 @@ export default function AdminProjectForm() {
           {/* Cover Image & Category */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium mb-2">Cover Image URL</label>
-              <input
-                type="url"
-                name="cover_image_url"
-                value={formData.cover_image_url}
-                onChange={handleChange}
-                placeholder="https://..."
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
-              />
+              <label className="block text-sm font-medium mb-2">Cover Image</label>
+              <div className="space-y-3">
+                {imagePreview ? (
+                  <div className="relative group">
+                    <img
+                      src={imagePreview}
+                      alt="Cover preview"
+                      className="w-full h-40 object-cover rounded-lg border border-primary/20"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-2 right-2 p-1.5 bg-destructive text-destructive-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full h-40 border-2 border-dashed border-muted rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-colors bg-muted/20"
+                  >
+                    <ImageIcon size={32} className="text-muted-foreground mb-2" />
+                    <span className="text-sm text-muted-foreground">Click to upload cover image</span>
+                    <span className="text-xs text-muted-foreground/60 mt-1">Max 5MB, 16:9 recommended</span>
+                  </div>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                {imagePreview && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full"
+                  >
+                    <Upload size={16} className="mr-2" />
+                    {uploading ? 'Uploading...' : 'Change Image'}
+                  </Button>
+                )}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Category</label>
