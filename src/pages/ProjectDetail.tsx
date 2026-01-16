@@ -160,11 +160,12 @@ export default function ProjectDetail() {
 
           {/* Full Description */}
           {project.full_description && (
-            <div className="prose prose-invert max-w-none mb-12">
+            <div className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-foreground">About This Project</h2>
-              <div className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                {project.full_description}
-              </div>
+              <div 
+                className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-primary prose-a:hover:text-primary/80 prose-strong:text-foreground prose-li:text-muted-foreground prose-blockquote:text-muted-foreground prose-blockquote:border-primary/50 prose-code:text-foreground prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-img:rounded-lg prose-img:my-4"
+                dangerouslySetInnerHTML={{ __html: project.full_description }}
+              />
             </div>
           )}
 
