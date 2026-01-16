@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save } from 'lucide-react';
 
@@ -202,12 +203,10 @@ export default function AdminProjectForm() {
           {/* Full Description */}
           <div>
             <label className="block text-sm font-medium mb-2">Full Description</label>
-            <textarea
-              name="full_description"
+            <RichTextEditor
               value={formData.full_description}
-              onChange={handleChange}
-              rows={6}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none"
+              onChange={(value) => setFormData(prev => ({ ...prev, full_description: value }))}
+              placeholder="Write a detailed description of the project..."
             />
           </div>
 
