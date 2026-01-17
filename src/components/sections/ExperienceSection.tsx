@@ -107,8 +107,25 @@ export function ExperienceSection() {
                             alt={story.caption}
                             className="w-full h-full object-cover"
                           />
+                          
+                          {/* Mobile Tap Zones (Instagram-style) */}
+                          {stories.length > 1 && (
+                            <div className="absolute inset-0 flex lg:hidden">
+                              <button 
+                                onClick={scrollPrev}
+                                className="w-1/2 h-full cursor-pointer"
+                                aria-label="Previous slide"
+                              />
+                              <button 
+                                onClick={scrollNext}
+                                className="w-1/2 h-full cursor-pointer"
+                                aria-label="Next slide"
+                              />
+                            </div>
+                          )}
+                          
                           {/* Caption Overlay */}
-                          <div className="absolute bottom-4 left-4 right-4">
+                          <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
                             <div className="bg-foreground/60 backdrop-blur-md rounded-xl p-4">
                               <p className="text-background text-sm leading-relaxed">
                                 {story.caption}
@@ -121,19 +138,19 @@ export function ExperienceSection() {
                   </div>
                 </div>
 
-                {/* Navigation Arrows */}
+                {/* Navigation Arrows (Desktop only) */}
                 {stories.length > 1 && (
                   <>
                     <button
                       onClick={scrollPrev}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-foreground/80 hover:bg-foreground text-background flex items-center justify-center transition-colors z-10"
+                      className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-foreground/80 hover:bg-foreground text-background items-center justify-center transition-colors z-10"
                       aria-label="Previous slide"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
                       onClick={scrollNext}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-foreground/80 hover:bg-foreground text-background flex items-center justify-center transition-colors z-10"
+                      className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-foreground/80 hover:bg-foreground text-background items-center justify-center transition-colors z-10"
                       aria-label="Next slide"
                     >
                       <ChevronRight className="w-5 h-5" />
