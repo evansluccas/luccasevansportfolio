@@ -205,22 +205,36 @@ export function ExperienceSection() {
                   </div>
                 </div>
 
-                {/* Navigation Arrows (Desktop only) */}
+                {/* Navigation Arrows (Desktop only) - Apple Glassmorphism */}
                 {stories.length > 1 && (
                   <>
                     <button
                       onClick={scrollPrev}
-                      className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-foreground/80 hover:bg-foreground text-background items-center justify-center transition-colors z-10"
+                      className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-10 hover:scale-105 active:scale-95"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.18)',
+                        backdropFilter: 'blur(50px) saturate(180%)',
+                        WebkitBackdropFilter: 'blur(50px) saturate(180%)',
+                        border: '1px solid rgba(255, 255, 255, 0.25)',
+                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                      }}
                       aria-label="Previous slide"
                     >
-                      <ChevronLeft className="w-5 h-5" />
+                      <ChevronLeft className="w-5 h-5 text-white drop-shadow-sm" />
                     </button>
                     <button
                       onClick={scrollNext}
-                      className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-foreground/80 hover:bg-foreground text-background items-center justify-center transition-colors z-10"
+                      className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-10 hover:scale-105 active:scale-95"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.18)',
+                        backdropFilter: 'blur(50px) saturate(180%)',
+                        WebkitBackdropFilter: 'blur(50px) saturate(180%)',
+                        border: '1px solid rgba(255, 255, 255, 0.25)',
+                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                      }}
                       aria-label="Next slide"
                     >
-                      <ChevronRight className="w-5 h-5" />
+                      <ChevronRight className="w-5 h-5 text-white drop-shadow-sm" />
                     </button>
                   </>
                 )}
