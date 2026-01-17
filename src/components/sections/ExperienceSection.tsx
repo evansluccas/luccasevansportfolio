@@ -1,16 +1,59 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useExperiences, useExperienceStories, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const TWEEN_FACTOR = 1.2;
 
 export function ExperienceSection() {
   const { data: experiences, isLoading: experiencesLoading } = useExperiences();
   const { data: stories, isLoading: storiesLoading } = useExperienceStories();
   const { data: sectionConfig, isLoading: configLoading } = useSectionConfig('experience');
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const tweenNodes = useRef<HTMLElement[]>([]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  const setTweenNodes = useCallback((emblaApi: ReturnType<typeof useEmblaCarousel>[1]) => {
+    if (!emblaApi) return;
+    tweenNodes.current = emblaApi.slideNodes().map((slideNode) => {
+      return slideNode.querySelector('.story-slide') as HTMLElement;
+    });
+  }, []);
+
+  const tweenRotate = useCallback((emblaApi: ReturnType<typeof useEmblaCarousel>[1]) => {
+    if (!emblaApi) return;
+    
+    const engine = emblaApi.internalEngine();
+    const scrollProgress = emblaApi.scrollProgress();
+    
+    emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
+      let diffToTarget = scrollSnap - scrollProgress;
+      
+      if (engine.options.loop) {
+        engine.slideLooper.loopPoints.forEach((loopItem) => {
+          const target = loopItem.target();
+          if (snapIndex === loopItem.index && target !== 0) {
+            const sign = Math.sign(target);
+            if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress);
+            if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress);
+          }
+        });
+      }
+      
+      const tweenValue = diffToTarget * (-1 * TWEEN_FACTOR);
+      const rotateY = tweenValue * 45; // Max 45 degrees rotation
+      const scale = 1 - Math.abs(tweenValue) * 0.15;
+      const opacity = 1 - Math.abs(tweenValue) * 0.5;
+      
+      const tweenNode = tweenNodes.current[snapIndex];
+      if (tweenNode) {
+        tweenNode.style.transform = `perspective(1000px) rotateY(${rotateY}deg) scale(${scale})`;
+        tweenNode.style.opacity = `${opacity}`;
+      }
+    });
+  }, []);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -19,12 +62,24 @@ export function ExperienceSection() {
 
   useEffect(() => {
     if (!emblaApi) return;
-    onSelect();
+    
+    setTweenNodes(emblaApi);
+    tweenRotate(emblaApi);
+    
+    emblaApi.on('reInit', setTweenNodes);
+    emblaApi.on('reInit', tweenRotate);
+    emblaApi.on('scroll', tweenRotate);
     emblaApi.on('select', onSelect);
+    
+    onSelect();
+    
     return () => {
+      emblaApi.off('reInit', setTweenNodes);
+      emblaApi.off('reInit', tweenRotate);
+      emblaApi.off('scroll', tweenRotate);
       emblaApi.off('select', onSelect);
     };
-  }, [emblaApi, onSelect]);
+  }, [emblaApi, onSelect, setTweenNodes, tweenRotate]);
 
   const scrollTo = useCallback((index: number) => {
     if (!emblaApi) return;
@@ -101,7 +156,10 @@ export function ExperienceSection() {
                         key={story.id} 
                         className="flex-[0_0_100%] min-w-0"
                       >
-                        <div className="relative aspect-[3/4] bg-primary/20 rounded-2xl overflow-hidden">
+                        <div 
+                          className="story-slide relative aspect-[3/4] bg-primary/20 rounded-2xl overflow-hidden transition-[opacity] duration-200"
+                          style={{ transformStyle: 'preserve-3d' }}
+                        >
                           <img
                             src={story.image_url}
                             alt={story.caption}
