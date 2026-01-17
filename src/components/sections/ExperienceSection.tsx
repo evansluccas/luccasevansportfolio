@@ -182,16 +182,16 @@ export function ExperienceSection() {
                             </div>
                           )}
                           
-                          {/* Caption Overlay - Apple Glassmorphism */}
+                          {/* Caption Overlay - Apple Glassmorphism (Orange) */}
                           <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
                             <div 
                               className="rounded-2xl p-4"
                               style={{
-                                background: 'rgba(255, 255, 255, 0.18)',
+                                background: 'linear-gradient(135deg, hsla(16, 100%, 65%, 0.25), hsla(16, 100%, 80%, 0.15))',
                                 backdropFilter: 'blur(50px) saturate(180%)',
                                 WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                                border: '1px solid rgba(255, 255, 255, 0.25)',
-                                boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                                border: '1px solid hsla(16, 100%, 70%, 0.35)',
+                                boxShadow: 'inset 0 1px 1px hsla(16, 100%, 80%, 0.3), 0 8px 32px rgba(0, 0, 0, 0.15)',
                               }}
                             >
                               <p className="text-white text-sm leading-relaxed font-medium drop-shadow-sm">
@@ -205,18 +205,18 @@ export function ExperienceSection() {
                   </div>
                 </div>
 
-                {/* Navigation Arrows (Desktop only) - Apple Glassmorphism */}
+                {/* Navigation Arrows (Desktop only) - Apple Glassmorphism (Orange) */}
                 {stories.length > 1 && (
                   <>
                     <button
                       onClick={scrollPrev}
                       className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-10 hover:scale-105 active:scale-95"
                       style={{
-                        background: 'rgba(255, 255, 255, 0.18)',
+                        background: 'linear-gradient(135deg, hsla(16, 100%, 65%, 0.25), hsla(16, 100%, 80%, 0.15))',
                         backdropFilter: 'blur(50px) saturate(180%)',
                         WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.25)',
-                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                        border: '1px solid hsla(16, 100%, 70%, 0.35)',
+                        boxShadow: 'inset 0 1px 1px hsla(16, 100%, 80%, 0.3), 0 8px 32px rgba(0, 0, 0, 0.15)',
                       }}
                       aria-label="Previous slide"
                     >
@@ -226,11 +226,11 @@ export function ExperienceSection() {
                       onClick={scrollNext}
                       className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-10 hover:scale-105 active:scale-95"
                       style={{
-                        background: 'rgba(255, 255, 255, 0.18)',
+                        background: 'linear-gradient(135deg, hsla(16, 100%, 65%, 0.25), hsla(16, 100%, 80%, 0.15))',
                         backdropFilter: 'blur(50px) saturate(180%)',
                         WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.25)',
-                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                        border: '1px solid hsla(16, 100%, 70%, 0.35)',
+                        boxShadow: 'inset 0 1px 1px hsla(16, 100%, 80%, 0.3), 0 8px 32px rgba(0, 0, 0, 0.15)',
                       }}
                       aria-label="Next slide"
                     >
