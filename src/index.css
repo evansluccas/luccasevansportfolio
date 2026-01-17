@@ -176,4 +176,21 @@
       transform: translateY(-20px);
     }
   }
+
+  /* Enhanced focus states for accessibility */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  /* Input focus enhancement */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-none ring-2 ring-primary/40 border-primary;
+  }
+
+  /* Button focus enhancement */
+  button:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
 }

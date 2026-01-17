@@ -166,35 +166,52 @@ export function ExperienceSection() {
                             className="w-full h-full object-cover"
                           />
                           
-                          {/* Mobile Tap Zones (Instagram-style) */}
+                          {/* Dark gradient overlay for contrast */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+                          
+                          {/* Mobile Tap Zones (Instagram-style) with visual hints */}
                           {stories.length > 1 && (
                             <div className="absolute inset-0 flex lg:hidden">
                               <button 
                                 onClick={scrollPrev}
-                                className="w-1/2 h-full cursor-pointer"
+                                className="w-1/2 h-full cursor-pointer group"
                                 aria-label="Previous slide"
-                              />
+                              >
+                                {/* Subtle tap hint on left */}
+                                <div className="absolute left-3 top-1/2 -translate-y-1/2 opacity-30 group-active:opacity-60 transition-opacity">
+                                  <svg className="w-6 h-6 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                  </svg>
+                                </div>
+                              </button>
                               <button 
                                 onClick={scrollNext}
-                                className="w-1/2 h-full cursor-pointer"
+                                className="w-1/2 h-full cursor-pointer group"
                                 aria-label="Next slide"
-                              />
+                              >
+                                {/* Subtle tap hint on right */}
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 opacity-30 group-active:opacity-60 transition-opacity">
+                                  <svg className="w-6 h-6 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                  </svg>
+                                </div>
+                              </button>
                             </div>
                           )}
                           
-                          {/* Caption Overlay - Apple Glassmorphism */}
+                          {/* Caption Overlay - Apple Glassmorphism with improved contrast */}
                           <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
                             <div 
                               className="rounded-2xl p-4"
                               style={{
-                                background: 'rgba(255, 255, 255, 0.18)',
+                                background: 'rgba(0, 0, 0, 0.25)',
                                 backdropFilter: 'blur(50px) saturate(180%)',
                                 WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                                border: '1px solid rgba(255, 255, 255, 0.25)',
-                                boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                                border: '1px solid rgba(255, 255, 255, 0.15)',
+                                boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.2)',
                               }}
                             >
-                              <p className="text-white text-sm leading-relaxed font-medium drop-shadow-sm">
+                              <p className="text-white text-sm leading-relaxed font-medium drop-shadow-md">
                                 {story.caption}
                               </p>
                             </div>
@@ -205,36 +222,36 @@ export function ExperienceSection() {
                   </div>
                 </div>
 
-                {/* Navigation Arrows (Desktop only) - Apple Glassmorphism */}
+                {/* Navigation Arrows (Desktop only) - Apple Glassmorphism with improved contrast */}
                 {stories.length > 1 && (
                   <>
                     <button
                       onClick={scrollPrev}
                       className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-10 hover:scale-105 active:scale-95"
                       style={{
-                        background: 'rgba(255, 255, 255, 0.18)',
+                        background: 'rgba(0, 0, 0, 0.3)',
                         backdropFilter: 'blur(50px) saturate(180%)',
                         WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.25)',
-                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.2)',
                       }}
                       aria-label="Previous slide"
                     >
-                      <ChevronLeft className="w-5 h-5 text-white drop-shadow-sm" />
+                      <ChevronLeft className="w-5 h-5 text-white drop-shadow-md" />
                     </button>
                     <button
                       onClick={scrollNext}
                       className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-10 hover:scale-105 active:scale-95"
                       style={{
-                        background: 'rgba(255, 255, 255, 0.18)',
+                        background: 'rgba(0, 0, 0, 0.3)',
                         backdropFilter: 'blur(50px) saturate(180%)',
                         WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.25)',
-                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.2)',
                       }}
                       aria-label="Next slide"
                     >
-                      <ChevronRight className="w-5 h-5 text-white drop-shadow-sm" />
+                      <ChevronRight className="w-5 h-5 text-white drop-shadow-md" />
                     </button>
                   </>
                 )}

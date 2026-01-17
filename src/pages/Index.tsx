@@ -6,10 +6,12 @@ import { ExperienceSection } from '@/components/sections/ExperienceSection';
 import { SkillsSection } from '@/components/sections/SkillsSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { ContactSection } from '@/components/sections/ContactSection';
+import { ScrollProgress } from '@/components/ui/ScrollProgress';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <ScrollProgress />
       <Header />
       <main>
         <HeroSection />
