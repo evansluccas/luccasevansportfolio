@@ -182,10 +182,19 @@ export function ExperienceSection() {
                             </div>
                           )}
                           
-                          {/* Caption Overlay */}
+                          {/* Caption Overlay - Apple Glassmorphism */}
                           <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
-                            <div className="bg-foreground/60 backdrop-blur-md rounded-xl p-4">
-                              <p className="text-background text-sm leading-relaxed">
+                            <div 
+                              className="rounded-2xl p-4"
+                              style={{
+                                background: 'rgba(255, 255, 255, 0.18)',
+                                backdropFilter: 'blur(50px) saturate(180%)',
+                                WebkitBackdropFilter: 'blur(50px) saturate(180%)',
+                                border: '1px solid rgba(255, 255, 255, 0.25)',
+                                boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1)',
+                              }}
+                            >
+                              <p className="text-white text-sm leading-relaxed font-medium drop-shadow-sm">
                                 {story.caption}
                               </p>
                             </div>
