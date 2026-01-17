@@ -86,7 +86,7 @@ export function ProjectsSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
                   
                   {/* Category Badge */}
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-primary/90 text-primary-foreground text-xs font-medium">
+                  <span className="absolute bottom-4 left-4 px-3 py-1 rounded-full bg-primary/90 text-primary-foreground text-xs font-medium">
                     {project.category}
                   </span>
                 </div>
