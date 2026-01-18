@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
 import { useProject } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
+import { normalizeRichTextHtml } from '@/lib/richText';
 import { format } from 'date-fns';
 
 export default function ProjectDetail() {
@@ -179,7 +180,7 @@ export default function ProjectDetail() {
                   prose-img:rounded-lg prose-img:my-6
                   prose-hr:my-8 prose-hr:border-muted
                   [&>*:first-child]:mt-0"
-                dangerouslySetInnerHTML={{ __html: project.full_description }}
+                dangerouslySetInnerHTML={{ __html: normalizeRichTextHtml(project.full_description) }}
               />
             </div>
           )}
