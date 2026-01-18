@@ -5,6 +5,7 @@ import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import { useEffect, useCallback, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { normalizeRichTextHtml } from '@/lib/richText';
 import { Button } from './button';
 import {
   Bold,
@@ -104,9 +105,9 @@ export function RichTextEditor({
         placeholder,
       }),
     ],
-    content: value,
+    content: normalizeRichTextHtml(value),
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      onChange(normalizeRichTextHtml(editor.getHTML()));
     },
     editorProps: {
       attributes: {
@@ -116,8 +117,10 @@ export function RichTextEditor({
   });
 
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value);
+    if (!editor) return;
+    const normalized = normalizeRichTextHtml(value);
+    if (normalized !== editor.getHTML()) {
+      editor.commands.setContent(normalized);
     }
   }, [value, editor]);
 
