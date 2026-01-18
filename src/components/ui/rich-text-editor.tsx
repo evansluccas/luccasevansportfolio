@@ -190,21 +190,39 @@ export function RichTextEditor({
 
         {/* Headings */}
         <ToolbarButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          onClick={() => {
+            if (editor.isActive('heading', { level: 1 })) {
+              editor.chain().focus().setParagraph().run();
+            } else {
+              editor.chain().focus().setHeading({ level: 1 }).run();
+            }
+          }}
           active={editor.isActive('heading', { level: 1 })}
           title="Heading 1"
         >
           <Heading1 size={16} />
         </ToolbarButton>
         <ToolbarButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() => {
+            if (editor.isActive('heading', { level: 2 })) {
+              editor.chain().focus().setParagraph().run();
+            } else {
+              editor.chain().focus().setHeading({ level: 2 }).run();
+            }
+          }}
           active={editor.isActive('heading', { level: 2 })}
           title="Heading 2"
         >
           <Heading2 size={16} />
         </ToolbarButton>
         <ToolbarButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          onClick={() => {
+            if (editor.isActive('heading', { level: 3 })) {
+              editor.chain().focus().setParagraph().run();
+            } else {
+              editor.chain().focus().setHeading({ level: 3 }).run();
+            }
+          }}
           active={editor.isActive('heading', { level: 3 })}
           title="Heading 3"
         >
