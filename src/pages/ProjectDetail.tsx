@@ -163,7 +163,22 @@ export default function ProjectDetail() {
             <div className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-foreground">About This Project</h2>
               <div 
-                className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-primary prose-a:hover:text-primary/80 prose-strong:text-foreground prose-li:text-muted-foreground prose-blockquote:text-muted-foreground prose-blockquote:border-primary/50 prose-code:text-foreground prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-img:rounded-lg prose-img:my-4"
+                className="prose prose-invert prose-lg max-w-none 
+                  prose-headings:text-foreground prose-headings:font-bold prose-headings:mt-8 prose-headings:mb-4
+                  prose-h1:text-3xl prose-h1:mt-10 prose-h1:mb-6
+                  prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4
+                  prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
+                  prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-4
+                  prose-a:text-primary hover:prose-a:text-primary/80 
+                  prose-strong:text-foreground 
+                  prose-li:text-muted-foreground prose-li:leading-relaxed prose-li:my-1
+                  prose-ul:my-4 prose-ol:my-4
+                  prose-blockquote:text-muted-foreground prose-blockquote:border-primary/50 prose-blockquote:my-6
+                  prose-code:text-foreground prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded 
+                  prose-pre:my-6
+                  prose-img:rounded-lg prose-img:my-6
+                  prose-hr:my-8 prose-hr:border-muted
+                  [&>*:first-child]:mt-0"
                 dangerouslySetInnerHTML={{ __html: project.full_description }}
               />
             </div>
