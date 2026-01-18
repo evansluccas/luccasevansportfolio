@@ -111,7 +111,7 @@ export function RichTextEditor({
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-invert max-w-none focus:outline-none min-h-[200px] p-4',
+        class: 'prose max-w-none focus:outline-none min-h-[200px] p-4 text-gray-900',
       },
     },
   });
