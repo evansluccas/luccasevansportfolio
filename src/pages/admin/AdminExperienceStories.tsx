@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, GripVertical, Image } from 'lucide-react';
+import { Plus, Pencil, Trash2, GripVertical, Image, Upload, X } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface ExperienceStory {
@@ -19,7 +18,11 @@ interface ExperienceStory {
 export default function AdminExperienceStories() {
   const [stories, setStories] = useState<ExperienceStory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     image_url: '',
     caption: '',
@@ -29,6 +32,15 @@ export default function AdminExperienceStories() {
   useEffect(() => {
     fetchStories();
   }, []);
+
+  // Clean up preview URL when component unmounts or file changes
+  useEffect(() => {
+    return () => {
+      if (previewUrl && previewUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const fetchStories = async () => {
     setIsLoading(true);
@@ -53,6 +65,14 @@ export default function AdminExperienceStories() {
       display_order: stories.length,
     });
     setEditingId(null);
+    setSelectedFile(null);
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setPreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleEdit = (story: ExperienceStory) => {
@@ -62,21 +82,83 @@ export default function AdminExperienceStories() {
       caption: story.caption,
       display_order: story.display_order,
     });
+    setSelectedFile(null);
+    setPreviewUrl(story.image_url);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be less than 5MB');
+      return;
+    }
+
+    setSelectedFile(file);
+    
+    // Create preview URL
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `experience-stories/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('portfolio-assets')
+      .upload(fileName, file);
+
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      toast.error('Failed to upload image');
+      return null;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('portfolio-assets')
+      .getPublicUrl(fileName);
+
+    return publicUrl;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.image_url.trim()) {
-      toast.error('Image URL is required');
+    // Check if we have an image (either new file or existing URL when editing)
+    if (!selectedFile && !formData.image_url) {
+      toast.error('Please select an image');
       return;
+    }
+
+    setIsUploading(true);
+    let imageUrl = formData.image_url;
+
+    // Upload new file if selected
+    if (selectedFile) {
+      const uploadedUrl = await uploadImage(selectedFile);
+      if (!uploadedUrl) {
+        setIsUploading(false);
+        return;
+      }
+      imageUrl = uploadedUrl;
     }
 
     if (editingId) {
       const { error } = await supabase
         .from('experience_stories')
         .update({
-          image_url: formData.image_url,
+          image_url: imageUrl,
           caption: formData.caption,
           display_order: formData.display_order,
         })
@@ -94,7 +176,7 @@ export default function AdminExperienceStories() {
       const { error } = await supabase
         .from('experience_stories')
         .insert({
-          image_url: formData.image_url,
+          image_url: imageUrl,
           caption: formData.caption,
           display_order: stories.length,
         });
@@ -108,6 +190,7 @@ export default function AdminExperienceStories() {
         fetchStories();
       }
     }
+    setIsUploading(false);
   };
 
   const handleDelete = async (id: string) => {
@@ -162,14 +245,50 @@ export default function AdminExperienceStories() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="image_url">Image URL</Label>
-            <Input
-              id="image_url"
-              value={formData.image_url}
-              onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-              placeholder="https://example.com/image.jpg"
-              className="bg-background"
+            <Label>Image</Label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+              id="image-upload"
             />
+            
+            {previewUrl ? (
+              <div className="relative inline-block">
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded-lg border border-primary/20"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedFile(null);
+                    if (previewUrl.startsWith('blob:')) {
+                      URL.revokeObjectURL(previewUrl);
+                    }
+                    setPreviewUrl(null);
+                    setFormData({ ...formData, image_url: '' });
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
+                    }
+                  }}
+                  className="absolute -top-2 -right-2 p-1 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <label
+                htmlFor="image-upload"
+                className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-primary/30 rounded-lg cursor-pointer hover:border-primary/50 bg-background transition-colors"
+              >
+                <Upload className="w-8 h-8 text-muted-foreground mb-2" />
+                <span className="text-sm text-muted-foreground">Upload</span>
+              </label>
+            )}
           </div>
 
           <div className="space-y-2 sm:col-span-2">
@@ -186,8 +305,13 @@ export default function AdminExperienceStories() {
         </div>
 
         <div className="flex gap-2">
-          <Button type="submit">
-            {editingId ? (
+          <Button type="submit" disabled={isUploading}>
+            {isUploading ? (
+              <>
+                <Upload className="w-4 h-4 mr-2 animate-pulse" />
+                Uploading...
+              </>
+            ) : editingId ? (
               <>
                 <Pencil className="w-4 h-4 mr-2" />
                 Update Story
