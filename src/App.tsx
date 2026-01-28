@@ -26,6 +26,7 @@ import AdminHeroStats from "./pages/admin/AdminHeroStats";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminNavigation from "./pages/admin/AdminNavigation";
 import AdminSections from "./pages/admin/AdminSections";
+import AdminContactSubmissions from "./pages/admin/AdminContactSubmissions";
 
 const queryClient = new QueryClient();
 
@@ -116,6 +117,11 @@ const App = () => (
             <Route path="/admin/sections" element={
               <ProtectedRoute requireAdmin>
                 <AdminSections />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/contact-submissions" element={
+              <ProtectedRoute requireAdmin>
+                <AdminContactSubmissions />
               </ProtectedRoute>
             } />
 

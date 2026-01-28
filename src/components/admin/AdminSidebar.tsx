@@ -13,7 +13,8 @@ import {
   MessageSquare,
   Navigation,
   Images,
-  Layers
+  Layers,
+  Mail
 } from 'lucide-react';
 
 const navItems = [
@@ -27,6 +28,7 @@ const navItems = [
   { href: '/admin/skills', label: 'Skills', icon: Gauge },
   { href: '/admin/about', label: 'About Cards', icon: MessageSquare },
   { href: '/admin/stats', label: 'Hero Stats', icon: BarChart3 },
+  { href: '/admin/contact-submissions', label: 'Contact Submissions', icon: Mail },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
