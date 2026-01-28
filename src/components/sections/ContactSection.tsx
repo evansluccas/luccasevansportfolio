@@ -5,6 +5,8 @@ import { BlobDecoration } from '@/components/decorations/BlobDecoration';
 import { useSiteConfig, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 
 export function ContactSection() {
   const { data: config, isLoading: configLoading } = useSiteConfig();
@@ -26,14 +28,32 @@ export function ContactSection() {
     e.preventDefault();
     setFormState('submitting');
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setFormState('success');
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    
-    // Reset after 5 seconds
-    setTimeout(() => setFormState('idle'), 5000);
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+        });
+
+      if (error) throw error;
+
+      setFormState('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      
+      // Reset after 5 seconds
+      setTimeout(() => setFormState('idle'), 5000);
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send message. Please try again.',
+        variant: 'destructive',
+      });
+      setFormState('idle');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
