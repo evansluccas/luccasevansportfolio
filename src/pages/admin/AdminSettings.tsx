@@ -47,11 +47,13 @@ export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingIcon, setUploadingIcon] = useState<string | null>(null);
+  const [uploadingProfileImage, setUploadingProfileImage] = useState(false);
   const { toast } = useToast();
 
   const linkedinIconRef = useRef<HTMLInputElement>(null);
   const emailIconRef = useRef<HTMLInputElement>(null);
   const locationIconRef = useRef<HTMLInputElement>(null);
+  const profileImageRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchConfig();
@@ -122,6 +124,33 @@ export default function AdminSettings() {
     setUploadingIcon(null);
   };
 
+  const handleProfileImageUpload = async (file: File) => {
+    setUploadingProfileImage(true);
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `profile-image-${Date.now()}.${fileExt}`;
+    const filePath = `profile/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('portfolio-assets')
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) {
+      toast({ title: 'Upload failed', description: uploadError.message, variant: 'destructive' });
+      setUploadingProfileImage(false);
+      return;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('portfolio-assets')
+      .getPublicUrl(filePath);
+
+    setConfig(prev => ({ ...prev, profile_image_url: publicUrl }));
+    
+    toast({ title: 'Profile image uploaded successfully' });
+    setUploadingProfileImage(false);
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, iconType: 'linkedin' | 'email' | 'location') => {
     const file = e.target.files?.[0];
     if (file) {
@@ -129,9 +158,20 @@ export default function AdminSettings() {
     }
   };
 
+  const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleProfileImageUpload(file);
+    }
+  };
+
   const removeIcon = (iconType: 'linkedin' | 'email' | 'location') => {
     const fieldName = `${iconType}_icon_url` as keyof SiteConfig;
     setConfig(prev => ({ ...prev, [fieldName]: '' }));
+  };
+
+  const removeProfileImage = () => {
+    setConfig(prev => ({ ...prev, profile_image_url: '' }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -319,28 +359,72 @@ export default function AdminSettings() {
             </div>
           </div>
 
-          {/* Hero Tag & Profile Image */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium mb-2">Hero Tag (e.g., "Hello!")</label>
+          {/* Hero Tag */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Hero Tag (e.g., "Hello!")</label>
+            <input
+              type="text"
+              name="hero_tag"
+              value={config.hero_tag}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+            />
+          </div>
+
+          {/* Profile Image Upload */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Profile Image</label>
+            <div className="flex items-center gap-4">
+              {config.profile_image_url ? (
+                <div className="relative group">
+                  <div className="w-24 h-24 rounded-xl bg-primary/10 border border-primary/20 overflow-hidden">
+                    <img 
+                      src={config.profile_image_url} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removeProfileImage}
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => profileImageRef.current?.click()}
+                  disabled={uploadingProfileImage}
+                  className="w-24 h-24 rounded-xl border-2 border-dashed border-muted-foreground/30 hover:border-primary/50 flex items-center justify-center transition-colors"
+                >
+                  {uploadingProfileImage ? (
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                  ) : (
+                    <Plus size={24} className="text-muted-foreground" />
+                  )}
+                </button>
+              )}
               <input
-                type="text"
-                name="hero_tag"
-                value={config.hero_tag}
-                onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                ref={profileImageRef}
+                type="file"
+                accept="image/*"
+                onChange={handleProfileImageChange}
+                className="hidden"
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Profile Image URL</label>
-              <input
-                type="url"
-                name="profile_image_url"
-                value={config.profile_image_url}
-                onChange={handleChange}
-                placeholder="https://..."
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
-              />
+              {config.profile_image_url && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => profileImageRef.current?.click()}
+                  disabled={uploadingProfileImage}
+                >
+                  <Upload size={14} className="mr-1" />
+                  Replace
+                </Button>
+              )}
             </div>
           </div>
 
