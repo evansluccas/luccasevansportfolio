@@ -19,9 +19,6 @@ interface SiteConfig {
   social_linkedin: string;
   social_email: string;
   location: string;
-  linkedin_icon_url: string;
-  email_icon_url: string;
-  location_icon_url: string;
 }
 
 const initialConfig: SiteConfig = {
@@ -37,23 +34,18 @@ const initialConfig: SiteConfig = {
   social_linkedin: '',
   social_email: '',
   location: '',
-  linkedin_icon_url: '',
-  email_icon_url: '',
-  location_icon_url: '',
 };
+
 
 export default function AdminSettings() {
   const [config, setConfig] = useState<SiteConfig>(initialConfig);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploadingIcon, setUploadingIcon] = useState<string | null>(null);
   const [uploadingProfileImage, setUploadingProfileImage] = useState(false);
   const { toast } = useToast();
 
-  const linkedinIconRef = useRef<HTMLInputElement>(null);
-  const emailIconRef = useRef<HTMLInputElement>(null);
-  const locationIconRef = useRef<HTMLInputElement>(null);
   const profileImageRef = useRef<HTMLInputElement>(null);
+
 
   useEffect(() => {
     fetchConfig();
@@ -83,10 +75,8 @@ export default function AdminSettings() {
         social_linkedin: data.social_linkedin || '',
         social_email: data.social_email || '',
         location: data.location || '',
-        linkedin_icon_url: data.linkedin_icon_url || '',
-        email_icon_url: data.email_icon_url || '',
-        location_icon_url: data.location_icon_url || '',
       });
+
     }
     setLoading(false);
   };
@@ -96,33 +86,6 @@ export default function AdminSettings() {
     setConfig(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleIconUpload = async (file: File, iconType: 'linkedin' | 'email' | 'location') => {
-    setUploadingIcon(iconType);
-
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${iconType}-icon-${Date.now()}.${fileExt}`;
-    const filePath = `contact-icons/${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('portfolio-assets')
-      .upload(filePath, file, { upsert: true });
-
-    if (uploadError) {
-      toast({ title: 'Upload failed', description: uploadError.message, variant: 'destructive' });
-      setUploadingIcon(null);
-      return;
-    }
-
-    const { data: { publicUrl } } = supabase.storage
-      .from('portfolio-assets')
-      .getPublicUrl(filePath);
-
-    const fieldName = `${iconType}_icon_url` as keyof SiteConfig;
-    setConfig(prev => ({ ...prev, [fieldName]: publicUrl }));
-    
-    toast({ title: 'Icon uploaded successfully' });
-    setUploadingIcon(null);
-  };
 
   const handleProfileImageUpload = async (file: File) => {
     setUploadingProfileImage(true);
@@ -151,13 +114,6 @@ export default function AdminSettings() {
     setUploadingProfileImage(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, iconType: 'linkedin' | 'email' | 'location') => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleIconUpload(file, iconType);
-    }
-  };
-
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -165,14 +121,10 @@ export default function AdminSettings() {
     }
   };
 
-  const removeIcon = (iconType: 'linkedin' | 'email' | 'location') => {
-    const fieldName = `${iconType}_icon_url` as keyof SiteConfig;
-    setConfig(prev => ({ ...prev, [fieldName]: '' }));
-  };
-
   const removeProfileImage = () => {
     setConfig(prev => ({ ...prev, profile_image_url: '' }));
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -191,10 +143,8 @@ export default function AdminSettings() {
       social_linkedin: config.social_linkedin || null,
       social_email: config.social_email || null,
       location: config.location || null,
-      linkedin_icon_url: config.linkedin_icon_url || null,
-      email_icon_url: config.email_icon_url || null,
-      location_icon_url: config.location_icon_url || null,
     };
+
 
     let error;
     if (config.id) {
@@ -213,69 +163,6 @@ export default function AdminSettings() {
     setSaving(false);
   };
 
-  const IconUploadField = ({ 
-    label, 
-    iconType, 
-    iconUrl, 
-    inputRef 
-  }: { 
-    label: string; 
-    iconType: 'linkedin' | 'email' | 'location'; 
-    iconUrl: string;
-    inputRef: React.RefObject<HTMLInputElement>;
-  }) => (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium">{label} Icon</label>
-      <div className="flex items-center gap-3">
-        {iconUrl ? (
-          <div className="relative group">
-            <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden">
-              <img src={iconUrl} alt={`${label} icon`} className="w-10 h-10 object-contain" />
-            </div>
-            <button
-              type="button"
-              onClick={() => removeIcon(iconType)}
-              className="absolute -top-2 -right-2 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <X size={12} />
-            </button>
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            disabled={uploadingIcon === iconType}
-            className="w-14 h-14 rounded-xl border-2 border-dashed border-muted-foreground/30 hover:border-primary/50 flex items-center justify-center transition-colors"
-          >
-            {uploadingIcon === iconType ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
-            ) : (
-              <Plus size={20} className="text-muted-foreground" />
-            )}
-          </button>
-        )}
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleFileChange(e, iconType)}
-          className="hidden"
-        />
-        {iconUrl && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => inputRef.current?.click()}
-            disabled={uploadingIcon === iconType}
-          >
-            <Upload size={14} className="mr-1" />
-            Replace
-          </Button>
-        )}
-      </div>
-    </div>
-  );
 
   if (loading) {
     return (
@@ -454,27 +341,6 @@ export default function AdminSettings() {
 
           <h3 className="text-lg font-semibold border-b border-primary/10 pb-4 pt-4">Contact Information</h3>
 
-          {/* Contact Icons */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <IconUploadField 
-              label="LinkedIn" 
-              iconType="linkedin" 
-              iconUrl={config.linkedin_icon_url}
-              inputRef={linkedinIconRef}
-            />
-            <IconUploadField 
-              label="Email" 
-              iconType="email" 
-              iconUrl={config.email_icon_url}
-              inputRef={emailIconRef}
-            />
-            <IconUploadField 
-              label="Location" 
-              iconType="location" 
-              iconUrl={config.location_icon_url}
-              inputRef={locationIconRef}
-            />
-          </div>
 
           {/* Contact Info URLs */}
           <div className="grid md:grid-cols-3 gap-6">

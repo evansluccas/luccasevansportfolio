@@ -65,7 +65,6 @@ export function ContactSection() {
   const contactInfo = [
     {
       icon: Linkedin,
-      customIconUrl: config?.linkedin_icon_url,
       label: 'LinkedIn',
       value: 'Connect with me',
       href: config?.social_linkedin || '#',
@@ -73,7 +72,6 @@ export function ContactSection() {
     },
     {
       icon: Mail,
-      customIconUrl: config?.email_icon_url,
       label: 'Email',
       value: config?.social_email,
       href: config?.social_email ? `mailto:${config.social_email}` : '#',
@@ -81,13 +79,13 @@ export function ContactSection() {
     },
     {
       icon: MapPin,
-      customIconUrl: config?.location_icon_url,
       label: 'Location',
       value: config?.location,
       href: '#',
       show: !!config?.location,
     },
   ].filter(item => item.show);
+
 
   return (
     <section id="contact" className="relative section-padding overflow-hidden bg-background">
@@ -144,16 +142,9 @@ export function ContactSection() {
                   className="group flex items-center gap-4 py-5 border-b border-border transition-colors hover:bg-secondary/15"
                 >
                   <div className="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0">
-                    {info.customIconUrl ? (
-                      <img 
-                        src={info.customIconUrl} 
-                        alt={`${info.label} icon`} 
-                        className="w-6 h-6 object-contain"
-                      />
-                    ) : (
-                      <info.icon size={20} strokeWidth={1.5} className="text-accent" />
-                    )}
+                    <info.icon size={20} strokeWidth={1.5} className="text-accent" />
                   </div>
+
                   <div>
                     <div className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{info.label}</div>
                     <div className="text-foreground">{info.value}</div>
