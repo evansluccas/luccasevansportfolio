@@ -67,7 +67,7 @@ export function AboutCardsCarousel({ cards }: { cards: AboutCard[] }) {
     <div className="border-t border-border">
       {/* Swap stage */}
       <div
-        className="relative overflow-hidden"
+        className="relative"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -77,7 +77,6 @@ export function AboutCardsCarousel({ cards }: { cards: AboutCard[] }) {
             const IconComponent = getAboutIcon(card.icon);
             const isActive = i === index;
             const isExiting = i === exitingIndex;
-            const isRest = !isActive && !isExiting;
 
             return (
               <div
@@ -105,13 +104,6 @@ export function AboutCardsCarousel({ cards }: { cards: AboutCard[] }) {
               </div>
             );
           })}
-        </div>
-
-        {/* Drag hint */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 text-[0.65rem] tracking-[0.15em] uppercase text-muted-foreground/60 animate-pulse pointer-events-none">
-          <ChevronLeft size={12} />
-          <span>Swap</span>
-          <ChevronRight size={12} />
         </div>
       </div>
 
@@ -143,32 +135,14 @@ export function AboutCardsCarousel({ cards }: { cards: AboutCard[] }) {
           ))}
         </div>
 
-        {/* Prev / Next swap buttons */}
-        <div className="flex items-center gap-1">
-          <button
-            aria-label="Previous card"
-            onClick={() => {
-              navigate(-1);
-              setPaused(true);
-              window.setTimeout(() => setPaused(false), 8000);
-            }}
-            className="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            aria-label="Next card"
-            onClick={() => {
-              navigate(1);
-              setPaused(true);
-              window.setTimeout(() => setPaused(false), 8000);
-            }}
-            className="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ChevronRight size={18} />
-          </button>
+        {/* Swap hint */}
+        <div className="flex items-center gap-1.5 text-[0.65rem] tracking-[0.15em] uppercase text-muted-foreground/60 animate-pulse">
+          <ChevronLeft size={12} />
+          <span>Swap</span>
+          <ChevronRight size={12} />
         </div>
       </div>
     </div>
   );
 }
+
