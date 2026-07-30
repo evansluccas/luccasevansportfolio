@@ -86,33 +86,6 @@ export default function AdminSettings() {
     setConfig(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleIconUpload = async (file: File, iconType: 'linkedin' | 'email' | 'location') => {
-    setUploadingIcon(iconType);
-
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${iconType}-icon-${Date.now()}.${fileExt}`;
-    const filePath = `contact-icons/${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('portfolio-assets')
-      .upload(filePath, file, { upsert: true });
-
-    if (uploadError) {
-      toast({ title: 'Upload failed', description: uploadError.message, variant: 'destructive' });
-      setUploadingIcon(null);
-      return;
-    }
-
-    const { data: { publicUrl } } = supabase.storage
-      .from('portfolio-assets')
-      .getPublicUrl(filePath);
-
-    const fieldName = `${iconType}_icon_url` as keyof SiteConfig;
-    setConfig(prev => ({ ...prev, [fieldName]: publicUrl }));
-    
-    toast({ title: 'Icon uploaded successfully' });
-    setUploadingIcon(null);
-  };
 
   const handleProfileImageUpload = async (file: File) => {
     setUploadingProfileImage(true);
