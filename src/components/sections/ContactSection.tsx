@@ -124,7 +124,7 @@ export function ContactSection() {
           {/* Contact Info */}
           <div>
             <h3 className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground mb-6">
-              Get in touch
+              Direct channels
             </h3>
 
             {configLoading ? (
