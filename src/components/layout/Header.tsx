@@ -53,7 +53,7 @@ export function Header() {
         className={`
           flex items-center justify-center px-4 md:px-10 py-1.5 md:py-3
           rounded-pill transition-all duration-300
-          bg-card/95 backdrop-blur-xl ${isScrolled ? 'shadow-card' : ''}
+          bg-card md:bg-card/95 backdrop-blur-xl ${isScrolled ? 'shadow-card' : ''}
           border border-primary/20
         `}
       >
