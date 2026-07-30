@@ -143,10 +143,8 @@ export default function AdminSettings() {
       social_linkedin: config.social_linkedin || null,
       social_email: config.social_email || null,
       location: config.location || null,
-      linkedin_icon_url: config.linkedin_icon_url || null,
-      email_icon_url: config.email_icon_url || null,
-      location_icon_url: config.location_icon_url || null,
     };
+
 
     let error;
     if (config.id) {
