@@ -341,27 +341,6 @@ export default function AdminSettings() {
 
           <h3 className="text-lg font-semibold border-b border-primary/10 pb-4 pt-4">Contact Information</h3>
 
-          {/* Contact Icons */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <IconUploadField 
-              label="LinkedIn" 
-              iconType="linkedin" 
-              iconUrl={config.linkedin_icon_url}
-              inputRef={linkedinIconRef}
-            />
-            <IconUploadField 
-              label="Email" 
-              iconType="email" 
-              iconUrl={config.email_icon_url}
-              inputRef={emailIconRef}
-            />
-            <IconUploadField 
-              label="Location" 
-              iconType="location" 
-              iconUrl={config.location_icon_url}
-              inputRef={locationIconRef}
-            />
-          </div>
 
           {/* Contact Info URLs */}
           <div className="grid md:grid-cols-3 gap-6">
