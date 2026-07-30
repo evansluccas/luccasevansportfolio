@@ -28,7 +28,7 @@ export function SkillsSection() {
     <section id="skills" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
-        <div className="max-w-3xl mb-14">
+        <div className="max-w-3xl mb-8 sm:mb-14">
           {configLoading ? (
             <>
               <Skeleton className="h-6 w-32 mb-4" />
@@ -42,12 +42,12 @@ export function SkillsSection() {
                   {sectionConfig.tag}
                 </span>
               )}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5">
+              <h2 className="text-[1.9rem] leading-tight sm:text-4xl lg:text-5xl mb-4 sm:mb-5">
                 {sectionConfig?.title || 'Skills &'}{' '}
                 <span className="italic text-accent">{sectionConfig?.title_highlight || 'Technologies'}</span>
               </h2>
               {sectionConfig?.description && (
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-[0.95rem] sm:text-lg">
                   {sectionConfig.description}
                 </p>
               )}
@@ -56,7 +56,7 @@ export function SkillsSection() {
         </div>
 
         {/* Skills Grid */}
-        <div className="grid md:grid-cols-2 gap-x-14 gap-y-12 border-t border-border pt-10">
+        <div className="grid md:grid-cols-2 gap-x-14 gap-y-10 sm:gap-y-12 border-t border-border pt-8 sm:pt-10">
           {skillsLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
               <Skeleton key={i} className="h-64 rounded-none" />
@@ -64,7 +64,7 @@ export function SkillsSection() {
           ) : (
             groupedSkills && Object.entries(groupedSkills).map(([category, categorySkills]) => (
               <div key={category}>
-                <h3 className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground pb-3 mb-6 border-b border-border">
+                <h3 className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground pb-3 mb-5 sm:mb-6 border-b border-border">
                   {category}
                 </h3>
                 <div className="space-y-4">

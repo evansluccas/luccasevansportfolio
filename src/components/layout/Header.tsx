@@ -48,12 +48,12 @@ export function Header() {
 
 
   return (
-    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl">
+    <header className="fixed top-3 md:top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1.5rem)] md:w-[calc(100%-2rem)] max-w-5xl">
       <nav
         className={`
-          flex items-center justify-center px-6 md:px-10 py-3 
+          flex items-center justify-center px-4 md:px-10 py-1.5 md:py-3
           rounded-pill transition-all duration-300
-          ${isScrolled ? 'glass-effect shadow-card' : 'bg-card/90 backdrop-blur-sm'}
+          bg-card md:bg-card/95 backdrop-blur-xl ${isScrolled ? 'shadow-card' : ''}
           border border-primary/20
         `}
       >
@@ -82,26 +82,28 @@ export function Header() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="md:hidden h-11 w-11"
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </Button>
       </nav>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden mt-2 p-4 rounded-2xl glass-effect border border-primary/20 shadow-card">
-          <ul className="flex flex-col gap-2">
+        <div className="md:hidden mt-2 p-2 rounded-2xl bg-card backdrop-blur-xl border border-primary/20 shadow-card">
+          <ul className="flex flex-col">
             {navLinks.map((link) => (
-              <li key={link.href}>
+              <li key={link.href} className="border-b border-border/60 last:border-b-0">
                 <a
                   href={link.href}
                   onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                   className={`
-                    block px-4 py-3 rounded-xl text-sm font-medium transition-all
+                    block px-4 py-3.5 rounded-xl text-sm font-medium transition-all
                     ${activeSection === link.href.slice(1)
-                      ? 'bg-primary/20 text-primary'
+                      ? 'text-accent'
                       : 'text-foreground/80 hover:bg-muted hover:text-primary'
                     }
                   `}

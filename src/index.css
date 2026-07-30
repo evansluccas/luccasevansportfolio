@@ -100,15 +100,22 @@
     scroll-behavior: smooth;
   }
 
+  /* Offset anchor scrolling for the floating header */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Work Sans', system-ui, sans-serif;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight font-medium;
     font-family: 'Fraunces', Georgia, serif;
     letter-spacing: -0.015em;
+    overflow-wrap: break-word;
   }
 }
 
@@ -129,11 +136,11 @@
   }
 
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8;
   }
 
   .section-padding {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-14 sm:py-20 md:py-24 lg:py-32;
   }
 
   .text-gradient-orange {
