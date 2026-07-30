@@ -278,11 +278,11 @@ export function ContactSection() {
                     />
                   </div>
 
-                  <div className="flex justify-end">
+                  <div className="flex justify-stretch sm:justify-end">
                     <Button 
                       variant="hero" 
                       size="lg" 
-                      className="gap-2"
+                      className="gap-2 w-full sm:w-auto"
                       disabled={formState === 'submitting'}
                     >
                       {formState === 'submitting' ? (
