@@ -65,8 +65,8 @@ export function HeroSection() {
             )}
 
             {/* CTA Buttons - Clear hierarchy: primary action first */}
-            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 justify-start">
-              <Button variant="hero" size="default" asChild className="group sm:h-12 sm:px-8 sm:text-base">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-start">
+              <Button variant="hero" size="default" asChild className="group h-9 px-5 text-sm sm:h-12 sm:px-8 sm:text-base">
                 <a href="#projects">
                   See My Work
                   <svg 
@@ -79,7 +79,7 @@ export function HeroSection() {
                   </svg>
                 </a>
               </Button>
-              <Button variant="heroOutline" size="default" asChild className="sm:h-12 sm:px-8 sm:text-base">
+              <Button variant="heroOutline" size="default" asChild className="h-9 px-5 text-sm sm:h-12 sm:px-8 sm:text-base">
                 <a href="#contact">Let's Connect</a>
               </Button>
             </div>
