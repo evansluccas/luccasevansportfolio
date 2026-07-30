@@ -142,16 +142,9 @@ export function ContactSection() {
                   className="group flex items-center gap-4 py-5 border-b border-border transition-colors hover:bg-secondary/15"
                 >
                   <div className="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0">
-                    {info.customIconUrl ? (
-                      <img 
-                        src={info.customIconUrl} 
-                        alt={`${info.label} icon`} 
-                        className="w-6 h-6 object-contain"
-                      />
-                    ) : (
-                      <info.icon size={20} strokeWidth={1.5} className="text-accent" />
-                    )}
+                    <info.icon size={20} strokeWidth={1.5} className="text-accent" />
                   </div>
+
                   <div>
                     <div className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{info.label}</div>
                     <div className="text-foreground">{info.value}</div>
