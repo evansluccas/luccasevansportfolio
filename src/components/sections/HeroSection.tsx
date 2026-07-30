@@ -3,6 +3,7 @@ import { useSiteConfig, useHeroStats } from '@/hooks/usePortfolioData';
 import { getIcon } from '@/lib/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TypingAnimation } from '@/components/ui/typing-animation';
+import { CountUp } from '@/components/ui/count-up';
 
 export function HeroSection() {
   const { data: config, isLoading: configLoading } = useSiteConfig();
