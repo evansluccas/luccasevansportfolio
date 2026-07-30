@@ -12,7 +12,6 @@ import {
   BarChart3,
   MessageSquare,
   Navigation,
-  Images,
   Layers,
   Mail
 } from 'lucide-react';
