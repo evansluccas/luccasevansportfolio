@@ -65,7 +65,6 @@ export function ContactSection() {
   const contactInfo = [
     {
       icon: Linkedin,
-      customIconUrl: config?.linkedin_icon_url,
       label: 'LinkedIn',
       value: 'Connect with me',
       href: config?.social_linkedin || '#',
@@ -73,7 +72,6 @@ export function ContactSection() {
     },
     {
       icon: Mail,
-      customIconUrl: config?.email_icon_url,
       label: 'Email',
       value: config?.social_email,
       href: config?.social_email ? `mailto:${config.social_email}` : '#',
@@ -81,13 +79,13 @@ export function ContactSection() {
     },
     {
       icon: MapPin,
-      customIconUrl: config?.location_icon_url,
       label: 'Location',
       value: config?.location,
       href: '#',
       show: !!config?.location,
     },
   ].filter(item => item.show);
+
 
   return (
     <section id="contact" className="relative section-padding overflow-hidden bg-background">
