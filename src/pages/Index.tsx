@@ -14,11 +14,11 @@ const Index = () => {
       <ScrollProgress />
       <Header />
       <main>
+        <ProjectsSection />
         <HeroSection />
         <AboutSection />
         <ExperienceSection />
         <SkillsSection />
-        <ProjectsSection />
         <ContactSection />
       </main>
       <Footer />
