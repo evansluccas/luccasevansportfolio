@@ -19,9 +19,6 @@ interface SiteConfig {
   social_linkedin: string;
   social_email: string;
   location: string;
-  linkedin_icon_url: string;
-  email_icon_url: string;
-  location_icon_url: string;
 }
 
 const initialConfig: SiteConfig = {
@@ -37,10 +34,8 @@ const initialConfig: SiteConfig = {
   social_linkedin: '',
   social_email: '',
   location: '',
-  linkedin_icon_url: '',
-  email_icon_url: '',
-  location_icon_url: '',
 };
+
 
 export default function AdminSettings() {
   const [config, setConfig] = useState<SiteConfig>(initialConfig);
