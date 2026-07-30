@@ -3,7 +3,7 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Save, Upload, X, Plus } from 'lucide-react';
+import { Save } from 'lucide-react';
 
 interface SiteConfig {
   id?: string;
