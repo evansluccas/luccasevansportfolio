@@ -17,13 +17,13 @@ function StarBlocks({ project }: { project: Project }) {
   if (entries.length === 0) return null;
 
   return (
-    <dl className="space-y-4 border-t border-border pt-5">
+    <dl className="space-y-3.5 sm:space-y-4 border-t border-border pt-5">
       {entries.map(({ key, label }) => (
-        <div key={key} className="grid grid-cols-[5.5rem_1fr] gap-3">
-          <dt className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground pt-0.5">
+        <div key={key} className="grid grid-cols-1 sm:grid-cols-[5.5rem_1fr] gap-1 sm:gap-3">
+          <dt className="text-[0.65rem] sm:text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground sm:pt-0.5">
             {label}
           </dt>
-          <dd className="text-sm leading-relaxed text-foreground/80">{project[key]}</dd>
+          <dd className="text-[0.9rem] sm:text-sm leading-relaxed text-foreground/80">{project[key]}</dd>
         </div>
       ))}
     </dl>
@@ -74,7 +74,7 @@ export function ProjectsSection() {
     <section id="projects" className="relative section-padding overflow-hidden bg-muted/40">
       <div className="section-container relative z-10">
         {/* Section Header */}
-        <div className="max-w-3xl mb-12">
+        <div className="max-w-3xl mb-8 sm:mb-12">
           {configLoading ? (
             <>
               <Skeleton className="h-6 w-32 mb-4" />
@@ -88,12 +88,12 @@ export function ProjectsSection() {
                   {sectionConfig.tag}
                 </span>
               )}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5">
+              <h2 className="text-[1.9rem] leading-tight sm:text-4xl lg:text-5xl mb-4 sm:mb-5">
                 {sectionConfig?.title || 'Featured'}{' '}
                 <span className="italic text-accent">{sectionConfig?.title_highlight || 'Projects'}</span>
               </h2>
               {sectionConfig?.description && (
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-[0.95rem] sm:text-lg">
                   {sectionConfig.description}
                 </p>
               )}
@@ -111,15 +111,15 @@ export function ProjectsSection() {
         ) : (
           <>
             <div ref={emblaRef} className="overflow-hidden -mx-2">
-              <div className="flex">
+              <div className="flex items-start lg:items-stretch">
                 {projects?.map((project) => (
                   <article
                     key={project.id}
-                    className="flex-[0_0_100%] sm:flex-[0_0_70%] lg:flex-[0_0_46%] min-w-0 px-2"
+                    className="flex-[0_0_92%] sm:flex-[0_0_70%] lg:flex-[0_0_46%] min-w-0 px-2"
                   >
                     <div className="h-full flex flex-col bg-card border border-border rounded-lg overflow-hidden shadow-card">
                       {project.cover_image_url && (
-                        <div className="aspect-[16/7] overflow-hidden border-b border-border">
+                        <div className="aspect-[16/9] sm:aspect-[16/7] overflow-hidden border-b border-border">
                           <img
                             src={project.cover_image_url}
                             alt={project.title}
@@ -129,22 +129,22 @@ export function ProjectsSection() {
                         </div>
                       )}
 
-                      <div className="flex flex-col flex-1 p-7">
+                      <div className="flex flex-col flex-1 p-5 sm:p-7">
                         {project.category && (
                           <span className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground mb-3">
                             {project.category}
                           </span>
                         )}
-                        <h3 className="text-2xl mb-3">{project.title}</h3>
+                        <h3 className="text-xl sm:text-2xl mb-3">{project.title}</h3>
                         {project.short_description && (
-                          <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                          <p className="text-muted-foreground text-[0.9rem] sm:text-sm leading-relaxed mb-5 sm:mb-6">
                             {project.short_description}
                           </p>
                         )}
 
                         <StarBlocks project={project} />
 
-                        <div className="mt-auto pt-6">
+                        <div className="mt-auto pt-5 sm:pt-6">
                           {project.technologies && project.technologies.length > 0 && (
                             <div className="flex flex-wrap gap-2 mb-5">
                               {project.technologies.map((tech, i) => (
@@ -161,9 +161,9 @@ export function ProjectsSection() {
                           {project.show_details !== false && (
                             <Link
                               to={`/project/${project.slug}`}
-                              className="group inline-flex items-center text-sm font-medium text-primary border-b border-primary/40 pb-0.5 hover:border-primary transition-colors"
+                              className="group inline-flex items-center min-h-[44px] text-sm font-medium text-primary hover:text-accent transition-colors"
                             >
-                              View details
+                              <span className="border-b border-primary/40 group-hover:border-accent pb-0.5">View details</span>
                               <ArrowRight
                                 size={15}
                                 className="ml-2 transition-transform group-hover:translate-x-1"
@@ -180,25 +180,25 @@ export function ProjectsSection() {
 
             {/* Controls */}
             {snapCount > 1 && (
-              <div className="flex items-center justify-between mt-8">
-                <div className="flex gap-1.5">
+              <div className="flex items-center justify-between gap-4 mt-6 sm:mt-8">
+                <div className="flex flex-wrap gap-1.5">
                   {Array.from({ length: snapCount }).map((_, i) => (
                     <button
                       key={i}
                       onClick={() => emblaApi?.scrollTo(i)}
                       aria-label={`Go to slide ${i + 1}`}
-                      className={`h-1 rounded-full transition-all ${
-                        i === selectedIndex ? 'w-8 bg-primary' : 'w-4 bg-primary/25 hover:bg-primary/40'
+                      className={`h-1.5 rounded-full transition-all ${
+                        i === selectedIndex ? 'w-8 bg-primary' : 'w-3 bg-primary/25 hover:bg-primary/40'
                       }`}
                     />
                   ))}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 shrink-0">
                   <button
                     onClick={() => emblaApi?.scrollPrev()}
                     disabled={!canPrev}
                     aria-label="Previous projects"
-                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-foreground transition-colors hover:bg-secondary/40 disabled:opacity-30 disabled:hover:bg-transparent"
+                    className="w-11 h-11 rounded-full border border-border flex items-center justify-center text-foreground transition-colors hover:bg-secondary/40 disabled:opacity-30 disabled:hover:bg-transparent"
                   >
                     <ChevronLeft size={18} />
                   </button>
@@ -206,7 +206,7 @@ export function ProjectsSection() {
                     onClick={() => emblaApi?.scrollNext()}
                     disabled={!canNext}
                     aria-label="Next projects"
-                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-foreground transition-colors hover:bg-secondary/40 disabled:opacity-30 disabled:hover:bg-transparent"
+                    className="w-11 h-11 rounded-full border border-border flex items-center justify-center text-foreground transition-colors hover:bg-secondary/40 disabled:opacity-30 disabled:hover:bg-transparent"
                   >
                     <ChevronRight size={18} />
                   </button>
