@@ -140,7 +140,7 @@
   }
 
   .section-padding {
-    @apply py-14 sm:py-20 md:py-24 lg:py-32;
+    @apply py-[2.975rem] sm:py-[4.25rem] md:py-[5.1rem] lg:py-[6.8rem];
   }
 
   .text-gradient-orange {
