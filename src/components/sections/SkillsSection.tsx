@@ -25,7 +25,7 @@ export function SkillsSection() {
   }, {} as Record<string, typeof skills>);
 
   return (
-    <section id="skills" className="relative section-padding overflow-hidden bg-muted/40">
+    <section id="skills" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
         <div className="max-w-3xl mb-14">
