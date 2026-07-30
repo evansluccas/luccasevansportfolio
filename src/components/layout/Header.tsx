@@ -93,7 +93,7 @@ export function Header() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden mt-2 p-2 rounded-2xl bg-card/98 backdrop-blur-xl border border-primary/20 shadow-card">
+        <div className="md:hidden mt-2 p-2 rounded-2xl bg-card backdrop-blur-xl border border-primary/20 shadow-card">
           <ul className="flex flex-col">
             {navLinks.map((link) => (
               <li key={link.href} className="border-b border-border/60 last:border-b-0">
