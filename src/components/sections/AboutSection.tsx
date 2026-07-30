@@ -50,6 +50,8 @@ export function AboutSection() {
           )}
         </div>
 
+        {cardsLoading && <Skeleton className="h-56 rounded-none sm:hidden" />}
+
         {/* Mobile: crossfade carousel */}
         {!cardsLoading && cards && cards.length > 0 && (
           <div className="sm:hidden">
