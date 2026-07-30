@@ -12,16 +12,16 @@ export function HeroSection() {
 
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-28 pb-16 overflow-hidden bg-background">
+    <section id="home" className="relative lg:min-h-screen flex items-center pt-24 sm:pt-28 pb-14 sm:pb-16 overflow-hidden bg-background">
       <div className="section-container relative z-10">
-        <div className="grid lg:grid-cols-[1.35fr_1fr] gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-[1.35fr_1fr] gap-8 sm:gap-12 lg:gap-20 items-center">
           {/* Left Content */}
           <div className="order-2 lg:order-1 text-left">
             {/* Hello Tag */}
             {isLoading ? (
               <Skeleton className="h-5 w-24 mb-6" />
             ) : config?.hero_tag && (
-              <span className="inline-block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6">
+              <span className="inline-block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4 sm:mb-6">
                 {config.hero_tag}
               </span>
             )}
@@ -30,7 +30,7 @@ export function HeroSection() {
             {isLoading ? (
               <Skeleton className="h-16 w-80 mb-4" />
             ) : (
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-5">
+              <h1 className="text-[2.6rem] leading-[1.05] sm:text-5xl lg:text-6xl xl:text-7xl mb-4 sm:mb-5">
                 <span className="text-foreground">{config?.name?.split(' ')[0]}</span>{' '}
                 <span className="italic text-accent">{config?.name?.split(' ').slice(1).join(' ')}</span>
               </h1>
@@ -40,7 +40,7 @@ export function HeroSection() {
             {isLoading ? (
               <Skeleton className="h-8 w-48 mb-6" />
             ) : (
-              <h2 className="text-lg sm:text-xl lg:text-2xl text-muted-foreground font-normal mb-6 min-h-[1.5em] border-t border-border pt-5">
+              <h2 className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-normal mb-5 sm:mb-6 min-h-[2.6em] sm:min-h-[1.5em] border-t border-border pt-4 sm:pt-5">
                 <TypingAnimation 
                   texts={[
                     config?.title || '',
@@ -59,13 +59,13 @@ export function HeroSection() {
             {isLoading ? (
               <Skeleton className="h-20 w-full max-w-xl mb-8" />
             ) : config?.bio_short && (
-              <p className="text-muted-foreground text-base lg:text-lg mb-9 max-w-xl leading-relaxed">
+              <p className="text-muted-foreground text-[0.95rem] lg:text-lg mb-7 sm:mb-9 max-w-xl leading-relaxed">
                 {config.bio_short}
               </p>
             )}
 
             {/* CTA Buttons - Clear hierarchy: primary action first */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-start">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start">
               <Button variant="hero" size="lg" asChild className="group">
                 <a href="#projects">
                   See My Work
@@ -87,7 +87,7 @@ export function HeroSection() {
 
           {/* Right Content - Photo */}
           <div className="order-1 lg:order-2 flex justify-center">
-            <div className="relative w-full max-w-sm">
+            <div className="relative w-full max-w-[15rem] sm:max-w-sm">
               <div className="absolute -inset-3 border border-border pointer-events-none hidden lg:block" />
               {/* Photo Container */}
               <div className="relative w-full aspect-[4/5] overflow-hidden rounded-sm bg-muted">
@@ -113,7 +113,7 @@ export function HeroSection() {
 
         {/* Stats Grid */}
         {(isLoading || (stats && stats.length > 0)) && (
-          <div className="mt-16 lg:mt-24">
+          <div className="mt-12 sm:mt-16 lg:mt-24">
             <div className="grid grid-cols-2 lg:grid-cols-4 border-t border-l border-border">
               {isLoading ? (
                 Array.from({ length: 4 }).map((_, i) => (
@@ -125,13 +125,13 @@ export function HeroSection() {
                   return (
                     <div
                       key={stat.id}
-                      className="group relative p-6 border-b border-r border-border transition-colors hover:bg-secondary/15"
+                      className="group relative p-4 sm:p-6 border-b border-r border-border transition-colors hover:bg-secondary/15"
                     >
-                      <IconComponent size={18} strokeWidth={1.5} className="text-accent mb-4" />
-                      <div className="text-3xl lg:text-4xl text-foreground font-serif">
+                      <IconComponent size={18} strokeWidth={1.5} className="text-accent mb-3 sm:mb-4" />
+                      <div className="text-2xl sm:text-3xl lg:text-4xl text-foreground font-serif">
                         {stat.number}
                       </div>
-                      <div className="text-sm text-muted-foreground mt-1.5">
+                      <div className="text-[0.8rem] sm:text-sm leading-snug text-muted-foreground mt-1.5">
                         {stat.description}
                       </div>
                     </div>
