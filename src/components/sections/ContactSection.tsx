@@ -93,7 +93,7 @@ export function ContactSection() {
     <section id="contact" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
-        <div className="max-w-3xl mb-14">
+        <div className="max-w-3xl mb-8 sm:mb-14">
           {sectionConfigLoading ? (
             <>
               <Skeleton className="h-6 w-32 mb-4" />
@@ -107,12 +107,12 @@ export function ContactSection() {
                   {sectionConfig.tag}
                 </span>
               )}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5">
+              <h2 className="text-[1.9rem] leading-tight sm:text-4xl lg:text-5xl mb-4 sm:mb-5">
                 {sectionConfig?.title || "Let's Work"}{' '}
                 <span className="italic text-accent">{sectionConfig?.title_highlight || 'Together'}</span>
               </h2>
               {sectionConfig?.description && (
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-[0.95rem] sm:text-lg">
                   {sectionConfig.description}
                 </p>
               )}
@@ -120,7 +120,7 @@ export function ContactSection() {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 border-t border-border pt-10">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 border-t border-border pt-8 sm:pt-10">
           {/* Contact Info */}
           <div>
             <h3 className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground mb-6">
@@ -173,7 +173,7 @@ export function ContactSection() {
           </div>
 
           {/* Contact Form */}
-          <div className="p-8 rounded-lg bg-card border border-border shadow-card">
+          <div className="p-5 sm:p-8 rounded-lg bg-card border border-border shadow-card">
             <AnimatePresence mode="wait">
               {formState === 'success' ? (
                 <motion.div
