@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSiteConfig, useNavLinks } from '@/hooks/usePortfolioData';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { data: config } = useSiteConfig();
   const { data: navLinks = [] } = useNavLinks();
@@ -33,7 +32,6 @@ export function Header() {
   }, []);
 
   const handleNavClick = (href: string) => {
-    setIsMobileMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
       const offset = 100;
@@ -83,38 +81,12 @@ export function Header() {
           variant="ghost"
           size="icon"
           className="md:hidden h-11 w-11 rounded-pill"
-          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isMobileMenuOpen}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Menu"
         >
-          {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          <Menu size={22} />
         </Button>
       </nav>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden mt-2 py-2 rounded-2xl bg-card border border-primary/20 shadow-card animate-fade-in">
-          <ul className="flex flex-col items-start">
-            {navLinks.map((link) => (
-              <li key={link.href} className="w-full">
-                <a
-                  href={link.href}
-                  onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
-                  className={`
-                    block text-left px-5 py-3 text-sm font-medium transition-colors
-                    ${activeSection === link.href.slice(1)
-                      ? 'text-accent'
-                      : 'text-foreground/75 hover:text-primary'
-                    }
-                  `}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </header>
   );
 }
+
