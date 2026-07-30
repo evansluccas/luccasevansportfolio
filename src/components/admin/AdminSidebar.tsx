@@ -12,7 +12,6 @@ import {
   BarChart3,
   MessageSquare,
   Navigation,
-  Images,
   Layers,
   Mail
 } from 'lucide-react';
@@ -24,7 +23,6 @@ const navItems = [
   { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
   { href: '/admin/blog', label: 'Blog Posts', icon: FileText },
   { href: '/admin/experiences', label: 'Experiences', icon: Briefcase },
-  { href: '/admin/experience-stories', label: 'Experience Stories', icon: Images },
   { href: '/admin/skills', label: 'Skills', icon: Gauge },
   { href: '/admin/about', label: 'About Cards', icon: MessageSquare },
   { href: '/admin/stats', label: 'Hero Stats', icon: BarChart3 },

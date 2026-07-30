@@ -156,7 +156,7 @@ export default function AdminBlogForm() {
                 onChange={handleChange}
                 onBlur={generateSlug}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -167,7 +167,7 @@ export default function AdminBlogForm() {
                 value={formData.slug}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function AdminBlogForm() {
               value={formData.excerpt}
               onChange={handleChange}
               rows={2}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
             />
           </div>
 
@@ -192,7 +192,7 @@ export default function AdminBlogForm() {
               value={formData.content}
               onChange={handleChange}
               rows={12}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none font-mono text-sm"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none font-mono text-sm"
             />
           </div>
 
@@ -206,7 +206,7 @@ export default function AdminBlogForm() {
                 value={formData.cover_image_url}
                 onChange={handleChange}
                 placeholder="https://..."
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -217,7 +217,7 @@ export default function AdminBlogForm() {
                 value={formData.category}
                 onChange={handleChange}
                 placeholder="Technology, Product, Career..."
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function AdminBlogForm() {
               value={formData.tags}
               onChange={handleChange}
               placeholder="product management, agile, career"
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
           </div>
 
@@ -244,7 +244,7 @@ export default function AdminBlogForm() {
                 name="author"
                 value={formData.author}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -255,7 +255,7 @@ export default function AdminBlogForm() {
                 value={formData.reading_time}
                 onChange={handleChange}
                 min={1}
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -264,7 +264,7 @@ export default function AdminBlogForm() {
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               >
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>

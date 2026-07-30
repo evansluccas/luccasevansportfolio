@@ -325,7 +325,12 @@ export type Database = {
           repo_link: string | null
           results: string[] | null
           short_description: string
+          show_details: boolean
           slug: string
+          star_action: string | null
+          star_result: string | null
+          star_situation: string | null
+          star_task: string | null
           technologies: string[] | null
           title: string
           updated_at: string
@@ -346,7 +351,12 @@ export type Database = {
           repo_link?: string | null
           results?: string[] | null
           short_description: string
+          show_details?: boolean
           slug: string
+          star_action?: string | null
+          star_result?: string | null
+          star_situation?: string | null
+          star_task?: string | null
           technologies?: string[] | null
           title: string
           updated_at?: string
@@ -367,7 +377,12 @@ export type Database = {
           repo_link?: string | null
           results?: string[] | null
           short_description?: string
+          show_details?: boolean
           slug?: string
+          star_action?: string | null
+          star_result?: string | null
+          star_situation?: string | null
+          star_task?: string | null
           technologies?: string[] | null
           title?: string
           updated_at?: string

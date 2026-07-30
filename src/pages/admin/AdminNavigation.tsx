@@ -185,7 +185,7 @@ export default function AdminNavigation() {
                       type="text"
                       value={link.label}
                       onChange={(e) => handleChange(link.id, 'label', e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none text-sm"
+                      className="w-full px-3 py-2 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none text-sm"
                       placeholder="Home"
                     />
                   </div>
@@ -197,7 +197,7 @@ export default function AdminNavigation() {
                       type="text"
                       value={link.href}
                       onChange={(e) => handleChange(link.id, 'href', e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none text-sm"
+                      className="w-full px-3 py-2 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none text-sm"
                       placeholder="#home"
                     />
                   </div>

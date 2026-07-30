@@ -19,7 +19,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
+        sans: ['Work Sans', 'system-ui', 'sans-serif'],
+        serif: ['Fraunces', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -83,9 +84,9 @@ export default {
         pill: "50px",
       },
       boxShadow: {
-        card: "0 4px 24px -4px hsl(0 0% 0% / 0.3)",
-        "card-hover": "0 8px 32px -4px hsl(16 100% 65% / 0.15)",
-        button: "0 4px 16px -4px hsl(16 100% 65% / 0.4)",
+        card: "0 1px 2px hsl(74 23% 16% / 0.06), 0 8px 24px -12px hsl(74 23% 16% / 0.18)",
+        "card-hover": "0 2px 4px hsl(74 23% 16% / 0.08), 0 16px 32px -16px hsl(74 23% 16% / 0.28)",
+        button: "0 2px 8px -2px hsl(74 23% 22% / 0.25)",
       },
       keyframes: {
         "accordion-down": {

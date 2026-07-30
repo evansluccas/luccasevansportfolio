@@ -301,7 +301,7 @@ export default function AdminSettings() {
               name="name"
               value={config.name}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
           </div>
 
@@ -320,7 +320,7 @@ export default function AdminSettings() {
                   value={config.title}
                   onChange={handleChange}
                   placeholder="Product Manager"
-                  className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                  className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
                 />
               </div>
               <div>
@@ -331,7 +331,7 @@ export default function AdminSettings() {
                   value={config.title_2}
                   onChange={handleChange}
                   placeholder="UX Designer"
-                  className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                  className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
                 />
               </div>
               <div>
@@ -342,7 +342,7 @@ export default function AdminSettings() {
                   value={config.title_3}
                   onChange={handleChange}
                   placeholder="Data Analyst"
-                  className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                  className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
                 />
               </div>
               <div>
@@ -353,7 +353,7 @@ export default function AdminSettings() {
                   value={config.title_4}
                   onChange={handleChange}
                   placeholder="Tech Lead"
-                  className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                  className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
                 />
               </div>
             </div>
@@ -367,7 +367,7 @@ export default function AdminSettings() {
               name="hero_tag"
               value={config.hero_tag}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
           </div>
 
@@ -436,7 +436,7 @@ export default function AdminSettings() {
               value={config.bio_short}
               onChange={handleChange}
               rows={3}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
             />
           </div>
 
@@ -448,7 +448,7 @@ export default function AdminSettings() {
               value={config.bio_long}
               onChange={handleChange}
               rows={5}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
             />
           </div>
 
@@ -486,7 +486,7 @@ export default function AdminSettings() {
                 value={config.social_linkedin}
                 onChange={handleChange}
                 placeholder="https://linkedin.com/in/..."
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -497,7 +497,7 @@ export default function AdminSettings() {
                 value={config.social_email}
                 onChange={handleChange}
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -508,7 +508,7 @@ export default function AdminSettings() {
                 value={config.location}
                 onChange={handleChange}
                 placeholder="São Paulo, Brazil"
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
           </div>

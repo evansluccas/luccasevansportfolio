@@ -1,100 +1,11 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { useExperiences, useExperienceStories, useSectionConfig } from '@/hooks/usePortfolioData';
+import { useExperiences, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
-import useEmblaCarousel from 'embla-carousel-react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-const TWEEN_FACTOR = 1.2;
 
 export function ExperienceSection() {
   const { data: experiences, isLoading: experiencesLoading } = useExperiences();
-  const { data: stories, isLoading: storiesLoading } = useExperienceStories();
   const { data: sectionConfig, isLoading: configLoading } = useSectionConfig('experience');
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const tweenNodes = useRef<HTMLElement[]>([]);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-
-  const setTweenNodes = useCallback((emblaApi: ReturnType<typeof useEmblaCarousel>[1]) => {
-    if (!emblaApi) return;
-    tweenNodes.current = emblaApi.slideNodes().map((slideNode) => {
-      return slideNode.querySelector('.story-slide') as HTMLElement;
-    });
-  }, []);
-
-  const tweenRotate = useCallback((emblaApi: ReturnType<typeof useEmblaCarousel>[1]) => {
-    if (!emblaApi) return;
-    
-    const engine = emblaApi.internalEngine();
-    const scrollProgress = emblaApi.scrollProgress();
-    
-    emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
-      let diffToTarget = scrollSnap - scrollProgress;
-      
-      if (engine.options.loop) {
-        engine.slideLooper.loopPoints.forEach((loopItem) => {
-          const target = loopItem.target();
-          if (snapIndex === loopItem.index && target !== 0) {
-            const sign = Math.sign(target);
-            if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress);
-            if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress);
-          }
-        });
-      }
-      
-      const tweenValue = diffToTarget * (-1 * TWEEN_FACTOR);
-      const rotateY = tweenValue * 45; // Max 45 degrees rotation
-      const scale = 1 - Math.abs(tweenValue) * 0.15;
-      const opacity = 1 - Math.abs(tweenValue) * 0.5;
-      
-      const tweenNode = tweenNodes.current[snapIndex];
-      if (tweenNode) {
-        tweenNode.style.transform = `perspective(1000px) rotateY(${rotateY}deg) scale(${scale})`;
-        tweenNode.style.opacity = `${opacity}`;
-      }
-    });
-  }, []);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    
-    setTweenNodes(emblaApi);
-    tweenRotate(emblaApi);
-    
-    emblaApi.on('reInit', setTweenNodes);
-    emblaApi.on('reInit', tweenRotate);
-    emblaApi.on('scroll', tweenRotate);
-    emblaApi.on('select', onSelect);
-    
-    onSelect();
-    
-    return () => {
-      emblaApi.off('reInit', setTweenNodes);
-      emblaApi.off('reInit', tweenRotate);
-      emblaApi.off('scroll', tweenRotate);
-      emblaApi.off('select', onSelect);
-    };
-  }, [emblaApi, onSelect, setTweenNodes, tweenRotate]);
-
-  const scrollTo = useCallback((index: number) => {
-    if (!emblaApi) return;
-    emblaApi.scrollTo(index);
-  }, [emblaApi]);
-
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
-
-  const isLoading = experiencesLoading || storiesLoading || configLoading;
+  const isLoading = experiencesLoading || configLoading;
 
   // Don't render if section is hidden
   if (!configLoading && sectionConfig && !sectionConfig.is_visible) {
@@ -111,26 +22,26 @@ export function ExperienceSection() {
     <section id="experience" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="max-w-3xl mb-14">
           {configLoading ? (
             <>
-              <Skeleton className="h-8 w-32 mx-auto mb-4" />
-              <Skeleton className="h-12 w-64 mx-auto mb-6" />
-              <Skeleton className="h-6 w-96 mx-auto" />
+              <Skeleton className="h-6 w-32 mb-4" />
+              <Skeleton className="h-12 w-64 mb-6" />
+              <Skeleton className="h-6 w-96" />
             </>
           ) : (
             <>
               {sectionConfig?.tag && (
-                <span className="inline-block px-4 py-2 bg-primary/20 text-primary rounded-full text-sm font-medium mb-6">
+                <span className="inline-block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
                   {sectionConfig.tag}
                 </span>
               )}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5">
                 {sectionConfig?.title || 'Professional'}{' '}
-                <span className="text-primary">{sectionConfig?.title_highlight || 'Experience'}</span>
+                <span className="italic text-accent">{sectionConfig?.title_highlight || 'Experience'}</span>
               </h2>
               {sectionConfig?.description && (
-                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                <p className="text-muted-foreground text-lg">
                   {sectionConfig.description}
                 </p>
               )}
@@ -138,211 +49,69 @@ export function ExperienceSection() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Left Side - Story Carousel */}
-          <div className="flex flex-col">
-            {storiesLoading ? (
-              <Skeleton className="aspect-[3/4] w-full max-w-md mx-auto rounded-2xl" />
-            ) : stories && stories.length > 0 ? (
-              <div className="relative max-w-md mx-auto w-full">
-                {/* Carousel */}
-                <div 
-                  ref={emblaRef} 
-                  className="overflow-hidden w-full rounded-2xl"
-                >
-                  <div className="flex">
-                    {stories.map((story) => (
-                      <div 
-                        key={story.id} 
-                        className="flex-[0_0_100%] min-w-0"
-                      >
-                        <div 
-                          className="story-slide relative aspect-[3/4] bg-primary/20 rounded-2xl overflow-hidden transition-[opacity] duration-200"
-                          style={{ transformStyle: 'preserve-3d' }}
+        {/* Timeline */}
+        {experiencesLoading ? (
+          <div className="space-y-10">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="grid md:grid-cols-[8rem_1fr] gap-6">
+                <Skeleton className="h-5 w-24" />
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-1/2" />
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <ol className="border-t border-border">
+            {experiences?.map((exp) => (
+              <li
+                key={exp.id}
+                className="group grid md:grid-cols-[9rem_1fr] gap-2 md:gap-10 py-8 border-b border-border transition-colors hover:bg-secondary/15"
+              >
+                <div className="md:text-right">
+                  <span className="text-sm font-medium tracking-wide text-muted-foreground">
+                    {exp.year || '—'}
+                  </span>
+                </div>
+
+                <div className="relative md:pl-8 md:border-l md:border-border">
+                  <span className="hidden md:block absolute -left-[4.5px] top-2 w-2 h-2 rounded-full bg-primary/40 transition-colors group-hover:bg-primary" />
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
+                    <h3 className="text-xl text-foreground">{exp.position}</h3>
+                    <span className="text-sm text-accent">{exp.company}</span>
+                    {exp.employment_type && (
+                      <span className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
+                        {exp.employment_type}
+                      </span>
+                    )}
+                  </div>
+                  {exp.location && (
+                    <p className="text-xs text-muted-foreground mb-3">{exp.location}</p>
+                  )}
+                  {exp.description && (
+                    <p className="text-muted-foreground text-sm leading-relaxed max-w-2xl">
+                      {exp.description}
+                    </p>
+                  )}
+                  {exp.technologies && exp.technologies.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {exp.technologies.map((tech, i) => (
+                        <span
+                          key={i}
+                          className="px-2.5 py-1 rounded-sm bg-secondary/40 text-xs text-secondary-foreground"
                         >
-                          <img
-                            src={story.image_url}
-                            alt={story.caption}
-                            className="w-full h-full object-cover"
-                          />
-                          
-                          {/* Dark gradient overlay for contrast */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
-                          
-                          {/* Mobile Tap Zones (Instagram-style) with visual hints */}
-                          {stories.length > 1 && (
-                            <div className="absolute inset-0 flex lg:hidden">
-                              <button 
-                                onClick={scrollPrev}
-                                className="w-1/2 h-full cursor-pointer group"
-                                aria-label="Previous slide"
-                              >
-                                {/* Subtle tap hint on left */}
-                                <div className="absolute left-3 top-1/2 -translate-y-1/2 opacity-30 group-active:opacity-60 transition-opacity">
-                                  <svg className="w-6 h-6 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                  </svg>
-                                </div>
-                              </button>
-                              <button 
-                                onClick={scrollNext}
-                                className="w-1/2 h-full cursor-pointer group"
-                                aria-label="Next slide"
-                              >
-                                {/* Subtle tap hint on right */}
-                                <div className="absolute right-3 top-1/2 -translate-y-1/2 opacity-30 group-active:opacity-60 transition-opacity">
-                                  <svg className="w-6 h-6 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                  </svg>
-                                </div>
-                              </button>
-                            </div>
-                          )}
-                          
-                          {/* Caption Overlay - Apple Glassmorphism with improved contrast */}
-                          <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
-                            <div 
-                              className="rounded-2xl p-4"
-                              style={{
-                                background: 'rgba(0, 0, 0, 0.25)',
-                                backdropFilter: 'blur(50px) saturate(180%)',
-                                WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                                border: '1px solid rgba(255, 255, 255, 0.15)',
-                                boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.2)',
-                              }}
-                            >
-                              <p className="text-white text-sm leading-relaxed font-medium drop-shadow-md">
-                                {story.caption}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Navigation Arrows (Desktop only) - Apple Glassmorphism with improved contrast */}
-                {stories.length > 1 && (
-                  <>
-                    <button
-                      onClick={scrollPrev}
-                      className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-10 hover:scale-105 active:scale-95"
-                      style={{
-                        background: 'rgba(0, 0, 0, 0.3)',
-                        backdropFilter: 'blur(50px) saturate(180%)',
-                        WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.2)',
-                      }}
-                      aria-label="Previous slide"
-                    >
-                      <ChevronLeft className="w-5 h-5 text-white drop-shadow-md" />
-                    </button>
-                    <button
-                      onClick={scrollNext}
-                      className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-10 hover:scale-105 active:scale-95"
-                      style={{
-                        background: 'rgba(0, 0, 0, 0.3)',
-                        backdropFilter: 'blur(50px) saturate(180%)',
-                        WebkitBackdropFilter: 'blur(50px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.2)',
-                      }}
-                      aria-label="Next slide"
-                    >
-                      <ChevronRight className="w-5 h-5 text-white drop-shadow-md" />
-                    </button>
-                  </>
-                )}
-
-                {/* Dots Navigation */}
-                <div className="flex gap-2 mt-6 justify-center">
-                  {stories.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => scrollTo(index)}
-                      className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                        index === selectedIndex 
-                          ? 'bg-primary' 
-                          : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-                      }`}
-                      aria-label={`Go to slide ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center aspect-[3/4] w-full max-w-md mx-auto rounded-2xl bg-card border border-primary/20">
-                <p className="text-muted-foreground text-center px-8">
-                  Add stories in the admin panel to display your journey here.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Right Side - Timeline */}
-          <div className="relative">
-            {experiencesLoading ? (
-              <div className="space-y-8">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="flex gap-6">
-                    <Skeleton className="w-16 h-6" />
-                    <Skeleton className="w-4 h-4 rounded-full flex-shrink-0" />
-                    <div className="flex-1 space-y-2">
-                      <Skeleton className="h-5 w-3/4" />
-                      <Skeleton className="h-4 w-1/2" />
-                      <Skeleton className="h-16 w-full" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="relative">
-                <div className="space-y-0">
-                  {experiences?.map((exp, index) => (
-                    <div key={exp.id} className="flex gap-6 items-start">
-                      {/* Year */}
-                      <div className="w-14 flex-shrink-0 text-right pt-4">
-                        <span className="text-lg font-semibold text-foreground">
-                          {exp.year || '—'}
+                          {tech}
                         </span>
-                      </div>
-
-                      {/* Timeline Connector */}
-                      <div className="relative flex-shrink-0 z-10 flex flex-col items-center">
-                        {/* Orange ball with dashed border */}
-                        <div className="relative w-12 h-12 flex items-center justify-center">
-                          {/* Dashed outer ring */}
-                          <div className="absolute inset-0 rounded-full border-2 border-dashed border-muted-foreground/60" />
-                          {/* Solid orange inner circle */}
-                          <div className="w-8 h-8 rounded-full bg-primary" />
-                        </div>
-                        {/* Vertical dashed line extending down */}
-                        <div className="w-px flex-1 min-h-20 border-l-2 border-dashed border-muted-foreground/40" />
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 pb-4">
-                        <h3 className="text-lg font-bold text-foreground">
-                          {exp.position}
-                        </h3>
-                        <h4 className="text-base text-primary font-medium mb-2">
-                          @{exp.company}
-                        </h4>
-                        {exp.description && (
-                          <p className="text-muted-foreground text-sm leading-relaxed">
-                            {exp.description}
-                          </p>
-                        )}
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
+              </li>
+            ))}
+          </ol>
+        )}
       </div>
     </section>
   );

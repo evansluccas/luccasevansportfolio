@@ -77,6 +77,11 @@ export interface Project {
   display_order: number;
   results: string[];
   published: boolean;
+  star_situation: string | null;
+  star_task: string | null;
+  star_action: string | null;
+  star_result: string | null;
+  show_details: boolean;
 }
 
 export interface BlogPost {

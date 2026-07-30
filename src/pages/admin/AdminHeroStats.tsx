@@ -162,7 +162,7 @@ export default function AdminHeroStats() {
               value={formData.number}
               onChange={e => setFormData({...formData, number: e.target.value})}
               required
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <input
               type="text"
@@ -170,12 +170,12 @@ export default function AdminHeroStats() {
               value={formData.description}
               onChange={e => setFormData({...formData, description: e.target.value})}
               required
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <select
               value={formData.icon}
               onChange={e => setFormData({...formData, icon: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             >
               {iconOptions.map(icon => (
                 <option key={icon} value={icon}>{icon}</option>

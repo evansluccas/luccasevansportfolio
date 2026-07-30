@@ -106,7 +106,7 @@ export default function AdminAboutCards() {
               value={formData.title}
               onChange={e => setFormData({...formData, title: e.target.value})}
               required
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <textarea
               placeholder="Description *"
@@ -114,12 +114,12 @@ export default function AdminAboutCards() {
               onChange={e => setFormData({...formData, description: e.target.value})}
               required
               rows={3}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
             />
             <select
               value={formData.icon}
               onChange={e => setFormData({...formData, icon: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             >
               {iconOptions.map(icon => (
                 <option key={icon} value={icon}>{icon}</option>
@@ -130,7 +130,7 @@ export default function AdminAboutCards() {
               placeholder="Display Order"
               value={formData.display_order}
               onChange={e => setFormData({...formData, display_order: parseInt(e.target.value) || 0})}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <div className="flex gap-3">
               <Button type="submit" className="flex-1">

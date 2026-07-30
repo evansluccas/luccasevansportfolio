@@ -236,7 +236,7 @@ export function ContactSection() {
                         onChange={handleChange}
                         placeholder="Your name"
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                       />
                     </div>
                     <div>
@@ -250,7 +250,7 @@ export function ContactSection() {
                         onChange={handleChange}
                         placeholder="your@email.com"
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                       />
                     </div>
                   </div>
@@ -266,7 +266,7 @@ export function ContactSection() {
                       onChange={handleChange}
                       placeholder="What's this about?"
                       required
-                      className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
 
@@ -281,7 +281,7 @@ export function ContactSection() {
                       onChange={handleChange}
                       placeholder="Tell me about your project..."
                       required
-                      className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                     />
                   </div>
 
