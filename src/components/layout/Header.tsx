@@ -83,11 +83,11 @@ export function Header() {
         <button
           type="button"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-2 -ml-2 text-foreground/90 hover:text-primary transition-colors"
+          className="md:hidden p-1 -ml-1 text-foreground/90 hover:text-primary transition-colors"
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMobileMenuOpen}
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
         </button>
 
         {/* Mobile Menu Dropdown */}
