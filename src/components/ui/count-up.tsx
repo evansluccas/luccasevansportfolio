@@ -18,7 +18,7 @@ export function CountUp({
   suffix?: string;
 }) {
   const [display, setDisplay] = useState('0');
-  const [hasStarted, setHasStarted] = useState(false);
+  const hasStartedRef = useRef(false);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -43,8 +43,8 @@ export function CountUp({
     let observer: IntersectionObserver;
 
     const start = () => {
-      if (hasStarted) return;
-      setHasStarted(true);
+      if (hasStartedRef.current) return;
+      hasStartedRef.current = true;
       const startTime = performance.now() + delay;
 
       const tick = (now: number) => {
@@ -89,7 +89,8 @@ export function CountUp({
       observer.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [value, duration, delay, prefix, suffix, hasStarted]);
+  }, [value, duration, delay, prefix, suffix]);
 
   return <span ref={ref}>{display}</span>;
 }
+
