@@ -24,7 +24,7 @@ export function CountUp({
   useEffect(() => {
     const targetMatch = value.match(/^\s*([+-]?\d+(?:\.\d+)?)(.*)$/);
     const target = targetMatch ? parseFloat(targetMatch[1]) : NaN;
-    const suffixPart = suffix || (targetMatch ? targetMatch[2].trim() : '');
+    const suffixPart = suffix || (targetMatch ? targetMatch[2].replace(/\s+$/g, '') : '');
 
     if (Number.isNaN(target)) {
       setDisplay(value);
