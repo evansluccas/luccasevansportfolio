@@ -86,7 +86,7 @@ export function HeroSection() {
           </div>
 
           {/* Right Content - Photo */}
-          <div className="order-1 lg:order-2 flex justify-center">
+          <div className="order-1 lg:order-2 flex justify-start lg:justify-center">
             <div className="relative w-full max-w-[15rem] sm:max-w-sm">
               <div className="absolute -inset-3 border border-border pointer-events-none hidden lg:block" />
               {/* Photo Container */}
