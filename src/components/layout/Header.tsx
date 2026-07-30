@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
 import { useSiteConfig, useNavLinks } from '@/hooks/usePortfolioData';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: config } = useSiteConfig();
   const { data: navLinks = [] } = useNavLinks();
 
@@ -32,6 +32,7 @@ export function Header() {
   }, []);
 
   const handleNavClick = (href: string) => {
+    setIsMobileMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
       const offset = 100;
