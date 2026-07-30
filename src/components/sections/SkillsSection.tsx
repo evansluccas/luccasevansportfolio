@@ -1,4 +1,3 @@
-import { BlobDecoration } from '@/components/decorations/BlobDecoration';
 import { useSkills, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -26,35 +25,29 @@ export function SkillsSection() {
   }, {} as Record<string, typeof skills>);
 
   return (
-    <section id="skills" className="relative section-padding overflow-hidden">
-      <BlobDecoration 
-        className="-right-32 bottom-1/4 opacity-20" 
-        size="lg" 
-        variant="primary"
-      />
-
+    <section id="skills" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="max-w-3xl mb-14">
           {configLoading ? (
             <>
-              <Skeleton className="h-8 w-32 mx-auto mb-4" />
-              <Skeleton className="h-12 w-64 mx-auto mb-6" />
-              <Skeleton className="h-6 w-96 mx-auto" />
+              <Skeleton className="h-6 w-32 mb-4" />
+              <Skeleton className="h-12 w-64 mb-6" />
+              <Skeleton className="h-6 w-96" />
             </>
           ) : (
             <>
               {sectionConfig?.tag && (
-                <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
+                <span className="inline-block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
                   {sectionConfig.tag}
                 </span>
               )}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5">
                 {sectionConfig?.title || 'Skills &'}{' '}
-                <span className="text-primary">{sectionConfig?.title_highlight || 'Technologies'}</span>
+                <span className="italic text-accent">{sectionConfig?.title_highlight || 'Technologies'}</span>
               </h2>
               {sectionConfig?.description && (
-                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                <p className="text-muted-foreground text-lg">
                   {sectionConfig.description}
                 </p>
               )}
@@ -63,34 +56,31 @@ export function SkillsSection() {
         </div>
 
         {/* Skills Grid */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-x-14 gap-y-12 border-t border-border pt-10">
           {skillsLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-64 rounded-2xl" />
+              <Skeleton key={i} className="h-64 rounded-none" />
             ))
           ) : (
             groupedSkills && Object.entries(groupedSkills).map(([category, categorySkills]) => (
-              <div
-                key={category}
-                className="p-6 lg:p-8 rounded-2xl bg-card border border-primary/20 hover-lift"
-              >
-                <h3 className="text-xl font-bold text-primary mb-6">
+              <div key={category}>
+                <h3 className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground pb-3 mb-6 border-b border-border">
                   {category}
                 </h3>
-                <div className="space-y-5">
+                <div className="space-y-4">
                   {categorySkills?.map((skill) => (
                     <div key={skill.id}>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-foreground">
+                      <div className="flex justify-between items-baseline mb-1.5">
+                        <span className="text-sm text-foreground">
                           {skill.name}
                         </span>
                         <span className="text-xs text-muted-foreground">
                           {skill.proficiency}%
                         </span>
                       </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-px bg-border overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-1000 ease-out"
+                          className="h-px bg-accent transition-all duration-1000 ease-out"
                           style={{ width: `${skill.proficiency}%` }}
                         />
                       </div>

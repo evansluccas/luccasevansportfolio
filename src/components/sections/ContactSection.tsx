@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Linkedin, Mail, MapPin, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { BlobDecoration } from '@/components/decorations/BlobDecoration';
 import { useSiteConfig, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -91,40 +90,29 @@ export function ContactSection() {
   ].filter(item => item.show);
 
   return (
-    <section id="contact" className="relative section-padding overflow-hidden bg-card/50">
-      <BlobDecoration 
-        className="-right-48 -bottom-32 opacity-20" 
-        size="xl" 
-        variant="primary"
-      />
-      <BlobDecoration 
-        className="-left-32 top-1/4 opacity-15" 
-        size="lg" 
-        variant="secondary"
-      />
-
+    <section id="contact" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="max-w-3xl mb-14">
           {sectionConfigLoading ? (
             <>
-              <Skeleton className="h-8 w-32 mx-auto mb-4" />
-              <Skeleton className="h-12 w-64 mx-auto mb-6" />
-              <Skeleton className="h-6 w-96 mx-auto" />
+              <Skeleton className="h-6 w-32 mb-4" />
+              <Skeleton className="h-12 w-64 mb-6" />
+              <Skeleton className="h-6 w-96" />
             </>
           ) : (
             <>
               {sectionConfig?.tag && (
-                <span className="inline-block px-4 py-2 rounded-pill bg-primary/10 text-primary text-sm font-medium mb-4">
+                <span className="inline-block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
                   {sectionConfig.tag}
                 </span>
               )}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5">
                 {sectionConfig?.title || "Let's Work"}{' '}
-                <span className="text-primary">{sectionConfig?.title_highlight || 'Together'}</span>
+                <span className="italic text-accent">{sectionConfig?.title_highlight || 'Together'}</span>
               </h2>
               {sectionConfig?.description && (
-                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                <p className="text-muted-foreground text-lg">
                   {sectionConfig.description}
                 </p>
               )}
@@ -132,55 +120,60 @@ export function ContactSection() {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 border-t border-border pt-10">
           {/* Contact Info */}
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold mb-8">
-              Let's <span className="text-primary">Talk</span>
+          <div>
+            <h3 className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground mb-6">
+              Direct channels
             </h3>
 
             {configLoading ? (
-              Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-20 rounded-xl" />
-              ))
+              <div className="space-y-4">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <Skeleton key={i} className="h-16 rounded-none" />
+                ))}
+              </div>
             ) : contactInfo.length > 0 ? (
-              contactInfo.map((info, index) => (
+              <ul className="border-t border-border">
+                {contactInfo.map((info, index) => (
+                <li key={index}>
                 <a
-                  key={index}
                   href={info.href}
                   target={info.href.startsWith('http') ? '_blank' : undefined}
                   rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-card border border-primary/20 hover-lift group"
+                  className="group flex items-center gap-4 py-5 border-b border-border transition-colors hover:bg-secondary/15"
                 >
-                  <div className="w-12 h-12 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors flex items-center justify-center overflow-hidden">
+                  <div className="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0">
                     {info.customIconUrl ? (
                       <img 
                         src={info.customIconUrl} 
                         alt={`${info.label} icon`} 
-                        className="w-7 h-7 object-contain"
+                        className="w-6 h-6 object-contain"
                       />
                     ) : (
-                      <info.icon size={24} className="text-primary" />
+                      <info.icon size={20} strokeWidth={1.5} className="text-accent" />
                     )}
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">{info.label}</div>
-                    <div className="text-foreground font-medium">{info.value}</div>
+                    <div className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{info.label}</div>
+                    <div className="text-foreground">{info.value}</div>
                   </div>
                 </a>
-              ))
+                </li>
+                ))}
+              </ul>
             ) : (
               <p className="text-muted-foreground">Contact information not configured yet.</p>
             )}
 
-            <p className="text-muted-foreground mt-8 leading-relaxed">
+            <p className="text-muted-foreground text-sm mt-8 leading-relaxed max-w-md">
               I'm always open to discussing new projects, creative ideas, or opportunities 
               to be part of your visions. Feel free to reach out!
             </p>
           </div>
 
           {/* Contact Form */}
-          <div className="p-8 rounded-2xl bg-card border border-primary/20">
+          <div className="p-8 rounded-lg bg-card border border-border shadow-card">
             <AnimatePresence mode="wait">
               {formState === 'success' ? (
                 <motion.div
@@ -194,15 +187,15 @@ export function ContactSection() {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
-                    className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6"
+                    className="w-16 h-16 rounded-full bg-secondary/40 flex items-center justify-center mb-6"
                   >
-                    <CheckCircle2 className="w-10 h-10 text-primary" />
+                    <CheckCircle2 className="w-8 h-8 text-accent" strokeWidth={1.5} />
                   </motion.div>
                   <motion.h3
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-2xl font-bold text-foreground mb-3"
+                    className="text-2xl text-foreground mb-3"
                   >
                     Message Sent!
                   </motion.h3>
