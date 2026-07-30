@@ -163,69 +163,6 @@ export default function AdminSettings() {
     setSaving(false);
   };
 
-  const IconUploadField = ({ 
-    label, 
-    iconType, 
-    iconUrl, 
-    inputRef 
-  }: { 
-    label: string; 
-    iconType: 'linkedin' | 'email' | 'location'; 
-    iconUrl: string;
-    inputRef: React.RefObject<HTMLInputElement>;
-  }) => (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium">{label} Icon</label>
-      <div className="flex items-center gap-3">
-        {iconUrl ? (
-          <div className="relative group">
-            <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden">
-              <img src={iconUrl} alt={`${label} icon`} className="w-10 h-10 object-contain" />
-            </div>
-            <button
-              type="button"
-              onClick={() => removeIcon(iconType)}
-              className="absolute -top-2 -right-2 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <X size={12} />
-            </button>
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            disabled={uploadingIcon === iconType}
-            className="w-14 h-14 rounded-xl border-2 border-dashed border-muted-foreground/30 hover:border-primary/50 flex items-center justify-center transition-colors"
-          >
-            {uploadingIcon === iconType ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
-            ) : (
-              <Plus size={20} className="text-muted-foreground" />
-            )}
-          </button>
-        )}
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleFileChange(e, iconType)}
-          className="hidden"
-        />
-        {iconUrl && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => inputRef.current?.click()}
-            disabled={uploadingIcon === iconType}
-          >
-            <Upload size={14} className="mr-1" />
-            Replace
-          </Button>
-        )}
-      </div>
-    </div>
-  );
 
   if (loading) {
     return (
