@@ -51,7 +51,7 @@ export function Header() {
     <header className="fixed top-3 md:top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1.5rem)] md:w-[calc(100%-2rem)] max-w-5xl">
       <nav
         className={`
-          flex items-center justify-center px-4 md:px-10 py-1.5 md:py-3
+          flex items-center justify-start md:justify-center px-2 md:px-10 py-1.5 md:py-3
           rounded-pill transition-all duration-300
           bg-card md:bg-card/95 backdrop-blur-xl ${isScrolled ? 'shadow-card' : ''}
           border border-primary/20
@@ -82,7 +82,7 @@ export function Header() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden h-11 w-11"
+          className="md:hidden h-11 w-11 rounded-pill"
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMobileMenuOpen}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -93,18 +93,18 @@ export function Header() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden mt-2 p-2 rounded-2xl bg-card backdrop-blur-xl border border-primary/20 shadow-card">
-          <ul className="flex flex-col">
+        <div className="md:hidden mt-2 py-2 rounded-2xl bg-card border border-primary/20 shadow-card animate-fade-in">
+          <ul className="flex flex-col items-start">
             {navLinks.map((link) => (
-              <li key={link.href} className="border-b border-border/60 last:border-b-0">
+              <li key={link.href} className="w-full">
                 <a
                   href={link.href}
                   onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                   className={`
-                    block px-4 py-3.5 rounded-xl text-sm font-medium transition-all
+                    block text-left px-5 py-3 text-sm font-medium transition-colors
                     ${activeSection === link.href.slice(1)
                       ? 'text-accent'
-                      : 'text-foreground/80 hover:bg-muted hover:text-primary'
+                      : 'text-foreground/75 hover:text-primary'
                     }
                   `}
                 >

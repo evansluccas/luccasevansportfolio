@@ -1,6 +1,7 @@
 import { useAboutCards, useSectionConfig } from '@/hooks/usePortfolioData';
 import { getAboutIcon } from '@/lib/aboutIcons';
 import { Skeleton } from '@/components/ui/skeleton';
+import { AboutCardsCarousel } from './AboutCardsCarousel';
 
 export function AboutSection() {
   const { data: cards, isLoading: cardsLoading } = useAboutCards();
@@ -49,8 +50,17 @@ export function AboutSection() {
           )}
         </div>
 
-        {/* Characteristics Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-border">
+        {cardsLoading && <Skeleton className="h-56 rounded-none sm:hidden" />}
+
+        {/* Mobile: crossfade carousel */}
+        {!cardsLoading && cards && cards.length > 0 && (
+          <div className="sm:hidden">
+            <AboutCardsCarousel cards={cards as any} />
+          </div>
+        )}
+
+        {/* Characteristics Grid (sm+) */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-border">
           {cardsLoading ? (
             Array.from({ length: 6 }).map((_, i) => (
               <Skeleton key={i} className="h-48 rounded-none" />
