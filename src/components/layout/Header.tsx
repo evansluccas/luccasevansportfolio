@@ -77,15 +77,41 @@ export function Header() {
           ))}
         </ul>
         
-        {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden h-11 w-11 rounded-pill"
-          aria-label="Menu"
+        {/* Mobile Menu Trigger */}
+        <button
+          type="button"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden p-1 -ml-1 text-foreground/90 hover:text-primary transition-colors"
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
         >
-          <Menu size={22} />
-        </Button>
+          {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+
+        {/* Mobile Menu Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 mt-2 w-full bg-card border border-primary/20 rounded-2xl shadow-card overflow-hidden animate-fade-in">
+            <ul className="flex flex-col py-2">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
+                    className={`
+                      block px-5 py-3 text-sm font-medium transition-colors
+                      ${activeSection === link.href.slice(1)
+                        ? 'text-primary'
+                        : 'text-foreground/80 hover:text-primary'
+                      }
+                    `}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </nav>
     </header>
   );
