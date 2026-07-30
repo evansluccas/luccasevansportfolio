@@ -3,6 +3,7 @@ import { useSiteConfig, useHeroStats } from '@/hooks/usePortfolioData';
 import { getIcon } from '@/lib/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TypingAnimation } from '@/components/ui/typing-animation';
+import { CountUp } from '@/components/ui/count-up';
 
 export function HeroSection() {
   const { data: config, isLoading: configLoading } = useSiteConfig();
@@ -129,7 +130,7 @@ export function HeroSection() {
                     >
                       <IconComponent size={18} strokeWidth={1.5} className="text-accent mb-3 sm:mb-4" />
                       <div className="text-2xl sm:text-3xl lg:text-4xl text-foreground font-serif">
-                        {stat.number}
+                        <CountUp value={stat.number} duration={2000} delay={100} />
                       </div>
                       <div className="text-[0.8rem] sm:text-sm leading-snug text-muted-foreground mt-1.5">
                         {stat.description}
