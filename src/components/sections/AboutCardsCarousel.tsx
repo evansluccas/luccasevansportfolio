@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getAboutIcon } from '@/lib/aboutIcons';
 
 interface AboutCard {
@@ -9,79 +10,125 @@ interface AboutCard {
 }
 
 const AUTOPLAY_MS = 5000;
+const TRANSITION_MS = 700;
 
 export function AboutCardsCarousel({ cards }: { cards: AboutCard[] }) {
   const [index, setIndex] = useState(0);
+  const [exitingIndex, setExitingIndex] = useState<number | null>(null);
+  const [direction, setDirection] = useState(1);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
+  const touchDelta = useRef(0);
 
   const total = cards.length;
 
   useEffect(() => {
     if (paused || total <= 1) return;
     const id = window.setInterval(() => {
-      setIndex((i) => (i + 1) % total);
+      navigate(1);
     }, AUTOPLAY_MS);
     return () => window.clearInterval(id);
-  }, [paused, total]);
+  }, [paused, total, index]);
 
-  const go = (next: number) => setIndex((next + total) % total);
+  const navigate = (delta: number) => {
+    if (total <= 1) return;
+    const next = (index + delta + total) % total;
+    if (next === index) return;
+    setDirection(delta > 0 ? 1 : -1);
+    setExitingIndex(index);
+    setIndex(next);
+    window.setTimeout(() => setExitingIndex(null), TRANSITION_MS);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchDelta.current = 0;
+    setPaused(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    touchDelta.current = e.touches[0].clientX - touchStartX.current;
+  };
+
+  const handleTouchEnd = () => {
+    const start = touchStartX.current;
+    const delta = touchDelta.current;
+    touchStartX.current = null;
+    touchDelta.current = 0;
+    if (start === null) return;
+    if (Math.abs(delta) > 40) {
+      navigate(delta < 0 ? 1 : -1);
+    }
+    window.setTimeout(() => setPaused(false), 6000);
+  };
 
   return (
-    <div
-      className="border-t border-border"
-      onTouchStart={(e) => {
-        touchStartX.current = e.touches[0].clientX;
-        setPaused(true);
-      }}
-      onTouchEnd={(e) => {
-        const start = touchStartX.current;
-        touchStartX.current = null;
-        if (start === null) return;
-        const delta = e.changedTouches[0].clientX - start;
-        if (Math.abs(delta) > 40) go(delta < 0 ? index + 1 : index - 1);
-        window.setTimeout(() => setPaused(false), 6000);
-      }}
-    >
-      {/* Stacked crossfade stage */}
-      <div className="relative grid">
-        {cards.map((card, i) => {
-          const IconComponent = getAboutIcon(card.icon);
-          const isActive = i === index;
-          return (
-            <div
-              key={card.id}
-              aria-hidden={!isActive}
-              className={`
-                col-start-1 row-start-1 px-1 py-8
-                transition-all duration-700 ease-out will-change-transform
-                ${isActive
-                  ? 'opacity-100 translate-y-0 scale-100 blur-0'
-                  : 'opacity-0 translate-y-3 scale-[0.97] blur-[2px] pointer-events-none'}
-              `}
-            >
-              <IconComponent size={20} className="text-accent mb-5" strokeWidth={1.5} />
-              <h3 className="text-xl mb-2.5 text-foreground">{card.title}</h3>
-              <p className="text-muted-foreground text-[0.9rem] leading-relaxed">
-                {card.description}
-              </p>
-            </div>
-          );
-        })}
+    <div className="border-t border-border">
+      {/* Swap stage */}
+      <div
+        className="relative overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="relative grid h-[260px] sm:h-[280px]">
+          {cards.map((card, i) => {
+            const IconComponent = getAboutIcon(card.icon);
+            const isActive = i === index;
+            const isExiting = i === exitingIndex;
+            const isRest = !isActive && !isExiting;
+
+            return (
+              <div
+                key={card.id}
+                aria-hidden={!isActive}
+                className={`
+                  col-start-1 row-start-1 px-1 py-8
+                  transition-all duration-700 ease-out will-change-transform
+                  ${isActive
+                    ? 'opacity-100 translate-x-0 scale-100 z-20'
+                    : isExiting
+                      ? direction > 0
+                        ? '-translate-x-full opacity-0 z-10'
+                        : 'translate-x-full opacity-0 z-10'
+                      : direction > 0
+                        ? 'translate-x-full opacity-0 z-0 pointer-events-none'
+                        : '-translate-x-full opacity-0 z-0 pointer-events-none'}
+                `}
+              >
+                <IconComponent size={20} className="text-accent mb-5" strokeWidth={1.5} />
+                <h3 className="text-xl mb-2.5 text-foreground">{card.title}</h3>
+                <p className="text-muted-foreground text-[0.9rem] leading-relaxed">
+                  {card.description}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Drag hint */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 text-[0.65rem] tracking-[0.15em] uppercase text-muted-foreground/60 animate-pulse pointer-events-none">
+          <ChevronLeft size={12} />
+          <span>Swap</span>
+          <ChevronRight size={12} />
+        </div>
       </div>
 
-      {/* Progress rail */}
+      {/* Controls rail */}
       <div className="flex items-center gap-3 border-t border-border pt-4">
         <span className="text-[0.7rem] tracking-[0.18em] uppercase text-muted-foreground tabular-nums">
           {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
         </span>
+
         <div className="flex-1 flex gap-1.5">
           {cards.map((card, i) => (
             <button
               key={card.id}
               aria-label={`Show ${card.title}`}
               onClick={() => {
-                setIndex(i);
+                const delta = i - index;
+                navigate(delta > 0 ? 1 : -1);
                 setPaused(true);
                 window.setTimeout(() => setPaused(false), 8000);
               }}
@@ -94,6 +141,32 @@ export function AboutCardsCarousel({ cards }: { cards: AboutCard[] }) {
               />
             </button>
           ))}
+        </div>
+
+        {/* Prev / Next swap buttons */}
+        <div className="flex items-center gap-1">
+          <button
+            aria-label="Previous card"
+            onClick={() => {
+              navigate(-1);
+              setPaused(true);
+              window.setTimeout(() => setPaused(false), 8000);
+            }}
+            className="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <button
+            aria-label="Next card"
+            onClick={() => {
+              navigate(1);
+              setPaused(true);
+              window.setTimeout(() => setPaused(false), 8000);
+            }}
+            className="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ChevronRight size={18} />
+          </button>
         </div>
       </div>
     </div>
