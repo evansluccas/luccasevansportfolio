@@ -47,13 +47,15 @@ export function Header() {
 
 
   return (
-    <header className="fixed top-3 md:top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1.5rem)] md:w-[calc(100%-2rem)] max-w-5xl">
+    <header className="fixed top-3 md:top-4 left-3 md:left-1/2 md:-translate-x-1/2 z-50 w-[calc(100%-1.5rem)] md:w-[calc(100%-2rem)] max-w-5xl">
       <nav
         className={`
-          flex items-center justify-start md:justify-center px-2 md:px-10 py-1.5 md:py-3
-          rounded-pill transition-all duration-300
-          bg-card md:bg-card/95 backdrop-blur-xl ${isScrolled ? 'shadow-card' : ''}
-          border border-primary/20
+          flex items-center justify-start md:justify-center
+          rounded-none md:rounded-pill transition-all duration-300
+          bg-transparent md:bg-card/95 backdrop-blur-none md:backdrop-blur-xl
+          ${isScrolled ? 'md:shadow-card' : ''}
+          md:border md:border-primary/20
+          px-0 md:px-10 py-0 md:py-3
         `}
       >
         {/* Desktop Navigation - Centered */}
@@ -81,7 +83,7 @@ export function Header() {
         <button
           type="button"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-1 -ml-1 text-foreground/90 hover:text-primary transition-colors"
+          className="md:hidden p-2 text-foreground/90 hover:text-primary transition-colors rounded-full bg-card/50 backdrop-blur-sm border border-primary/10"
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMobileMenuOpen}
         >
