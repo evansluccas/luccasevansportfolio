@@ -22,7 +22,7 @@ export function ExperienceSection() {
     <section id="experience" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
-        <div className="max-w-3xl mb-14">
+        <div className="max-w-3xl mb-8 sm:mb-14">
           {configLoading ? (
             <>
               <Skeleton className="h-6 w-32 mb-4" />
@@ -36,12 +36,12 @@ export function ExperienceSection() {
                   {sectionConfig.tag}
                 </span>
               )}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5">
+              <h2 className="text-[1.9rem] leading-tight sm:text-4xl lg:text-5xl mb-4 sm:mb-5">
                 {sectionConfig?.title || 'Professional'}{' '}
                 <span className="italic text-accent">{sectionConfig?.title_highlight || 'Experience'}</span>
               </h2>
               {sectionConfig?.description && (
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-[0.95rem] sm:text-lg">
                   {sectionConfig.description}
                 </p>
               )}
@@ -68,21 +68,21 @@ export function ExperienceSection() {
             {experiences?.map((exp) => (
               <li
                 key={exp.id}
-                className="group grid md:grid-cols-[9rem_1fr] gap-2 md:gap-10 py-8 border-b border-border transition-colors hover:bg-secondary/15"
+                className="group grid md:grid-cols-[9rem_1fr] gap-1.5 md:gap-10 py-6 sm:py-8 border-b border-border transition-colors hover:bg-secondary/15"
               >
                 <div className="md:text-right">
-                  <span className="text-sm font-medium tracking-wide text-muted-foreground">
+                  <span className="text-xs sm:text-sm font-medium tracking-[0.08em] text-muted-foreground">
                     {exp.year || '—'}
                   </span>
                 </div>
 
                 <div className="relative md:pl-8 md:border-l md:border-border">
                   <span className="hidden md:block absolute -left-[4.5px] top-2 w-2 h-2 rounded-full bg-primary/40 transition-colors group-hover:bg-primary" />
-                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
-                    <h3 className="text-xl text-foreground">{exp.position}</h3>
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 mb-2">
+                    <h3 className="text-lg sm:text-xl text-foreground">{exp.position}</h3>
                     <span className="text-sm text-accent">{exp.company}</span>
                     {exp.employment_type && (
-                      <span className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
+                      <span className="text-[0.65rem] sm:text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
                         {exp.employment_type}
                       </span>
                     )}
@@ -91,7 +91,7 @@ export function ExperienceSection() {
                     <p className="text-xs text-muted-foreground mb-3">{exp.location}</p>
                   )}
                   {exp.description && (
-                    <p className="text-muted-foreground text-sm leading-relaxed max-w-2xl">
+                    <p className="text-muted-foreground text-[0.9rem] sm:text-sm leading-relaxed max-w-2xl">
                       {exp.description}
                     </p>
                   )}

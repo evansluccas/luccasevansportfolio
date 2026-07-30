@@ -22,7 +22,7 @@ export function AboutSection() {
     <section id="about" className="relative section-padding overflow-hidden bg-background">
       <div className="section-container relative z-10">
         {/* Section Header */}
-        <div className="max-w-3xl mb-14">
+        <div className="max-w-3xl mb-8 sm:mb-14">
           {isLoading ? (
             <>
               <Skeleton className="h-6 w-32 mb-4" />
@@ -36,12 +36,12 @@ export function AboutSection() {
                   {sectionConfig.tag}
                 </span>
               )}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-5">
+              <h2 className="text-[1.9rem] leading-tight sm:text-4xl lg:text-5xl mb-4 sm:mb-5">
                 {sectionConfig?.title || 'Know Who'}{' '}
                 <span className="italic text-accent">{sectionConfig?.title_highlight || 'I Am'}</span>
               </h2>
               {sectionConfig?.description && (
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-[0.95rem] sm:text-lg">
                   {sectionConfig.description}
                 </p>
               )}
@@ -61,13 +61,13 @@ export function AboutSection() {
               return (
                 <div
                   key={card.id}
-                  className="group p-8 border-b border-r border-border transition-colors hover:bg-secondary/15"
+                  className="group p-6 sm:p-8 border-b border-r border-border transition-colors hover:bg-secondary/15"
                 >
-                  <IconComponent size={22} className="text-accent mb-6" strokeWidth={1.5} />
-                  <h3 className="text-xl mb-3 text-foreground">
+                  <IconComponent size={20} className="text-accent mb-4 sm:mb-6" strokeWidth={1.5} />
+                  <h3 className="text-lg sm:text-xl mb-2.5 sm:mb-3 text-foreground">
                     {card.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-[0.9rem] sm:text-sm leading-relaxed">
                     {card.description}
                   </p>
                 </div>
