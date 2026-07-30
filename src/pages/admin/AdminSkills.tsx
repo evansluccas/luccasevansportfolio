@@ -135,12 +135,12 @@ export default function AdminSkills() {
               value={formData.name}
               onChange={e => setFormData({...formData, name: e.target.value})}
               required
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <select
               value={formData.category}
               onChange={e => setFormData({...formData, category: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             >
               {categories.map(cat => (
                 <option key={cat} value={cat}>{cat}</option>
@@ -162,7 +162,7 @@ export default function AdminSkills() {
               placeholder="Display Order"
               value={formData.display_order}
               onChange={e => setFormData({...formData, display_order: parseInt(e.target.value) || 0})}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <label className="flex items-center gap-3">
               <input

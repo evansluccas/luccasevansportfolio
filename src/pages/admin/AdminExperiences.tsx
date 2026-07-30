@@ -136,7 +136,7 @@ export default function AdminExperiences() {
                 value={formData.position}
                 onChange={e => setFormData({...formData, position: e.target.value})}
                 required
-                className="px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
               <input
                 type="text"
@@ -144,7 +144,7 @@ export default function AdminExperiences() {
                 value={formData.company}
                 onChange={e => setFormData({...formData, company: e.target.value})}
                 required
-                className="px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <input
@@ -152,34 +152,34 @@ export default function AdminExperiences() {
               placeholder="Location"
               value={formData.location}
               onChange={e => setFormData({...formData, location: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <input
               type="text"
               placeholder="Year (e.g., 2024)"
               value={formData.year}
               onChange={e => setFormData({...formData, year: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <textarea
               placeholder="Description"
               value={formData.description}
               onChange={e => setFormData({...formData, description: e.target.value})}
               rows={3}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
             />
             <input
               type="text"
               placeholder="Technologies (comma-separated)"
               value={formData.technologies}
               onChange={e => setFormData({...formData, technologies: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
             <div className="grid grid-cols-2 gap-4">
               <select
                 value={formData.employment_type}
                 onChange={e => setFormData({...formData, employment_type: e.target.value})}
-                className="px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               >
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
@@ -191,7 +191,7 @@ export default function AdminExperiences() {
                 placeholder="Display Order"
                 value={formData.display_order}
                 onChange={e => setFormData({...formData, display_order: parseInt(e.target.value) || 0})}
-                className="px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div className="flex gap-3">

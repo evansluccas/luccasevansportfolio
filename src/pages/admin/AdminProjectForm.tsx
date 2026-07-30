@@ -231,7 +231,7 @@ export default function AdminProjectForm() {
                 onChange={handleChange}
                 onBlur={generateSlug}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -242,7 +242,7 @@ export default function AdminProjectForm() {
                 value={formData.slug}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function AdminProjectForm() {
               onChange={handleChange}
               required
               rows={2}
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
             />
           </div>
 
@@ -328,7 +328,7 @@ export default function AdminProjectForm() {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               >
                 <option value="Web">Web</option>
                 <option value="Mobile">Mobile</option>
@@ -347,7 +347,7 @@ export default function AdminProjectForm() {
               value={formData.technologies}
               onChange={handleChange}
               placeholder="React, Node.js, PostgreSQL"
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
           </div>
 
@@ -361,7 +361,7 @@ export default function AdminProjectForm() {
                 value={formData.demo_link}
                 onChange={handleChange}
                 placeholder="https://..."
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -372,7 +372,7 @@ export default function AdminProjectForm() {
                 value={formData.repo_link}
                 onChange={handleChange}
                 placeholder="https://github.com/..."
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
           </div>
@@ -386,7 +386,7 @@ export default function AdminProjectForm() {
               onChange={handleChange}
               rows={3}
               placeholder="40% increase in engagement&#10;10K+ users&#10;99.9% uptime"
-              className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
             />
           </div>
 
@@ -399,7 +399,7 @@ export default function AdminProjectForm() {
                 name="display_order"
                 value={formData.display_order}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-input text-background border border-muted focus:border-primary focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
               />
             </div>
             <div className="flex items-center gap-3 pt-8">
