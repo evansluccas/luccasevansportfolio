@@ -21,6 +21,11 @@ interface ProjectFormData {
   published: boolean;
   results: string;
   display_order: number;
+  star_situation: string;
+  star_task: string;
+  star_action: string;
+  star_result: string;
+  show_details: boolean;
 }
 
 const initialFormData: ProjectFormData = {
@@ -37,6 +42,11 @@ const initialFormData: ProjectFormData = {
   published: true,
   results: '',
   display_order: 0,
+  star_situation: '',
+  star_task: '',
+  star_action: '',
+  star_result: '',
+  show_details: true,
 };
 
 export default function AdminProjectForm() {
@@ -82,6 +92,11 @@ export default function AdminProjectForm() {
         published: data.published,
         results: (data.results || []).join('\n'),
         display_order: data.display_order,
+        star_situation: data.star_situation || '',
+        star_task: data.star_task || '',
+        star_action: data.star_action || '',
+        star_result: data.star_result || '',
+        show_details: data.show_details ?? true,
       });
       // Set image preview if there's an existing cover image
       if (data.cover_image_url) {
@@ -178,6 +193,11 @@ export default function AdminProjectForm() {
       published: formData.published,
       results: formData.results.split('\n').filter(Boolean),
       display_order: formData.display_order,
+      star_situation: formData.star_situation || null,
+      star_task: formData.star_task || null,
+      star_action: formData.star_action || null,
+      star_result: formData.star_result || null,
+      show_details: formData.show_details,
     };
 
     let error;
@@ -377,6 +397,35 @@ export default function AdminProjectForm() {
             </div>
           </div>
 
+          {/* STAR */}
+          <div className="space-y-4 border-t border-primary/10 pt-6">
+            <div>
+              <h3 className="text-sm font-semibold">STAR story</h3>
+              <p className="text-xs text-muted-foreground">
+                Shown on the project card. Leave a field empty to hide it.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {([
+                ['star_situation', 'Situation'],
+                ['star_task', 'Task'],
+                ['star_action', 'Action'],
+                ['star_result', 'Result'],
+              ] as const).map(([name, label]) => (
+                <div key={name}>
+                  <label className="block text-sm font-medium mb-2">{label}</label>
+                  <textarea
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Results */}
           <div>
             <label className="block text-sm font-medium mb-2">Key Results (one per line)</label>
@@ -391,7 +440,7 @@ export default function AdminProjectForm() {
           </div>
 
           {/* Order & Toggles */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-4 gap-6">
             <div>
               <label className="block text-sm font-medium mb-2">Display Order</label>
               <input
@@ -423,6 +472,17 @@ export default function AdminProjectForm() {
                 className="w-5 h-5 rounded border-muted text-primary focus:ring-primary"
               />
               <label htmlFor="published" className="text-sm font-medium">Published</label>
+            </div>
+            <div className="flex items-center gap-3 pt-8">
+              <input
+                type="checkbox"
+                name="show_details"
+                id="show_details"
+                checked={formData.show_details}
+                onChange={handleChange}
+                className="w-5 h-5 rounded border-muted text-primary focus:ring-primary"
+              />
+              <label htmlFor="show_details" className="text-sm font-medium">Show "View details"</label>
             </div>
           </div>
 
