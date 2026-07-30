@@ -41,14 +41,11 @@ export default function AdminSettings() {
   const [config, setConfig] = useState<SiteConfig>(initialConfig);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploadingIcon, setUploadingIcon] = useState<string | null>(null);
   const [uploadingProfileImage, setUploadingProfileImage] = useState(false);
   const { toast } = useToast();
 
-  const linkedinIconRef = useRef<HTMLInputElement>(null);
-  const emailIconRef = useRef<HTMLInputElement>(null);
-  const locationIconRef = useRef<HTMLInputElement>(null);
   const profileImageRef = useRef<HTMLInputElement>(null);
+
 
   useEffect(() => {
     fetchConfig();
