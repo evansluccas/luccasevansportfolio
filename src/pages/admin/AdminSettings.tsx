@@ -114,13 +114,6 @@ export default function AdminSettings() {
     setUploadingProfileImage(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, iconType: 'linkedin' | 'email' | 'location') => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleIconUpload(file, iconType);
-    }
-  };
-
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -128,14 +121,10 @@ export default function AdminSettings() {
     }
   };
 
-  const removeIcon = (iconType: 'linkedin' | 'email' | 'location') => {
-    const fieldName = `${iconType}_icon_url` as keyof SiteConfig;
-    setConfig(prev => ({ ...prev, [fieldName]: '' }));
-  };
-
   const removeProfileImage = () => {
     setConfig(prev => ({ ...prev, profile_image_url: '' }));
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
