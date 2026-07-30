@@ -130,7 +130,7 @@ export function HeroSection() {
                     >
                       <IconComponent size={18} strokeWidth={1.5} className="text-accent mb-3 sm:mb-4" />
                       <div className="text-2xl sm:text-3xl lg:text-4xl text-foreground font-serif">
-                        {stat.number}
+                        <CountUp value={stat.number} duration={2000} delay={100} />
                       </div>
                       <div className="text-[0.8rem] sm:text-sm leading-snug text-muted-foreground mt-1.5">
                         {stat.description}
