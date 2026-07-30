@@ -17,13 +17,13 @@ function StarBlocks({ project }: { project: Project }) {
   if (entries.length === 0) return null;
 
   return (
-    <dl className="space-y-3.5 sm:space-y-4 border-t border-border pt-5">
+    <dl className="space-y-3 sm:space-y-3.5 border-t border-border pt-4">
       {entries.map(({ key, label }) => (
-        <div key={key} className="grid grid-cols-1 sm:grid-cols-[5.5rem_1fr] gap-1 sm:gap-3">
-          <dt className="text-[0.65rem] sm:text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground sm:pt-0.5">
+        <div key={key} className="grid grid-cols-1 sm:grid-cols-[4.5rem_1fr] gap-1 sm:gap-2.5">
+          <dt className="text-[0.6rem] sm:text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground sm:pt-0.5">
             {label}
           </dt>
-          <dd className="text-[0.9rem] sm:text-sm leading-relaxed text-foreground/80">{project[key]}</dd>
+          <dd className="text-sm leading-relaxed text-foreground/80">{project[key]}</dd>
         </div>
       ))}
     </dl>
