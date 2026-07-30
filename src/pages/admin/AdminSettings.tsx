@@ -75,10 +75,8 @@ export default function AdminSettings() {
         social_linkedin: data.social_linkedin || '',
         social_email: data.social_email || '',
         location: data.location || '',
-        linkedin_icon_url: data.linkedin_icon_url || '',
-        email_icon_url: data.email_icon_url || '',
-        location_icon_url: data.location_icon_url || '',
       });
+
     }
     setLoading(false);
   };
