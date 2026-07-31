@@ -18,7 +18,7 @@ function StarBlocks({ project }: { project: Project }) {
   if (entries.length === 0) return null;
 
   return (
-    <dl className="space-y-3 sm:space-y-3.5 border-t border-border pt-4">
+    <dl className="space-y-3 sm:space-y-3.5">
       {entries.map(({ key, label }) => (
         <div key={key} className="grid grid-cols-1 sm:grid-cols-[4.5rem_1fr] gap-1 sm:gap-2.5">
           <dt className="text-[0.6rem] sm:text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground sm:pt-0.5">
@@ -128,18 +128,6 @@ export function ProjectsSection() {
                       </div>
 
                       <div className="flex flex-col flex-1 p-4 sm:p-5">
-                        {project.category && (
-                          <span className="text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground mb-2.5">
-                            {project.category}
-                          </span>
-                        )}
-                        <h3 className="text-lg sm:text-xl mb-2 sm:mb-3">{project.title}</h3>
-                        {project.short_description && (
-                          <p className="text-muted-foreground text-[0.85rem] sm:text-sm leading-relaxed mb-4 sm:mb-5">
-                            {project.short_description}
-                          </p>
-                        )}
-
                         <StarBlocks project={project} />
 
                         <div className="mt-auto pt-4 sm:pt-5">
