@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BlobDecoration } from '@/components/decorations/BlobDecoration';
 import { useProject } from '@/hooks/usePortfolioData';
+import { ProjectCover } from '@/components/projects/ProjectCover';
 import { Skeleton } from '@/components/ui/skeleton';
 import { normalizeRichTextHtml } from '@/lib/richText';
 import { format } from 'date-fns';
