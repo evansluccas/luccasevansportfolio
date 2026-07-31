@@ -1,4 +1,4 @@
-import { Briefcase, Coffee, Award, Users, Star, Code, Rocket, Heart, LucideIcon } from 'lucide-react';
+import { Briefcase, Coffee, Award, Users, Star, Code, Rocket, Heart, TrendingUp, DollarSign, LucideIcon } from 'lucide-react';
 
 const iconMap: Record<string, LucideIcon> = {
   Briefcase,
@@ -9,6 +9,9 @@ const iconMap: Record<string, LucideIcon> = {
   Code,
   Rocket,
   Heart,
+  Revenue: TrendingUp,
+  TrendingUp,
+  DollarSign,
 };
 
 export function getIcon(iconName: string): LucideIcon {

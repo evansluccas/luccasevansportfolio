@@ -13,7 +13,7 @@ interface HeroStat {
   display_order: number;
 }
 
-const iconOptions = ['Briefcase', 'Coffee', 'Award', 'Users', 'Star', 'Code', 'Rocket', 'Heart'];
+const iconOptions = ['Briefcase', 'Coffee', 'Award', 'Users', 'Star', 'Code', 'Rocket', 'Heart', 'Revenue'];
 
 export default function AdminHeroStats() {
   const [stats, setStats] = useState<HeroStat[]>([]);
