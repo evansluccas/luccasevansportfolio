@@ -4,6 +4,7 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
+import { ProjectCover } from '@/components/projects/ProjectCover';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, Upload, X, Image as ImageIcon } from 'lucide-react';
 
