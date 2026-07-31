@@ -120,20 +120,11 @@ export function ProjectsSection() {
                   >
                     <div className="h-full flex flex-col bg-card border border-border rounded-lg overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-300">
                       <div className="aspect-[16/9] sm:aspect-[16/8] overflow-hidden border-b border-border">
-                        {project.cover_image_url ? (
-                          <img
-                            src={project.cover_image_url}
-                            alt={project.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <ProjectCover
-                            heading={project.cover_heading || project.title}
-                            subheading={project.cover_subheading}
-                            category={project.category}
-                          />
-                        )}
+                        <ProjectCover
+                          heading={project.cover_heading || project.title}
+                          subheading={project.cover_subheading}
+                          category={project.category}
+                        />
                       </div>
 
                       <div className="flex flex-col flex-1 p-4 sm:p-5">
