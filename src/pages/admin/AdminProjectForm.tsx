@@ -13,6 +13,8 @@ interface ProjectFormData {
   short_description: string;
   full_description: string;
   cover_image_url: string;
+  cover_heading: string;
+  cover_subheading: string;
   technologies: string;
   demo_link: string;
   repo_link: string;
@@ -34,6 +36,8 @@ const initialFormData: ProjectFormData = {
   short_description: '',
   full_description: '',
   cover_image_url: '',
+  cover_heading: '',
+  cover_subheading: '',
   technologies: '',
   demo_link: '',
   repo_link: '',
@@ -84,6 +88,8 @@ export default function AdminProjectForm() {
         short_description: data.short_description,
         full_description: data.full_description || '',
         cover_image_url: data.cover_image_url || '',
+        cover_heading: data.cover_heading || '',
+        cover_subheading: data.cover_subheading || '',
         technologies: (data.technologies || []).join(', '),
         demo_link: data.demo_link || '',
         repo_link: data.repo_link || '',
@@ -185,6 +191,8 @@ export default function AdminProjectForm() {
       short_description: formData.short_description,
       full_description: formData.full_description,
       cover_image_url: formData.cover_image_url || null,
+      cover_heading: formData.cover_heading || null,
+      cover_subheading: formData.cover_subheading || null,
       technologies: formData.technologies.split(',').map(t => t.trim()).filter(Boolean),
       demo_link: formData.demo_link || null,
       repo_link: formData.repo_link || null,
