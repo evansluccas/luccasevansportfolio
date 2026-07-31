@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,14 +6,13 @@ import { Button } from '@/components/ui/button';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { ProjectCover } from '@/components/projects/ProjectCover';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Save, Upload, X, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Save } from 'lucide-react';
 
 interface ProjectFormData {
   title: string;
   slug: string;
   short_description: string;
   full_description: string;
-  cover_image_url: string;
   cover_heading: string;
   cover_subheading: string;
   technologies: string;
@@ -36,7 +35,6 @@ const initialFormData: ProjectFormData = {
   slug: '',
   short_description: '',
   full_description: '',
-  cover_image_url: '',
   cover_heading: '',
   cover_subheading: '',
   technologies: '',
@@ -61,9 +59,6 @@ export default function AdminProjectForm() {
   const [formData, setFormData] = useState<ProjectFormData>(initialFormData);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(!!id);
-  const [uploading, setUploading] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const isEditing = !!id;
 
   useEffect(() => {
@@ -88,7 +83,6 @@ export default function AdminProjectForm() {
         slug: data.slug,
         short_description: data.short_description,
         full_description: data.full_description || '',
-        cover_image_url: data.cover_image_url || '',
         cover_heading: data.cover_heading || '',
         cover_subheading: data.cover_subheading || '',
         technologies: (data.technologies || []).join(', '),
@@ -105,65 +99,8 @@ export default function AdminProjectForm() {
         star_result: data.star_result || '',
         show_details: data.show_details ?? true,
       });
-      // Set image preview if there's an existing cover image
-      if (data.cover_image_url) {
-        setImagePreview(data.cover_image_url);
-      }
     }
     setFetching(false);
-  };
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast({ title: 'Invalid file type', description: 'Please select an image file', variant: 'destructive' });
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast({ title: 'File too large', description: 'Maximum file size is 5MB', variant: 'destructive' });
-      return;
-    }
-
-    setUploading(true);
-
-    try {
-      // Generate unique filename
-      const fileExt = file.name.split('.').pop();
-      const fileName = `projects/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-
-      // Upload to storage
-      const { error: uploadError } = await supabase.storage
-        .from('portfolio-assets')
-        .upload(fileName, file);
-
-      if (uploadError) throw uploadError;
-
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('portfolio-assets')
-        .getPublicUrl(fileName);
-
-      setFormData(prev => ({ ...prev, cover_image_url: publicUrl }));
-      setImagePreview(publicUrl);
-      toast({ title: 'Image uploaded successfully' });
-    } catch (error: any) {
-      toast({ title: 'Upload failed', description: error.message, variant: 'destructive' });
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setFormData(prev => ({ ...prev, cover_image_url: '' }));
-    setImagePreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -191,7 +128,7 @@ export default function AdminProjectForm() {
       slug: formData.slug,
       short_description: formData.short_description,
       full_description: formData.full_description,
-      cover_image_url: formData.cover_image_url || null,
+      cover_image_url: null,
       cover_heading: formData.cover_heading || null,
       cover_subheading: formData.cover_subheading || null,
       technologies: formData.technologies.split(',').map(t => t.trim()).filter(Boolean),
@@ -299,58 +236,8 @@ export default function AdminProjectForm() {
             />
           </div>
 
-          {/* Cover Image & Category */}
+          {/* Category */}
           <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium mb-2">Cover Image</label>
-              <div className="space-y-3">
-                {imagePreview ? (
-                  <div className="relative group">
-                    <img
-                      src={imagePreview}
-                      alt="Cover preview"
-                      className="w-full h-40 object-cover rounded-lg border border-primary/20"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleRemoveImage}
-                      className="absolute top-2 right-2 p-1.5 bg-destructive text-destructive-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X size={16} />
-                    </button>
-                  </div>
-                ) : (
-                  <div
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full h-40 border-2 border-dashed border-muted rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-colors bg-muted/20"
-                  >
-                    <ImageIcon size={32} className="text-muted-foreground mb-2" />
-                    <span className="text-sm text-muted-foreground">Click to upload cover image</span>
-                    <span className="text-xs text-muted-foreground/60 mt-1">Max 5MB, 16:9 recommended</span>
-                  </div>
-                )}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-                {imagePreview && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploading}
-                    className="w-full"
-                  >
-                    <Upload size={16} className="mr-2" />
-                    {uploading ? 'Uploading...' : 'Change Image'}
-                  </Button>
-                )}
-              </div>
-            </div>
             <div>
               <label className="block text-sm font-medium mb-2">Category</label>
               <select
@@ -367,12 +254,12 @@ export default function AdminProjectForm() {
             </div>
           </div>
 
-          {/* Generated Cover (used when no image is uploaded) */}
+          {/* Generated Cover */}
           <div className="border border-muted rounded-xl p-4 space-y-4 bg-muted/10">
             <div>
-              <h3 className="text-sm font-semibold">Generated Cover</h3>
+              <h3 className="text-sm font-semibold">Cover</h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Used automatically when no cover image is uploaded. Renders a styled card cover that matches the site design.
+                Every project uses a generated cover that matches the site design.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">

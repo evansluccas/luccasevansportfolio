@@ -61,19 +61,11 @@ export default function ProjectDetail() {
         {/* Hero */}
         <section className="relative">
           <div className="aspect-[21/9] w-full overflow-hidden">
-            {project.cover_image_url ? (
-              <img
-                src={project.cover_image_url}
-                alt={project.title}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <ProjectCover
-                heading={project.cover_heading || project.title}
-                subheading={project.cover_subheading}
-                category={project.category}
-              />
-            )}
+            <ProjectCover
+              heading={project.cover_heading || project.title}
+              subheading={project.cover_subheading}
+              category={project.category}
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
           </div>
 
@@ -205,26 +197,6 @@ export default function ProjectDetail() {
             </div>
           )}
 
-          {/* Gallery */}
-          {project.gallery && project.gallery.length > 0 && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Gallery</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {project.gallery.map((image, index) => (
-                  <div
-                    key={index}
-                    className="aspect-video rounded-xl overflow-hidden border border-primary/20"
-                  >
-                    <img
-                      src={image}
-                      alt={`${project.title} screenshot ${index + 1}`}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </section>
       </main>
 
