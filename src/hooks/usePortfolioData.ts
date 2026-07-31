@@ -67,6 +67,8 @@ export interface Project {
   short_description: string;
   full_description: string | null;
   cover_image_url: string | null;
+  cover_heading: string | null;
+  cover_subheading: string | null;
   gallery: string[];
   technologies: string[];
   demo_link: string | null;
