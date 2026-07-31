@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useProjects, useSectionConfig, type Project } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ProjectCover } from '@/components/projects/ProjectCover';
 
 const STAR_LABELS = [
   { key: 'star_situation', label: 'Situation' },
@@ -118,16 +119,22 @@ export function ProjectsSection() {
                     className="flex-[0_0_92%] sm:flex-[0_0_60%] lg:flex-[0_0_33.333%] xl:flex-[0_0_32%] min-w-0 px-2"
                   >
                     <div className="h-full flex flex-col bg-card border border-border rounded-lg overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-300">
-                      {project.cover_image_url && (
-                        <div className="aspect-[16/9] sm:aspect-[16/8] overflow-hidden border-b border-border">
+                      <div className="aspect-[16/9] sm:aspect-[16/8] overflow-hidden border-b border-border">
+                        {project.cover_image_url ? (
                           <img
                             src={project.cover_image_url}
                             alt={project.title}
                             loading="lazy"
                             className="w-full h-full object-cover"
                           />
-                        </div>
-                      )}
+                        ) : (
+                          <ProjectCover
+                            heading={project.cover_heading || project.title}
+                            subheading={project.cover_subheading}
+                            category={project.category}
+                          />
+                        )}
+                      </div>
 
                       <div className="flex flex-col flex-1 p-4 sm:p-5">
                         {project.category && (

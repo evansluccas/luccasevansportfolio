@@ -312,7 +312,9 @@ export type Database = {
         Row: {
           category: string | null
           completion_date: string | null
+          cover_heading: string | null
           cover_image_url: string | null
+          cover_subheading: string | null
           created_at: string
           demo_link: string | null
           display_order: number
@@ -338,7 +340,9 @@ export type Database = {
         Insert: {
           category?: string | null
           completion_date?: string | null
+          cover_heading?: string | null
           cover_image_url?: string | null
+          cover_subheading?: string | null
           created_at?: string
           demo_link?: string | null
           display_order?: number
@@ -364,7 +368,9 @@ export type Database = {
         Update: {
           category?: string | null
           completion_date?: string | null
+          cover_heading?: string | null
           cover_image_url?: string | null
+          cover_subheading?: string | null
           created_at?: string
           demo_link?: string | null
           display_order?: number

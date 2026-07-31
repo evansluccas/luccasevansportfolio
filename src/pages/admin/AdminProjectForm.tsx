@@ -4,6 +4,7 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
+import { ProjectCover } from '@/components/projects/ProjectCover';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, Upload, X, Image as ImageIcon } from 'lucide-react';
 
@@ -13,6 +14,8 @@ interface ProjectFormData {
   short_description: string;
   full_description: string;
   cover_image_url: string;
+  cover_heading: string;
+  cover_subheading: string;
   technologies: string;
   demo_link: string;
   repo_link: string;
@@ -34,6 +37,8 @@ const initialFormData: ProjectFormData = {
   short_description: '',
   full_description: '',
   cover_image_url: '',
+  cover_heading: '',
+  cover_subheading: '',
   technologies: '',
   demo_link: '',
   repo_link: '',
@@ -84,6 +89,8 @@ export default function AdminProjectForm() {
         short_description: data.short_description,
         full_description: data.full_description || '',
         cover_image_url: data.cover_image_url || '',
+        cover_heading: data.cover_heading || '',
+        cover_subheading: data.cover_subheading || '',
         technologies: (data.technologies || []).join(', '),
         demo_link: data.demo_link || '',
         repo_link: data.repo_link || '',
@@ -185,6 +192,8 @@ export default function AdminProjectForm() {
       short_description: formData.short_description,
       full_description: formData.full_description,
       cover_image_url: formData.cover_image_url || null,
+      cover_heading: formData.cover_heading || null,
+      cover_subheading: formData.cover_subheading || null,
       technologies: formData.technologies.split(',').map(t => t.trim()).filter(Boolean),
       demo_link: formData.demo_link || null,
       repo_link: formData.repo_link || null,
@@ -355,6 +364,50 @@ export default function AdminProjectForm() {
                 <option value="Product">Product</option>
                 <option value="Design">Design</option>
               </select>
+            </div>
+          </div>
+
+          {/* Generated Cover (used when no image is uploaded) */}
+          <div className="border border-muted rounded-xl p-4 space-y-4 bg-muted/10">
+            <div>
+              <h3 className="text-sm font-semibold">Generated Cover</h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Used automatically when no cover image is uploaded. Renders a styled card cover that matches the site design.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">Cover Heading</label>
+                <input
+                  type="text"
+                  name="cover_heading"
+                  value={formData.cover_heading}
+                  onChange={handleChange}
+                  placeholder="Defaults to the project title"
+                  className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Cover Sub-heading</label>
+                <input
+                  type="text"
+                  name="cover_subheading"
+                  value={formData.cover_subheading}
+                  onChange={handleChange}
+                  placeholder="e.g. Discovery → Launch in 6 weeks"
+                  className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="max-w-sm">
+              <p className="text-xs text-muted-foreground mb-2">Preview</p>
+              <div className="aspect-[16/8] border border-border rounded-lg overflow-hidden">
+                <ProjectCover
+                  heading={formData.cover_heading || formData.title || 'Project title'}
+                  subheading={formData.cover_subheading}
+                  category={formData.category}
+                />
+              </div>
             </div>
           </div>
 
