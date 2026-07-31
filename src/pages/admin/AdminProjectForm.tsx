@@ -366,6 +366,50 @@ export default function AdminProjectForm() {
             </div>
           </div>
 
+          {/* Generated Cover (used when no image is uploaded) */}
+          <div className="border border-muted rounded-xl p-4 space-y-4 bg-muted/10">
+            <div>
+              <h3 className="text-sm font-semibold">Generated Cover</h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Used automatically when no cover image is uploaded. Renders a styled card cover that matches the site design.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">Cover Heading</label>
+                <input
+                  type="text"
+                  name="cover_heading"
+                  value={formData.cover_heading}
+                  onChange={handleChange}
+                  placeholder="Defaults to the project title"
+                  className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Cover Sub-heading</label>
+                <input
+                  type="text"
+                  name="cover_subheading"
+                  value={formData.cover_subheading}
+                  onChange={handleChange}
+                  placeholder="e.g. Discovery → Launch in 6 weeks"
+                  className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="max-w-sm">
+              <p className="text-xs text-muted-foreground mb-2">Preview</p>
+              <div className="aspect-[16/8] border border-border rounded-lg overflow-hidden">
+                <ProjectCover
+                  heading={formData.cover_heading || formData.title || 'Project title'}
+                  subheading={formData.cover_subheading}
+                  category={formData.category}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Technologies */}
           <div>
             <label className="block text-sm font-medium mb-2">Technologies (comma-separated)</label>
