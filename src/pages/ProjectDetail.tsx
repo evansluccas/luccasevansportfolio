@@ -67,9 +67,11 @@ export default function ProjectDetail() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-muted flex items-center justify-center">
-                <span className="text-8xl text-muted-foreground">{project.title.charAt(0)}</span>
-              </div>
+              <ProjectCover
+                heading={project.cover_heading || project.title}
+                subheading={project.cover_subheading}
+                category={project.category}
+              />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
           </div>
