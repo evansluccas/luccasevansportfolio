@@ -1,0 +1,1 @@
+UPDATE public.projects SET cover_image_url = NULL, gallery = '{}';
