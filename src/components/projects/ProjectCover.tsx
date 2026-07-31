@@ -32,19 +32,23 @@ export function ProjectCover({ heading, subheading, category, className = '' }: 
         className="absolute inset-0 bg-gradient-to-br from-background/70 via-transparent to-primary/10"
       />
 
-      <div className="relative h-full flex flex-col justify-end p-4 sm:p-5">
+      <div className="relative h-full flex flex-col p-4 sm:p-5 gap-1">
         {category && (
-          <span className="absolute top-4 left-4 sm:top-5 sm:left-5 text-[0.6rem] uppercase tracking-[0.2em] text-muted-foreground">
+          <span className="block text-[0.6rem] uppercase tracking-[0.2em] text-muted-foreground shrink-0">
             {category}
           </span>
         )}
-        <span aria-hidden className="block w-8 h-px bg-primary/50 mb-2.5" />
-        <h4 className="text-base sm:text-lg leading-snug text-foreground">{heading}</h4>
-        {subheading && (
-          <p className="mt-1 text-[0.75rem] sm:text-sm italic text-muted-foreground leading-relaxed">
-            {subheading}
-          </p>
-        )}
+        <div className="mt-auto min-h-0">
+          <span aria-hidden className="block w-8 h-px bg-primary/50 mb-2" />
+          <h4 className="text-sm sm:text-base leading-snug text-foreground line-clamp-2">
+            {heading}
+          </h4>
+          {subheading && (
+            <p className="mt-1 text-[0.7rem] sm:text-xs italic text-muted-foreground leading-relaxed line-clamp-2">
+              {subheading}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
