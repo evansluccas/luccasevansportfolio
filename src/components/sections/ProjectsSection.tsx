@@ -5,6 +5,8 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useProjects, useSectionConfig, type Project } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProjectCover } from '@/components/projects/ProjectCover';
+import { Reveal } from '@/components/ui/Reveal';
+
 
 const STAR_LABELS = [
   { key: 'star_situation', label: 'Situation' },
