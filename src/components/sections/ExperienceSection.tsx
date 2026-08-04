@@ -1,5 +1,7 @@
 import { useExperiences, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Reveal } from '@/components/ui/Reveal';
+
 
 export function ExperienceSection() {
   const { data: experiences, isLoading: experiencesLoading } = useExperiences();
@@ -65,9 +67,12 @@ export function ExperienceSection() {
           </div>
         ) : (
           <ol className="border-t border-border">
-            {experiences?.map((exp) => (
-              <li
+            {experiences?.map((exp, i) => (
+              <Reveal
                 key={exp.id}
+                as="li"
+                immediate={i === 0}
+                delay={i === 0 ? 0 : 0.1}
                 className="group grid md:grid-cols-[9rem_1fr] gap-1.5 md:gap-10 py-6 sm:py-8 border-b border-border transition-colors hover:bg-secondary/15"
               >
                 <div className="md:text-right">
@@ -108,7 +113,7 @@ export function ExperienceSection() {
                     </div>
                   )}
                 </div>
-              </li>
+              </Reveal>
             ))}
           </ol>
         )}

@@ -1,7 +1,9 @@
 import { useAboutCards, useSectionConfig } from '@/hooks/usePortfolioData';
 import { getAboutIcon } from '@/lib/aboutIcons';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Reveal } from '@/components/ui/Reveal';
 import { AboutCardsCarousel } from './AboutCardsCarousel';
+
 
 export function AboutSection() {
   const { data: cards, isLoading: cardsLoading } = useAboutCards();
@@ -66,11 +68,13 @@ export function AboutSection() {
               <Skeleton key={i} className="h-48 rounded-none" />
             ))
           ) : (
-            cards?.map((card) => {
+            cards?.map((card, i) => {
               const IconComponent = getAboutIcon(card.icon);
               return (
-                <div
+                <Reveal
                   key={card.id}
+                  immediate={i === 0}
+                  delay={i === 0 ? 0 : 0.1}
                   className="group p-6 sm:p-8 border-b border-r border-border transition-colors hover:bg-secondary/15"
                 >
                   <IconComponent size={20} className="text-accent mb-4 sm:mb-6" strokeWidth={1.5} />
@@ -80,7 +84,7 @@ export function AboutSection() {
                   <p className="text-muted-foreground text-[0.9rem] sm:text-sm leading-relaxed">
                     {card.description}
                   </p>
-                </div>
+                </Reveal>
               );
             })
           )}

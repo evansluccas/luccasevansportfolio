@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { useSiteConfig, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Reveal } from '@/components/ui/Reveal';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+
 
 export function ContactSection() {
   const { data: config, isLoading: configLoading } = useSiteConfig();
@@ -134,23 +136,28 @@ export function ContactSection() {
             ) : contactInfo.length > 0 ? (
               <ul className="border-t border-border">
                 {contactInfo.map((info, index) => (
-                <li key={index}>
-                <a
-                  href={info.href}
-                  target={info.href.startsWith('http') ? '_blank' : undefined}
-                  rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="group flex items-center gap-4 py-5 border-b border-border transition-colors hover:bg-secondary/15"
-                >
-                  <div className="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0">
-                    <info.icon size={20} strokeWidth={1.5} className="text-accent" />
-                  </div>
+                  <Reveal
+                    key={index}
+                    as="li"
+                    immediate={index === 0}
+                    delay={index === 0 ? 0 : 0.1}
+                  >
+                    <a
+                      href={info.href}
+                      target={info.href.startsWith('http') ? '_blank' : undefined}
+                      rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      className="group flex items-center gap-4 py-5 border-b border-border transition-colors hover:bg-secondary/15"
+                    >
+                      <div className="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0">
+                        <info.icon size={20} strokeWidth={1.5} className="text-accent" />
+                      </div>
 
-                  <div>
-                    <div className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{info.label}</div>
-                    <div className="text-foreground">{info.value}</div>
-                  </div>
-                </a>
-                </li>
+                      <div>
+                        <div className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{info.label}</div>
+                        <div className="text-foreground">{info.value}</div>
+                      </div>
+                    </a>
+                  </Reveal>
                 ))}
               </ul>
             ) : (
