@@ -4,7 +4,6 @@ import { useSiteConfig, useHeroStats } from '@/hooks/usePortfolioData';
 import { getIcon } from '@/lib/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CountUp } from '@/components/ui/count-up';
-import { AnimatePresence, motion } from 'framer-motion';
 
 const ROLES = ['Product Manager', 'Builder', 'Founder'];
 
