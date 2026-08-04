@@ -1,7 +1,9 @@
 import { useAboutCards, useSectionConfig } from '@/hooks/usePortfolioData';
 import { getAboutIcon } from '@/lib/aboutIcons';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Reveal } from '@/components/ui/Reveal';
 import { AboutCardsCarousel } from './AboutCardsCarousel';
+
 
 export function AboutSection() {
   const { data: cards, isLoading: cardsLoading } = useAboutCards();
