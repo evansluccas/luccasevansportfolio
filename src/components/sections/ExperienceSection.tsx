@@ -1,5 +1,7 @@
 import { useExperiences, useSectionConfig } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Reveal } from '@/components/ui/Reveal';
+
 
 export function ExperienceSection() {
   const { data: experiences, isLoading: experiencesLoading } = useExperiences();
