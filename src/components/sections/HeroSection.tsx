@@ -18,15 +18,6 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-[1.35fr_1fr] gap-8 sm:gap-12 lg:gap-20 items-center">
           {/* Left Content */}
           <div className="order-2 lg:order-1 text-left">
-            {/* Hello Tag */}
-            {isLoading ? (
-              <Skeleton className="h-5 w-24 mb-6" />
-            ) : config?.hero_tag && (
-              <span className="inline-block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4 sm:mb-6">
-                {config.hero_tag}
-              </span>
-            )}
-
             {/* Name */}
             {isLoading ? (
               <Skeleton className="h-16 w-80 mb-4" />
@@ -37,31 +28,21 @@ export function HeroSection() {
               </h1>
             )}
 
-            {/* Title with Typing Animation */}
+            {/* Subtitle */}
             {isLoading ? (
-              <Skeleton className="h-8 w-48 mb-6" />
-            ) : (
-              <h2 className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-normal mb-5 sm:mb-6 min-h-[2.6em] sm:min-h-[1.5em] border-t border-border pt-4 sm:pt-5">
-                <TypingAnimation 
-                  texts={[
-                    config?.title || '',
-                    config?.title_2 || '',
-                    config?.title_3 || '',
-                    config?.title_4 || '',
-                  ]}
-                  typingSpeed={80}
-                  deletingSpeed={40}
-                  pauseDuration={2500}
-                />
+              <Skeleton className="h-8 w-72 mb-6" />
+            ) : (config?.hero_subtitle || config?.title) && (
+              <h2 className="text-base sm:text-xl lg:text-2xl text-foreground font-normal mb-4 sm:mb-5 max-w-xl border-t border-border pt-4 sm:pt-5">
+                {config?.hero_subtitle || config?.title}
               </h2>
             )}
 
-            {/* Bio */}
+            {/* Sub-subtitle */}
             {isLoading ? (
               <Skeleton className="h-20 w-full max-w-xl mb-8" />
-            ) : config?.bio_short && (
+            ) : (config?.hero_subheadline || config?.bio_short) && (
               <p className="text-muted-foreground text-[0.95rem] lg:text-lg mb-7 sm:mb-9 max-w-xl leading-relaxed">
-                {config.bio_short}
+                {config?.hero_subheadline || config?.bio_short}
               </p>
             )}
 
@@ -69,7 +50,7 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-start">
               <Button variant="hero" size="default" asChild className="group h-9 px-4 text-sm sm:h-12 sm:px-8 sm:text-base w-full">
                 <a href="#projects">
-                  See My Work
+                  View case studies
                   <svg 
                     className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" 
                     fill="none" 
@@ -80,9 +61,17 @@ export function HeroSection() {
                   </svg>
                 </a>
               </Button>
-              <Button variant="heroOutline" size="default" asChild className="h-9 px-4 text-sm sm:h-12 sm:px-8 sm:text-base w-full">
-                <a href="#contact">Let's Connect</a>
-              </Button>
+              {config?.resume_url ? (
+                <Button variant="heroOutline" size="default" asChild className="h-9 px-4 text-sm sm:h-12 sm:px-8 sm:text-base w-full">
+                  <a href={config.resume_url} download target="_blank" rel="noopener noreferrer">
+                    Download resume
+                  </a>
+                </Button>
+              ) : (
+                <Button variant="heroOutline" size="default" asChild className="h-9 px-4 text-sm sm:h-12 sm:px-8 sm:text-base w-full">
+                  <a href="#contact">Download resume</a>
+                </Button>
+              )}
             </div>
           </div>
 
