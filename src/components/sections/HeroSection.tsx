@@ -8,33 +8,66 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const ROLES = ['Product Manager', 'Builder', 'Founder'];
 
-function RoleRotator() {
-  const [index, setIndex] = useState(0);
+function TypewriterRoles() {
+  const [state, setState] = useState<{
+    roleIndex: number;
+    text: string;
+    isDeleting: boolean;
+    isPaused: boolean;
+  }>({
+    roleIndex: 0,
+    text: '',
+    isDeleting: false,
+    isPaused: false,
+  });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % ROLES.length);
-    }, 2500);
-    return () => clearInterval(timer);
-  }, []);
+    const fullText = ROLES[state.roleIndex];
+    const nextRoleIndex = (state.roleIndex + 1) % ROLES.length;
+    const typingSpeed = state.isDeleting ? 45 : 85;
+
+    const handleTick = () => {
+      if (state.isPaused) {
+        setState((prev) => ({ ...prev, isPaused: false, isDeleting: true }));
+        return;
+      }
+
+      if (state.isDeleting) {
+        const nextText = fullText.slice(0, state.text.length - 1);
+        if (nextText === '') {
+          setState({
+            roleIndex: nextRoleIndex,
+            text: '',
+            isDeleting: false,
+            isPaused: false,
+          });
+        } else {
+          setState((prev) => ({ ...prev, text: nextText }));
+        }
+      } else {
+        const nextText = fullText.slice(0, state.text.length + 1);
+        if (nextText === fullText) {
+          setState((prev) => ({ ...prev, text: nextText, isPaused: true }));
+        } else {
+          setState((prev) => ({ ...prev, text: nextText }));
+        }
+      }
+    };
+
+    const timer = setTimeout(handleTick, state.isPaused ? 1500 : typingSpeed);
+    return () => clearTimeout(timer);
+  }, [state]);
 
   return (
     <div className="h-5 sm:h-6 mb-3 sm:mb-4 overflow-hidden">
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={ROLES[index]}
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -20, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="block text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground"
-        >
-          {ROLES[index]}
-        </motion.span>
-      </AnimatePresence>
+      <span className="block text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground">
+        {state.text}
+        <span className="inline-block w-[1px] h-[1em] bg-current ml-0.5 align-middle animate-pulse" />
+      </span>
     </div>
   );
 }
+
 
 
 export function HeroSection() {
