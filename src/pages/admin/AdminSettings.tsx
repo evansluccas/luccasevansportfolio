@@ -3,7 +3,7 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Save, Upload, X, Plus } from 'lucide-react';
+import { Save, Upload, X, Plus, FileText } from 'lucide-react';
 
 interface SiteConfig {
   id?: string;
@@ -13,6 +13,9 @@ interface SiteConfig {
   title_3: string;
   title_4: string;
   hero_tag: string;
+  hero_subtitle: string;
+  hero_subheadline: string;
+  resume_url: string;
   bio_short: string;
   bio_long: string;
   profile_image_url: string;
@@ -28,6 +31,9 @@ const initialConfig: SiteConfig = {
   title_3: '',
   title_4: '',
   hero_tag: 'Hello!',
+  hero_subtitle: '',
+  hero_subheadline: '',
+  resume_url: '',
   bio_short: '',
   bio_long: '',
   profile_image_url: '',
@@ -42,9 +48,11 @@ export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingProfileImage, setUploadingProfileImage] = useState(false);
+  const [uploadingResume, setUploadingResume] = useState(false);
   const { toast } = useToast();
 
   const profileImageRef = useRef<HTMLInputElement>(null);
+  const resumeRef = useRef<HTMLInputElement>(null);
 
 
   useEffect(() => {
@@ -69,6 +77,9 @@ export default function AdminSettings() {
         title_3: data.title_3 || '',
         title_4: data.title_4 || '',
         hero_tag: data.hero_tag || '',
+        hero_subtitle: data.hero_subtitle || '',
+        hero_subheadline: data.hero_subheadline || '',
+        resume_url: data.resume_url || '',
         bio_short: data.bio_short || '',
         bio_long: data.bio_long || '',
         profile_image_url: data.profile_image_url || '',
@@ -125,6 +136,35 @@ export default function AdminSettings() {
     setConfig(prev => ({ ...prev, profile_image_url: '' }));
   };
 
+  const handleResumeUpload = async (file: File) => {
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: 'File too large', description: 'Please upload a file under 10MB.', variant: 'destructive' });
+      return;
+    }
+    setUploadingResume(true);
+
+    const fileExt = file.name.split('.').pop();
+    const filePath = `resume/resume-${Date.now()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('portfolio-assets')
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) {
+      toast({ title: 'Upload failed', description: uploadError.message, variant: 'destructive' });
+      setUploadingResume(false);
+      return;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('portfolio-assets')
+      .getPublicUrl(filePath);
+
+    setConfig(prev => ({ ...prev, resume_url: publicUrl }));
+    toast({ title: 'Resume uploaded', description: 'Remember to save your settings.' });
+    setUploadingResume(false);
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,6 +177,9 @@ export default function AdminSettings() {
       title_3: config.title_3 || null,
       title_4: config.title_4 || null,
       hero_tag: config.hero_tag,
+      hero_subtitle: config.hero_subtitle || null,
+      hero_subheadline: config.hero_subheadline || null,
+      resume_url: config.resume_url || null,
       bio_short: config.bio_short,
       bio_long: config.bio_long,
       profile_image_url: config.profile_image_url || null,
@@ -246,16 +289,78 @@ export default function AdminSettings() {
             </div>
           </div>
 
-          {/* Hero Tag */}
+          {/* Hero Subtitle */}
           <div>
-            <label className="block text-sm font-medium mb-2">Hero Tag (e.g., "Hello!")</label>
+            <label className="block text-sm font-medium mb-2">Hero Subtitle (under your name)</label>
             <input
               type="text"
-              name="hero_tag"
-              value={config.hero_tag}
+              name="hero_subtitle"
+              value={config.hero_subtitle}
               onChange={handleChange}
+              placeholder="Product Manager who ships experiments that move revenue."
               className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none"
             />
+          </div>
+
+          {/* Hero Sub-subtitle */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Hero Supporting Paragraph</label>
+            <textarea
+              name="hero_subheadline"
+              value={config.hero_subheadline}
+              onChange={handleChange}
+              rows={3}
+              className="w-full px-4 py-3 rounded-lg bg-background text-foreground border border-muted focus:border-primary focus:outline-none resize-none"
+            />
+          </div>
+
+          {/* Resume Upload */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Resume (PDF / DOC)</label>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => resumeRef.current?.click()}
+                disabled={uploadingResume}
+              >
+                <Upload size={14} className="mr-1" />
+                {uploadingResume ? 'Uploading...' : config.resume_url ? 'Replace resume' : 'Upload resume'}
+              </Button>
+              <input
+                ref={resumeRef}
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleResumeUpload(file);
+                }}
+                className="hidden"
+              />
+              {config.resume_url && (
+                <>
+                  <a
+                    href={config.resume_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-sm text-primary underline"
+                  >
+                    <FileText size={14} /> View current resume
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setConfig(prev => ({ ...prev, resume_url: '' }))}
+                    className="inline-flex items-center gap-1 text-sm text-destructive"
+                  >
+                    <X size={14} /> Remove
+                  </button>
+                </>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Used by the "Download resume" button in the hero section. Max 10MB.
+            </p>
           </div>
 
           {/* Profile Image Upload */}

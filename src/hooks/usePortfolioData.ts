@@ -10,6 +10,9 @@ export interface SiteConfig {
   title_3: string | null;
   title_4: string | null;
   hero_tag: string | null;
+  hero_subtitle: string | null;
+  hero_subheadline: string | null;
+  resume_url: string | null;
   bio_short: string | null;
   bio_long: string | null;
   profile_image_url: string | null;
