@@ -64,32 +64,34 @@ export function SkillsSection() {
               <Skeleton key={i} className="h-64 rounded-none" />
             ))
           ) : (
-            groupedSkills && Object.entries(groupedSkills).map(([category, categorySkills]) => (
-              <div key={category}>
-                <h3 className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground pb-3 mb-5 sm:mb-6 border-b border-border">
-                  {category}
-                </h3>
-                <div className="space-y-4">
-                  {categorySkills?.map((skill) => (
-                    <div key={skill.id}>
-                      <div className="flex justify-between items-baseline mb-1.5">
-                        <span className="text-sm text-foreground">
-                          {skill.name}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {skill.proficiency}%
-                        </span>
+            groupedSkills && Object.entries(groupedSkills).map(([category, categorySkills], i) => (
+              <Reveal key={category} immediate={i === 0} delay={i === 0 ? 0 : 0.1}>
+                <div>
+                  <h3 className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground pb-3 mb-5 sm:mb-6 border-b border-border">
+                    {category}
+                  </h3>
+                  <div className="space-y-4">
+                    {categorySkills?.map((skill) => (
+                      <div key={skill.id}>
+                        <div className="flex justify-between items-baseline mb-1.5">
+                          <span className="text-sm text-foreground">
+                            {skill.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {skill.proficiency}%
+                          </span>
+                        </div>
+                        <div className="h-px bg-border overflow-hidden">
+                          <div
+                            className="h-px bg-accent transition-all duration-1000 ease-out"
+                            style={{ width: `${skill.proficiency}%` }}
+                          />
+                        </div>
                       </div>
-                      <div className="h-px bg-border overflow-hidden">
-                        <div
-                          className="h-px bg-accent transition-all duration-1000 ease-out"
-                          style={{ width: `${skill.proficiency}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             ))
           )}
         </div>
