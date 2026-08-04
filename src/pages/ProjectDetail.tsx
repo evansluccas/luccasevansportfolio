@@ -119,7 +119,7 @@ export default function ProjectDetail() {
             <div className="mb-12">
               <h3 className="text-lg font-semibold text-muted-foreground mb-4 flex items-center gap-2">
                 <Tag size={18} />
-                Technologies Used
+                Focus Areas
               </h3>
               <div className="flex flex-wrap gap-3">
                 {project.technologies.map((tech, index) => (
