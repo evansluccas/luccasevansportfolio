@@ -1,8 +1,41 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSiteConfig, useHeroStats } from '@/hooks/usePortfolioData';
 import { getIcon } from '@/lib/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CountUp } from '@/components/ui/count-up';
+import { AnimatePresence, motion } from 'framer-motion';
+
+const ROLES = ['Product Manager', 'Builder', 'Founder'];
+
+function RoleRotator() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % ROLES.length);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="h-5 sm:h-6 mb-3 sm:mb-4 overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={ROLES[index]}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -20, opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="block text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground"
+        >
+          {ROLES[index]}
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
+}
+
 
 export function HeroSection() {
   const { data: config, isLoading: configLoading } = useSiteConfig();
@@ -17,6 +50,13 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-[1.35fr_1fr] gap-8 sm:gap-12 lg:gap-20 items-center">
           {/* Left Content */}
           <div className="order-2 lg:order-1 text-left">
+            {/* Rotating role */}
+            {isLoading ? (
+              <Skeleton className="h-5 w-48 mb-3 sm:mb-4" />
+            ) : (
+              <RoleRotator />
+            )}
+
             {/* Name */}
             {isLoading ? (
               <Skeleton className="h-16 w-80 mb-4" />
@@ -30,9 +70,9 @@ export function HeroSection() {
             {/* Subtitle */}
             {isLoading ? (
               <Skeleton className="h-8 w-72 mb-6" />
-            ) : (config?.hero_subtitle || config?.title) && (
+            ) : (
               <h2 className="text-base sm:text-xl lg:text-2xl text-foreground font-normal mb-4 sm:mb-5 max-w-xl border-t border-border pt-4 sm:pt-5">
-                {config?.hero_subtitle || config?.title}
+                I ship experiments that move revenue.
               </h2>
             )}
 
