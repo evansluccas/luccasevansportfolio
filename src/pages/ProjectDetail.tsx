@@ -56,26 +56,8 @@ export default function ProjectDetail() {
       <Header />
       
       <main className="pt-24">
-        {/* Hero */}
-        <section className="relative">
-          <div className="aspect-[21/9] w-full overflow-hidden">
-            <ProjectCover
-              heading={project.cover_heading || project.title}
-              subheading={project.cover_subheading}
-              category={project.category}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-          </div>
-
-          <BlobDecoration 
-            className="-right-48 top-1/4 opacity-20" 
-            size="xl" 
-            variant="primary"
-          />
-        </section>
-
         {/* Content */}
-        <section className="section-container relative z-10 -mt-32 pb-24">
+        <section className="section-container py-12 pb-24">
           {/* Breadcrumb */}
           <div className="mb-8">
             <Link
