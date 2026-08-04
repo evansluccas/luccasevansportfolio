@@ -87,7 +87,7 @@ export function HeroSection() {
             {isLoading ? (
               <Skeleton className="h-5 w-48 mb-3 sm:mb-4" />
             ) : (
-              <RoleRotator />
+              <TypewriterRoles />
             )}
 
             {/* Name */}
