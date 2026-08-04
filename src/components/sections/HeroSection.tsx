@@ -50,6 +50,13 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-[1.35fr_1fr] gap-8 sm:gap-12 lg:gap-20 items-center">
           {/* Left Content */}
           <div className="order-2 lg:order-1 text-left">
+            {/* Rotating role */}
+            {isLoading ? (
+              <Skeleton className="h-5 w-48 mb-3 sm:mb-4" />
+            ) : (
+              <RoleRotator />
+            )}
+
             {/* Name */}
             {isLoading ? (
               <Skeleton className="h-16 w-80 mb-4" />
@@ -63,9 +70,9 @@ export function HeroSection() {
             {/* Subtitle */}
             {isLoading ? (
               <Skeleton className="h-8 w-72 mb-6" />
-            ) : (config?.hero_subtitle || config?.title) && (
+            ) : (
               <h2 className="text-base sm:text-xl lg:text-2xl text-foreground font-normal mb-4 sm:mb-5 max-w-xl border-t border-border pt-4 sm:pt-5">
-                {config?.hero_subtitle || config?.title}
+                I ship experiments that move revenue.
               </h2>
             )}
 
