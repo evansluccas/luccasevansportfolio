@@ -443,6 +443,8 @@ export type Database = {
           bio_short: string | null
           created_at: string
           email_icon_url: string | null
+          hero_subheadline: string | null
+          hero_subtitle: string | null
           hero_tag: string | null
           id: string
           lang: string
@@ -451,6 +453,7 @@ export type Database = {
           location_icon_url: string | null
           name: string
           profile_image_url: string | null
+          resume_url: string | null
           social_email: string | null
           social_linkedin: string | null
           title: string
@@ -464,6 +467,8 @@ export type Database = {
           bio_short?: string | null
           created_at?: string
           email_icon_url?: string | null
+          hero_subheadline?: string | null
+          hero_subtitle?: string | null
           hero_tag?: string | null
           id?: string
           lang?: string
@@ -472,6 +477,7 @@ export type Database = {
           location_icon_url?: string | null
           name?: string
           profile_image_url?: string | null
+          resume_url?: string | null
           social_email?: string | null
           social_linkedin?: string | null
           title?: string
@@ -485,6 +491,8 @@ export type Database = {
           bio_short?: string | null
           created_at?: string
           email_icon_url?: string | null
+          hero_subheadline?: string | null
+          hero_subtitle?: string | null
           hero_tag?: string | null
           id?: string
           lang?: string
@@ -493,6 +501,7 @@ export type Database = {
           location_icon_url?: string | null
           name?: string
           profile_image_url?: string | null
+          resume_url?: string | null
           social_email?: string | null
           social_linkedin?: string | null
           title?: string
