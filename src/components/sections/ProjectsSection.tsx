@@ -115,9 +115,12 @@ export function ProjectsSection() {
           <>
             <div ref={emblaRef} className="overflow-hidden -mx-2">
               <div className="flex items-start lg:items-stretch">
-                {projects?.map((project) => (
-                  <article
+                {projects?.map((project, i) => (
+                  <Reveal
                     key={project.id}
+                    as="article"
+                    immediate={i === 0}
+                    delay={i === 0 ? 0 : 0.1}
                     className="flex-[0_0_92%] sm:flex-[0_0_60%] lg:flex-[0_0_33.333%] xl:flex-[0_0_32%] min-w-0 px-2"
                   >
                     <div className="h-full flex flex-col bg-card border border-border rounded-lg overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-300">
@@ -161,7 +164,7 @@ export function ProjectsSection() {
                         </div>
                       </div>
                     </div>
-                  </article>
+                  </Reveal>
                 ))}
               </div>
             </div>
